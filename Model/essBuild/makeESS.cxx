@@ -391,7 +391,7 @@ makeESS::buildLowButterfly(Simulation& System)
   LowMod=std::shared_ptr<constructSystem::ModBase>(BM);
   OR.addObject(LowMod);
   LowMod->createAll(System,*Reflector,LowPreMod.get(),6);
-  LowFocalPoints = BM->getFocalPoints();
+  //  LowFocalPoints = BM->getFocalPoints();
   return;
 }
 
@@ -416,7 +416,7 @@ makeESS::buildTopButterfly(Simulation& System)
   
   TopMod->createAll(System,*Reflector,TopPreMod.get(),6);
 
-  TopFocalPoints = BM->getFocalPoints();
+  //  TopFocalPoints = BM->getFocalPoints();
 
   return;
 }

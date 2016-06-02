@@ -235,7 +235,6 @@ ButterflyModerator::createObjects(Simulation& System)
   ELog::RegMethod RegA("ButterflyModerator","createObjects");
   
   const std::string sideRule=getSideRule(); // ContainedComp::getExclude();
-
   HeadRule HR(sideRule);
   HR.makeComplement();
 
@@ -393,6 +392,75 @@ ButterflyModerator::getComponent(const std::string& compName) const
 }
 
   
+
+std::string
+ButterflyModerator::getSideRule() const
+  /*
+    Return side rule
+    \todo // SA: Use union of link points as it is faster
+  */
+{
+  ELog::RegMethod RegA("ButterflyModerator","getSideRule");
+  std::string side("");
+  HeadRule HR;
+  HR.procString(LeftUnit->getSideRule());
+  HR.addUnion(RightUnit->getSideRule());
+  HR.addUnion(MidWater->getSideRule());
+  HR.addUnion(LeftWater->getSideRule());
+  HR.addUnion(RightWater->getSideRule());
+  HR.makeComplement();
+  return HR.display();
+}
+
+std::string
+ButterflyModerator::getLeftRightWaterSideRule() const
+  /*
+    Return left+right water side rule
+    \todo // SA: Use union of link points as it is faster
+  */
+{
+  ELog::RegMethod RegA("ButterflyModerator","getLeftRightWaterSideRule");
+  std::string side;
+  HeadRule HR;
+  HR.procString(LeftWater->getSideRule());
+  HR.addUnion(RightWater->getSideRule());
+  HR.makeComplement();
+  return HR.display();
+}
+
+Geometry::Vec3D
+ButterflyModerator::getFocalPoint(const long int sideIndex) const
+  /*!
+    Return focal point coordinates for collimator setup
+    \param sideIndex :: link point number of MidWater
+  */
+{
+  return MidWater->getSignedLinkPt(sideIndex);
+}
+
+std::vector<Geometry::Vec3D>
+ButterflyModerator::getFocalPoints() const
+  /*!
+    Return array of focal points + 
+    Last two items defining zmin and zmax
+  */
+{
+  ELog::RegMethod RegA("ButterflyModerator","getFocalPoints");
+  
+  std::vector<Geometry::Vec3D> vec;
+  for (long int i=1; i<11; i++)
+    vec.push_back(MidWater->getSignedLinkPt(i));
+  
+  Geometry::Vec3D zmin(0, 0, LeftUnit->getCentre()[2]-LeftUnit->getHeight()/2.0);
+  Geometry::Vec3D zmax(0, 0, LeftUnit->getCentre()[2]+LeftUnit->getHeight()/2.0);
+
+
+  vec.push_back(zmin);
+  vec.push_back(zmax);
+  
+  return vec;
+}
+
 void
 ButterflyModerator::createAll(Simulation& System,
 			      const attachSystem::FixedComp& axisFC,
@@ -434,67 +502,5 @@ ButterflyModerator::createAll(Simulation& System,
   return;
 }
 
-  std::string
-  ButterflyModerator::getSideRule() const
-  /*
-    Return side rule
-    \todo // SA: Use union of link points as it is faster
-  */
-  {
-    std::string side("");
-    HeadRule HR;
-    HR.procString(LeftUnit->getSideRule());
-    HR.addUnion(RightUnit->getSideRule());
-    HR.addUnion(MidWater->getSideRule());
-    HR.addUnion(LeftWater->getSideRule());
-    HR.addUnion(RightWater->getSideRule());
-    HR.makeComplement();
-    return HR.display();
-  }
-
-  std::string
-  ButterflyModerator::getLeftRightWaterSideRule() const
-  /*
-    Return left+right water side rule
-    \todo // SA: Use union of link points as it is faster
-  */
-  {
-    std::string side("");
-    HeadRule HR;
-    HR.procString(LeftWater->getSideRule());
-    HR.addUnion(RightWater->getSideRule());
-    HR.makeComplement();
-    return HR.display();
-  }
-
-  Geometry::Vec3D ButterflyModerator::getFocalPoint(int i) const
-  /*
-    Return focal point coordinates for collimator setup
-    \param i :: link point number of MidWater
-  */
-  {
-    return MidWater->getLinkPt(i);
-  }
-
-  std::vector<Geometry::Vec3D> ButterflyModerator::getFocalPoints() const
-  /*
-    Return array of focal points + 
-    Last two items defining zmin and zmax
-  */
-  {
-    std::vector<Geometry::Vec3D> vec;
-
-    for (int i=0; i<10; i++)
-      vec.push_back(MidWater->getLinkPt(i));
-
-    Geometry::Vec3D zmin(0, 0, LeftUnit->getCentre()[2]-LeftUnit->getHeight()/2.0);
-    Geometry::Vec3D zmax(0, 0, LeftUnit->getCentre()[2]+LeftUnit->getHeight()/2.0);
-
-
-    vec.push_back(zmin);
-    vec.push_back(zmax);
-
-    return vec;
-  }
-
+  
 }  // NAMESPACE essSystem

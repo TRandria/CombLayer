@@ -329,11 +329,7 @@ ProtonTube::createAll(Simulation& System,
   if (bIndex)
     {
       ELog::EM << "which one to use??? check with BeRef geometry" << ELog::endDiag;
-      //<<<<<<< HEAD
-      //const size_t lIndex(static_cast<size_t>(std::abs(bIndex)-1));
-      //=======
       const size_t lIndex(static_cast<size_t>(std::abs(bIndex))-1);
-      //>>>>>>> BeRef-variables-splited
       BSurf=(bIndex>0) ?
 	BulkFC.getLinkString(lIndex) : BulkFC.getBridgeComplement(lIndex) ;
       FixedComp::setLinkComponent(0,BulkFC,lIndex);

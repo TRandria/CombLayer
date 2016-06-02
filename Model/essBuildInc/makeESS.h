@@ -181,14 +181,13 @@ class makeESS
   void buildPillars(Simulation&);
   void buildBunkerFeedThrough(Simulation&,
 			      const mainSystem::inputParam&);
-
-  void buildF5Collimator(Simulation&, size_t); // when -nF5 is used
-  void buildF5Collimator(Simulation&, const mainSystem::inputParam&); // when -TopCC is used
-
   void buildPreWings(Simulation&);
   void buildTwister(Simulation&);
 
-  void buildPillars(Simulation&);
+  // when -nF5 is used
+  void buildF5Collimator(Simulation&,size_t);
+  // when -TopCC is used
+  void buildF5Collimator(Simulation&,const mainSystem::inputParam&); 
 
   void optionSummary(Simulation&);
 

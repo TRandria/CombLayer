@@ -211,7 +211,8 @@ TaperedDiskPreMod::populate(const FuncDataBase& Control,
 
 void
 TaperedDiskPreMod::createUnitVector(const attachSystem::FixedComp& refCentre,
-			     const long int sideIndex,const bool zRotate)
+                                    const long int sideIndex,
+                                    const bool zRotate)
   /*!
     Create the unit vectors
     \param refCentre :: Centre for object
@@ -220,6 +221,9 @@ TaperedDiskPreMod::createUnitVector(const attachSystem::FixedComp& refCentre,
   */
 {
   ELog::RegMethod RegA("TaperedDiskPreMod","createUnitVector");
+
+  // Note: Create unitvectors around central point of refCentre
+  // but orign relative to link point.
   attachSystem::FixedComp::createUnitVector(refCentre);
   Origin=refCentre.getSignedLinkPt(sideIndex);
   if (zRotate)
@@ -227,6 +231,7 @@ TaperedDiskPreMod::createUnitVector(const attachSystem::FixedComp& refCentre,
       X*=-1;
       Z*=-1;
     }
+  // Apply shift to centre because initial orign at surface
   const double D=(depth.empty()) ? 0.0 : depth.back();
   applyShift(0,0,zStep+D);
 

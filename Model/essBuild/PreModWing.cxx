@@ -3,7 +3,7 @@
  
  * File:   essBuild/PreModWing.cxx
  *
- * Copyright (c) 2015 by Konstantin Batkov
+ * Copyright (c) 2016 by Konstantin Batkov
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -244,7 +244,8 @@ PreModWing::createSurfaces()
 
 void
 PreModWing::createObjects(Simulation& System,
-			  const attachSystem::FixedComp& Pre, const long int preLP, 
+			  const attachSystem::FixedComp& Pre,
+                          const long int preLP, 
 			  const attachSystem::FixedComp& Mod)
 
   /*!
@@ -285,7 +286,7 @@ PreModWing::createObjects(Simulation& System,
   std::string Out;
 
   std::string PreString;
-  HR.procString(Pre.getLinkString(preLP));
+  HR.procString(Pre.getSignedLinkString(preLP));
   HR.makeComplement();
   PreString = HR.display();
 

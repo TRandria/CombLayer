@@ -3,7 +3,7 @@
  
   * File:   essBuild/DiskPreSimple.cxx
   *
-  * Copyright (c) 2004-2015 by Stuart Ansell
+  * Copyright (c) 2004-2016 by Stuart Ansell/Konstain Batkov
   *
   * This program is free software: you can redistribute it and/or modify
   * it under the terms of the GNU General Public License as published by
@@ -75,19 +75,19 @@
 namespace essSystem
 {
 
-  BilbaoWheelInnerStructure::BilbaoWheelInnerStructure(const std::string& Key) :
-    attachSystem::ContainedComp(),
-    attachSystem::FixedComp(Key,6),
-    insIndex(ModelSupport::objectRegister::Instance().cell(Key, -1, 1E+5)), // max number of surfaces
-    cellIndex(insIndex+1)
-    /*!
-      Constructor
-      \param Key :: Name of construction key
-    */
-  {
-  }
+BilbaoWheelInnerStructure::BilbaoWheelInnerStructure(const std::string& Key) :
+  attachSystem::ContainedComp(),
+  attachSystem::FixedComp(Key,6),
+  insIndex(ModelSupport::objectRegister::Instance().cell(Key,1e5)), 
+  cellIndex(insIndex+1)
+  /*!
+    Constructor
+    \param Key :: Name of construction key
+  */
+{}
 
-  BilbaoWheelInnerStructure::BilbaoWheelInnerStructure(const BilbaoWheelInnerStructure& A) : 
+BilbaoWheelInnerStructure::BilbaoWheelInnerStructure
+(const BilbaoWheelInnerStructure& A) : 
     attachSystem::ContainedComp(A),
     attachSystem::FixedComp(A),
     insIndex(A.insIndex),
