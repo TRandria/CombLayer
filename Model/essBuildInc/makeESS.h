@@ -37,7 +37,7 @@ namespace constructSystem
 
 namespace moderatorSystem
 {
-  class BasicFlightLine;
+  class TaperedFlightLine;
   class FlightLine;
 }
 
@@ -59,12 +59,14 @@ namespace essSystem
   class ConicModerator;
   class CylPreMod;
   class IradCylinder;
+  class PreModWing;
   class BulkModule;
+  class TwisterModule;
   class ShutterBay;
   class ProtonTube;
   class GuideBay;
   class BeamMonitor;
-  class DiskPreMod;
+  class TaperedDiskPreMod;
   class Bunker;
   class RoofPillars;
   class Curtain;
@@ -93,35 +95,44 @@ class makeESS
   // Butterly
   /// Primary Lower Mod 
   std::shared_ptr<constructSystem::ModBase> LowMod;
-  std::shared_ptr<DiskPreMod> LowPreMod;         ///< Lower mod 
-  std::shared_ptr<DiskPreMod> LowCapMod;         ///< Upper mod
+  std::shared_ptr<TaperedDiskPreMod> LowPreMod;         ///< Lower mod 
+  std::shared_ptr<TaperedDiskPreMod> LowCapMod;         ///< Upper mod
 
-  std::shared_ptr<moderatorSystem::BasicFlightLine> LowAFL;  ///< Lower Mode FL
-  std::shared_ptr<moderatorSystem::BasicFlightLine> LowBFL;  ///< Lower Mode FL
+  std::shared_ptr<moderatorSystem::TaperedFlightLine> LowAFL;  ///< Lower Mode FL
+  std::shared_ptr<moderatorSystem::TaperedFlightLine> LowBFL;  ///< Lower Mode FL
   std::shared_ptr<CylPreMod> LowPre;          ///< Lower Mod (Pre)
-
-  /// Lower supply 
-  std::shared_ptr<constructSystem::SupplyPipe> LowSupplyPipe; 
-  std::shared_ptr<constructSystem::SupplyPipe> LowReturnPipe;  ///< Lower supply
 
   // Butterly
   /// Primary Upper Mod 
   std::shared_ptr<constructSystem::ModBase> TopMod;
-  std::shared_ptr<DiskPreMod> TopPreMod;         ///< Top mod 
-  std::shared_ptr<DiskPreMod> TopCapMod;         ///< Lower mod
+  std::shared_ptr<TaperedDiskPreMod> TopPreMod;         ///< Top mod 
+  std::shared_ptr<TaperedDiskPreMod> TopCapMod;         ///< Lower mod
 
+  std::shared_ptr<moderatorSystem::TaperedFlightLine> TopAFL;  ///< Top Mode FL
+  std::shared_ptr<moderatorSystem::TaperedFlightLine> TopBFL;  ///< Top Mode FL
 
-  
-  std::shared_ptr<moderatorSystem::BasicFlightLine> TopAFL;  ///< Top Mode FL
-  std::shared_ptr<moderatorSystem::BasicFlightLine> TopBFL;  ///< Top Mode FL
   std::shared_ptr<CylPreMod> TopPre;          ///< Toper Mod (Pre)
 
-  /// Top supply 
+  std::shared_ptr<PreModWing> LowPreWing; ///< Low premoderator wing
+  std::shared_ptr<PreModWing> TopPreWing; ///< Top premoderator wing
+  std::shared_ptr<PreModWing> LowCapWing; ///< Low cap premoderator wing
+  std::shared_ptr<PreModWing> TopCapWing; ///< Top cap premoderator wing
 
-  std::shared_ptr<constructSystem::SupplyPipe> TopSupplyPipe; 
-  std::shared_ptr<constructSystem::SupplyPipe> TopReturnPipe;  ///< Top supply
+  /// Pipes
+  std::shared_ptr<constructSystem::SupplyPipe> TopSupplyLeftAl,  TopSupplyLeftConnect,  TopSupplyLeftInvar;
+  std::shared_ptr<constructSystem::SupplyPipe> TopReturnLeftAl,  TopReturnLeftConnect,  TopReturnLeftInvar;
+
+  std::shared_ptr<constructSystem::SupplyPipe> TopSupplyRightAl, TopSupplyRightConnect, TopSupplyRightInvar;
+  std::shared_ptr<constructSystem::SupplyPipe> TopReturnRightAl, TopReturnRightConnect, TopReturnRightInvar;
+
+  std::shared_ptr<constructSystem::SupplyPipe> LowSupplyLeftAl,  LowSupplyLeftConnect,  LowSupplyLeftInvar;
+  std::shared_ptr<constructSystem::SupplyPipe> LowReturnLeftAl,  LowReturnLeftConnect,  LowReturnLeftInvar;
+
+  std::shared_ptr<constructSystem::SupplyPipe> LowSupplyRightAl, LowSupplyRightConnect, LowSupplyRightInvar;
+  std::shared_ptr<constructSystem::SupplyPipe> LowReturnRightAl, LowReturnRightConnect, LowReturnRightInvar;
 
   std::shared_ptr<BulkModule> Bulk;      ///< Main bulk module
+  std::shared_ptr<TwisterModule> Twister;
   std::shared_ptr<moderatorSystem::FlightLine> BulkLowAFL;  ///< Lower Mode FL
 
   /// Shutterbay objects
@@ -140,9 +151,10 @@ class makeESS
   std::shared_ptr<RoofPillars> BBunkerPillars; 
   std::shared_ptr<Curtain> TopCurtain;  ///< Conc-curtain
 
-  /// collimators for F5 tallies
-  std::vector<std::shared_ptr<F5Collimator>> F5array; 
-  
+  std::vector<std::shared_ptr<F5Collimator>> F5array; ///< collimators for F5 tallies
+  std::vector<Geometry::Vec3D> TopFocalPoints; ///< top moderator focal points
+  std::vector<Geometry::Vec3D> LowFocalPoints; ///< low moderator focal points
+ 
   void topFlightLines(Simulation&);
   void lowFlightLines(Simulation&);
   void createGuides(Simulation&);
@@ -153,10 +165,12 @@ class makeESS
 
 
   void buildTopButterfly(Simulation&);
-  void buildLowerPipe(Simulation&,const std::string&);
-
-  void buildTopPreMod(Simulation&);
-  void buildToperPipe(Simulation&,const std::string&);
+  void buildH2Pipe(Simulation&, std::string, std::string, std::string,
+		   std::shared_ptr<constructSystem::SupplyPipe>,
+		   std::shared_ptr<constructSystem::SupplyPipe>,
+		   std::shared_ptr<constructSystem::SupplyPipe>);
+  void buildTopPipes(Simulation&,const std::string&);
+  void buildLowPipes(Simulation&,const std::string&);
 
   void makeTarget(Simulation&,const std::string&);
   void makeBunker(Simulation&,const mainSystem::inputParam&);
@@ -168,8 +182,13 @@ class makeESS
   void buildBunkerFeedThrough(Simulation&,
 			      const mainSystem::inputParam&);
 
+  void buildF5Collimator(Simulation&, size_t); // when -nF5 is used
+  void buildF5Collimator(Simulation&, const mainSystem::inputParam&); // when -TopCC is used
 
-  void buildF5Collimator(Simulation&, size_t);
+  void buildPreWings(Simulation&);
+  void buildTwister(Simulation&);
+
+  void buildPillars(Simulation&);
 
   void optionSummary(Simulation&);
 

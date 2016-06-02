@@ -85,6 +85,7 @@
 #include "ModBase.h"
 #include "H2Wing.h"
 #include "MidWaterDivider.h"
+#include "SurInter.h"
 
 namespace essSystem
 {
@@ -263,7 +264,6 @@ MidWaterDivider::createLinks(const H2Wing& leftWing,
       FixedComp::setConnect
       	(index,SurInter::getPoint(PA,PB,midPlane),Axis[index]);
     }
-
   return;
 }
   
@@ -324,15 +324,15 @@ MidWaterDivider::createSurfaces()
 
   
   ModelSupport::buildPlane(SMap,divIndex+111,
-			   Origin+leftNorm*(length+wallThick),leftNorm);
+			   Origin+leftNorm*(length+wallThick),leftNorm); // x-y+
   ModelSupport::buildPlane(SMap,divIndex+112,
-			   Origin+rightNorm*(length+wallThick),rightNorm);
+			   Origin+rightNorm*(length+wallThick),rightNorm); // x-y-
 
   // Length below [note reverse of normals]
   ModelSupport::buildPlane(SMap,divIndex+131,
-			   Origin-rightNorm*(wallThick+length),-rightNorm);
+			   Origin-rightNorm*(wallThick+length),-rightNorm); // x+y+
   ModelSupport::buildPlane(SMap,divIndex+132,
-			   Origin-leftNorm*(wallThick+length),-leftNorm);
+			   Origin-leftNorm*(wallThick+length),-leftNorm); // x+y-
 
   return;
 }
@@ -387,8 +387,6 @@ MidWaterDivider::createObjects(Simulation& System,
   Out=ModelSupport::getComposite(SMap,divIndex,
 				 "-100 (-123 : 124) -131 -132 ");
   addOuterUnionSurf(Out);
-  
-   
   return;
 }
 
