@@ -103,7 +103,7 @@ PreModWing::PreModWing(const PreModWing& A) :
   modIndex(A.modIndex),cellIndex(A.cellIndex),
   engActive(A.engActive),thick(A.thick),mat(A.mat),
   wallThick(A.wallThick),wallMat(A.wallMat),
-  tiltSide(A.tiltSide),tiltAngle(A.tiltAngle),
+  tiltAngle(A.tiltAngle),
   tiltRadius(A.tiltRadius)
   /*!
     Copy constructor
@@ -130,7 +130,6 @@ PreModWing::operator=(const PreModWing& A)
       mat=A.mat;
       wallThick=A.wallThick;
       wallMat=A.wallMat;
-      tiltSide=A.tiltSide;
       tiltAngle=A.tiltAngle;
       tiltRadius=A.tiltRadius;
    }
@@ -193,6 +192,8 @@ PreModWing::createUnitVector(const attachSystem::FixedComp& FC, const long int s
   ELog::RegMethod RegA("PreModWing","createUnitVector");
   attachSystem::FixedComp::createUnitVector(FC);
   Origin=FC.getSignedLinkPt(sideIndex);
+  ELog::EM<<keyName<<" "<<sideIndex<<" ::"<<Origin<<ELog::endDiag;
+    
   //  ELog::EM << Origin << ELog::endCrit;
   if (zRotate)
     {
@@ -208,7 +209,7 @@ PreModWing::createUnitVector(const attachSystem::FixedComp& FC, const long int s
 
 
 void
-PreModWing::createSurfaces()
+PreModWing::createSurfaces(const int tiltSide)
   /*!
     Create planes for the silicon and Polyethene layers
     \param tiltSide :: top/bottom side to tilt
@@ -225,18 +226,20 @@ PreModWing::createSurfaces()
   ModelSupport::buildCylinder(SMap,modIndex+7,Origin,Z,tiltRadius);  
 
   const int tiltSign = tiltSide ? 1 : -1;
-
-  ModelSupport::buildPlane(SMap,modIndex+5,Origin+Z*(thick)*tiltSign,Z*tiltSign);  
-  ModelSupport::buildPlane(SMap,modIndex+6,Origin+Z*(thick+wallThick)*tiltSign,Z*tiltSign);  
+  ELog::EM<<keyName<<" Origin == "<<Origin<<ELog::endDiag;
+  ModelSupport::buildPlane(SMap,modIndex+5,Origin+Z*(thick)*tiltSign,Z*tiltSide);  
+  ModelSupport::buildPlane(SMap,modIndex+6,Origin+Z*(thick+wallThick*tiltSide),Z*tiltSign);  
   if (tiltAngle>Geometry::zeroTol)
     {
-      ModelSupport::buildCone(SMap, modIndex+8, Origin+Z*(thick+h)*tiltSign, Z, 90-tiltAngle, -tiltSign);
-      ModelSupport::buildCone(SMap, modIndex+9, Origin+Z*(thick+wallThick+h)*tiltSign, Z, 90-tiltAngle, -tiltSign);
+      ModelSupport::buildCone(SMap, modIndex+8, Origin+Z*((thick+h)*tiltSide), Z,
+                              90-tiltAngle,-tiltSide);
+      ModelSupport::buildCone(SMap, modIndex+9, Origin+Z*((thick+wallThick+h)*tiltSide),
+                              Z, 90-tiltAngle, -tiltSide);
     }
   else
     {
-      ModelSupport::buildPlane(SMap, modIndex+8, Origin+Z*(thick+h)*tiltSign, Z*tiltSign);
-      ModelSupport::buildPlane(SMap, modIndex+9, Origin+Z*(thick+wallThick+h)*tiltSign, Z*tiltSign);
+      ModelSupport::buildPlane(SMap, modIndex+8, Origin+Z*(thick+h)*tiltSide, Z*tiltSide);
+      ModelSupport::buildPlane(SMap, modIndex+9, Origin+Z*((thick+wallThick+h)*tiltSide), Z*tiltSide);
     }
 
   return; 
@@ -278,30 +281,25 @@ PreModWing::createObjects(Simulation& System,
   const std::string excludeBMLeftRightWater = BM->getLeftRightWaterSideRule();
 
   // BM outer cylinder side surface
-  HeadRule HR;
-  HR.procString(BM->getLinkString(2));
-  HR.makeComplement();
-  const std::string BMouterCyl = HR.display();
-
+  const std::string BMouterCyl = BM->getSignedLinkString(-3);
   std::string Out;
 
-  std::string PreString;
-  HR.procString(Pre.getSignedLinkString(preLP));
-  HR.makeComplement();
-  PreString = HR.display();
+  std::string PreString=Pre.getSignedLinkString(preLP);
 
   Out=ModelSupport::getComposite(SMap,modIndex," -5 -7 ") + PreString;
   System.addCell(MonteCarlo::Qhull(cellIndex++,mat,0.0,Out+excludeBM));
+  if (keyName=="TopCapWing")
+    ELog::EM<<cellIndex<<"::"<<Out<<" ::: "<<excludeBM<<ELog::endDiag;
 
   Out=ModelSupport::getComposite(SMap,modIndex," 5 -6 -7 ");// + PreString;
   System.addCell(MonteCarlo::Qhull(cellIndex++,wallMat,0.0,Out+excludeBM));
-  
+
   Out=ModelSupport::getComposite(SMap,modIndex," 7 -8 ") + PreString;
   // Originally I excluded all moderator by +excludeBM string, but actually this particular cell
   // only crosses its left+right water cells, so I use +BM->getLeftRightWaterSideRule()
   System.addCell(MonteCarlo::Qhull(cellIndex++,mat,0.0,
 				   Out+excludeBMLeftRightWater+BMouterCyl));
-
+  
   Out=ModelSupport::getComposite(SMap,modIndex," 7 8 -9 ") + PreString;
   System.addCell(MonteCarlo::Qhull(cellIndex++,wallMat,0.0,
 				   Out + excludeBMLeftRightWater + BMouterCyl)); // same trick with excludeBMLeftRightWater as in the previous cell
@@ -336,7 +334,8 @@ void
 PreModWing::createAll(Simulation& System,
 		      const attachSystem::FixedComp& Pre, const long int preLP,
 		      const bool zRotate,
-		      const bool ts,
+                      const long int cutLinkPt,
+		      const int ts,
 		      const attachSystem::FixedComp& Mod)
   /*!
     Extrenal build everything
@@ -344,22 +343,20 @@ PreModWing::createAll(Simulation& System,
     \param Pre :: Attachment point
     \param preLP :: z-surface of Pre
     \param zRotate :: true if must be flipped
-    \param ts :: tilt side
+    \param ts :: tilt side [+/1]
     \param Mod :: Butterfly moderator
    */
 {
   ELog::RegMethod RegA("PreModWing","createAll");
 
-  tiltSide = ts;
-
   populate(System.getDataBase());
-  createUnitVector(Pre, preLP, zRotate);
+  createUnitVector(Pre,preLP,zRotate);
 
-  createSurfaces();
-  createObjects(System, Pre, preLP, Mod);
+  createSurfaces(ts);
+  createObjects(System,Pre,cutLinkPt,Mod);
   createLinks();
 
-
+  
 
   insertObjects(System);
 

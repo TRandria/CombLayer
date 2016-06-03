@@ -3,7 +3,7 @@
  
  * File:   essBuildInc/PreModWing.h
  *
- * Copyright (c) 2015 by Konstantin Batkov
+ * Copyright (c) 2016 by Konstantin Batkov
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -27,13 +27,17 @@ class Simulation;
 namespace essSystem
 {
   class CylFlowGuide;
+
 /*!
   \class PreModWing
   \author Konstantin Batkov
   \version 1.0
   \date Aug 2015
-  \brief Premoderator wing - used for flight line tilting when the flight line height is smaller than the Butterfly moderator height.
-         Inserted into the flight line.
+  \brief Premoderator wing - within flightline
+
+  Used for flight line tilting when the flight line height is 
+  smaller than the Butterfly moderator height.
+  Inserted into the flight line.
 */
 
 class PreModWing : public attachSystem::ContainedComp,
@@ -52,15 +56,16 @@ class PreModWing : public attachSystem::ContainedComp,
   double wallThick;               ///< wall thickness
   int wallMat;                    ///< wall material
 
-  bool   tiltSide;                ///< true ? top : bottom  side to be tilted
   double tiltAngle;               ///< tilt angle
   double tiltRadius;              ///< radius where tilting starts
   
   void populate(const FuncDataBase&);
-  void createUnitVector(const attachSystem::FixedComp&, const long int, const bool);
+  void createUnitVector(const attachSystem::FixedComp&,
+			const long int,const bool);
 
-  void createSurfaces();
-  void createObjects(Simulation&, const attachSystem::FixedComp&, const long int,
+  void createSurfaces(const int);
+  void createObjects(Simulation&,const attachSystem::FixedComp&,
+		     const long int,
 		     const attachSystem::FixedComp&);
   void createLinks();
 
@@ -72,8 +77,9 @@ class PreModWing : public attachSystem::ContainedComp,
   virtual PreModWing* clone() const;
   virtual ~PreModWing();
 
-  void createAll(Simulation&,const attachSystem::FixedComp&, const long int, const bool,
-		 const bool,
+  void createAll(Simulation&,const attachSystem::FixedComp&,
+		 const long int, const bool,
+		 const long int,const int,
 		 const attachSystem::FixedComp&);
 };
 

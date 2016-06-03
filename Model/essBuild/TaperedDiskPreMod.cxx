@@ -304,6 +304,7 @@ TaperedDiskPreMod::createObjects(Simulation& System)
 	      Out = ModelSupport::getComposite(SMap, SI, " ((-7 5 -6) : (8 -7 5 -9 -6)) "); // need this to define Inner. below
 	      Out1 = ModelSupport::getComposite(SMap, SI, " -7 5 -6 ");
 	      System.addCell(MonteCarlo::Qhull(cellIndex++,mat[i],temp[i], Out1+Inner.display()));
+                            
 	    }
 	  Out1 = ModelSupport::getComposite(SMap, SI, " 8 -7 5 -9 -6 ");
 	  System.addCell(MonteCarlo::Qhull(cellIndex++,mat[i],temp[i], Out1+Inner.display()));

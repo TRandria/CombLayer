@@ -354,7 +354,9 @@ ButterflyModerator::createLinks()
   
 void
 ButterflyModerator::createExternal()
-  
+  /*!
+    Calculates the external volume of the moderator
+   */
 {
   ELog::RegMethod RegA("ButterflyModerator","createExternal");
 
@@ -391,7 +393,7 @@ ButterflyModerator::getComponent(const std::string& compName) const
   throw ColErr::InContainerError<std::string>(compName,keyName+" component");
 }
 
-  
+ 
 
 std::string
 ButterflyModerator::getSideRule() const
@@ -490,6 +492,8 @@ ButterflyModerator::createAll(Simulation& System,
   LeftWater->createAll(System,*this,CutString,Exclude);
 
   CutString=RightUnit->getSignedLinkString(2);
+  ELog::EM<<"Cut == "<<CutString<<ELog::endDiag;
+
   RightWater->createAll(System,*this,CutString,Exclude);
 
   Origin=MidWater->getCentre();

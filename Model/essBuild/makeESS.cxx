@@ -832,31 +832,39 @@ makeESS::makeBunker(Simulation& System,
 
 void
 makeESS::buildPreWings(Simulation& System)
+  /*!
+    Build wings that are within the viewable flightline
+    \param System :: Simulation for model components
+   */
 {
+  ELog::RegMethod Rega("makeESS","buildPreWings");
+  
   ModelSupport::objectRegister& OR=
     ModelSupport::objectRegister::Instance();
 
-  enum Side {bottom, top};
+  const int sideBottom(-1),sideTop(1);
   
   TopPreWing = std::shared_ptr<PreModWing>(new PreModWing("TopPreWing"));
   OR.addObject(TopPreWing);
-  TopPreWing->createAll(System, *TopPreMod, 9, false, top, *TopMod);
+  TopPreWing->createAll(System, *TopPreMod,-9, false,-10,sideTop,*TopMod);
   attachSystem::addToInsertSurfCtrl(System, *TopPreMod, *TopPreWing);
 
   TopCapWing = std::shared_ptr<PreModWing>(new PreModWing("TopCapWing"));
   OR.addObject(TopCapWing);
-  TopCapWing->createAll(System, *TopCapMod, 10, false, bottom, *TopMod);
+  TopCapWing->createAll(System, *TopCapMod,-10, false,-11,sideBottom,*TopMod);
   attachSystem::addToInsertSurfCtrl(System, *TopCapMod, *TopCapWing);
-
+  return;
   LowPreWing = std::shared_ptr<PreModWing>(new PreModWing("LowPreWing"));
   OR.addObject(LowPreWing);
-  LowPreWing->createAll(System, *LowPreMod, 9, true, bottom, *LowMod);
-  attachSystem::addToInsertSurfCtrl(System, *LowPreMod, *LowPreWing);
+  LowPreWing->createAll(System, *LowPreMod,-9,true,-10,sideBottom,*LowMod);
+  attachSystem::addToInsertSurfCtrl(System,*LowPreMod,*LowPreWing);
 
   LowCapWing = std::shared_ptr<PreModWing>(new PreModWing("LowCapWing"));
   OR.addObject(LowCapWing);
-  LowCapWing->createAll(System, *LowCapMod, 10, true, top, *LowMod);
+  LowCapWing->createAll(System, *LowCapMod,-10, true,-11,sideTop, *LowMod);
   attachSystem::addToInsertSurfCtrl(System, *LowCapMod, *LowCapWing);
+
+  return;
 }
 
 void
