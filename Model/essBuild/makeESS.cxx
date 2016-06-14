@@ -97,7 +97,7 @@
 #include "TwisterModule.h"
 #include "ShutterBay.h"
 #include "GuideBay.h"
-#include "TaperedDiskPreMod.h"
+#include "DiskPreMod.h"
 #include "Bunker.h"
 #include "RoofPillars.h"
 #include "BunkerFeed.h"
@@ -121,14 +121,14 @@ makeESS::makeESS() :
   PBeam(new ProtonTube("ProtonTube")),
   BMon(new BeamMonitor("BeamMonitor")),
 
-  LowPreMod(new TaperedDiskPreMod("LowPreMod")),
-  LowCapMod(new TaperedDiskPreMod("LowCapMod")),
+  LowPreMod(new DiskPreMod("LowPreMod")),
+  LowCapMod(new DiskPreMod("LowCapMod")),
   
   LowAFL(new moderatorSystem::TaperedFlightLine("LowAFlight")),
   LowBFL(new moderatorSystem::TaperedFlightLine("LowBFlight")),
 
-  TopPreMod(new TaperedDiskPreMod("TopPreMod")),
-  TopCapMod(new TaperedDiskPreMod("TopCapMod")),
+  TopPreMod(new DiskPreMod("TopPreMod")),
+  TopCapMod(new DiskPreMod("TopCapMod")),
 
   TopAFL(new moderatorSystem::TaperedFlightLine("TopAFlight")),
   TopBFL(new moderatorSystem::TaperedFlightLine("TopBFlight")),
@@ -932,11 +932,11 @@ makeESS::build(Simulation& System,
   // lower moderator
   LowPreMod->createAll(System,World::masterOrigin(),0,true,
 		       Target->wheelHeight()/2.0,
-		       Reflector->getRadius(), false);
+		       Reflector->getRadius());
 
   TopPreMod->createAll(System,World::masterOrigin(),0,false,
 		       Target->wheelHeight()/2.0,
-		       Reflector->getRadius(), true);
+		       Reflector->getRadius());
   buildLowButterfly(System);
   buildTopButterfly(System);
   const double LMHeight=attachSystem::calcLinkDistance(*LowMod,5,6);
@@ -944,15 +944,15 @@ makeESS::build(Simulation& System,
   
   // Cap moderator DOES not span whole unit
   LowCapMod->createAll(System,*LowMod,6,false,
-   		       0.0,Reflector->getRadius(), true);
+                       0.0,Reflector->getRadius());
   TopCapMod->createAll(System,*TopMod,6,false,
-   		       0.0,Reflector->getRadius(), false);
+   		       0.0,Reflector->getRadius());
   Reflector->createAll(System,World::masterOrigin(),
 		       Target->wheelHeight(),
 		       LowPreMod->getHeight()+LMHeight+LowCapMod->getHeight(),
 		       TopPreMod->getHeight()+TMHeight+TopCapMod->getHeight());
 
-  buildPreWings(System);
+  //  buildPreWings(System);
 
   Reflector->insertComponent(System,"targetVoid",*Target,1);
   Reflector->deleteCell(System,"lowVoid");
