@@ -302,25 +302,20 @@ EssButterflyModerator(FuncDataBase& Control)
   Control.addVariable("TopFlyRightWaterWallMat","Aluminium");
   Control.addVariable("TopFlyRightWaterModTemp",300.0);
 
-  Control.addVariable("LowPreModNLayers",4);
+  Control.addVariable("LowPreModNLayers",3);
   Control.addVariable("LowPreModHeight0",1.5);
   Control.addVariable("LowPreModDepth0",1.5);
   Control.addVariable("LowPreModRadius0",30.0);
   Control.addVariable("LowPreModMat0","H2OAl47"); // email from LZ 15 Jan 2016
-  Control.addVariable("LowPreModHeight1",0);
-  Control.addVariable("LowPreModDepth1",0);
-  Control.addVariable("LowPreModRadius1",0.3);
+  Control.addVariable("LowPreModHeight1",0.3);
+  Control.addVariable("LowPreModDepth1",0.3);
+  Control.addVariable("LowPreModRadius1",30.3);
   Control.addVariable("LowPreModMat1","Aluminium");
   Control.addVariable("LowPreModHeight2",0);
   Control.addVariable("LowPreModDepth2",0);
-  Control.Parse("BeRefRadius-LowPreModRadius0-LowPreModRadius1+BeRefWallThick-0.0"); // 0.0 is LowPreModRadius3
-  Control.addVariable("LowPreModRadius2");
+  Control.addVariable("LowPreModRadius2", 0);
   Control.addVariable("LowPreModMat2","Iron10H2O");
 
-  Control.addVariable("LowPreModHeight3",0.3);
-  Control.addVariable("LowPreModDepth3",0.3);
-  Control.addVariable("LowPreModRadius3", 0.0);
-  Control.addVariable("LowPreModMat3","Aluminium");
   //  Control.Parse("LowAFlightAngleZBase");
   Control.addVariable("LowPreModTiltAngle", 0.0);
 
@@ -329,24 +324,20 @@ EssButterflyModerator(FuncDataBase& Control)
   Control.addVariable("LowPreModFlowGuideNBaffles", 9);
   Control.addVariable("LowPreModFlowGuideGapWidth", 3);
 
-  Control.addVariable("TopPreModNLayers",4);
+  Control.addVariable("TopPreModNLayers",3);
   Control.addVariable("TopPreModHeight0",1.5);
   Control.addVariable("TopPreModDepth0",1.5);
   Control.addVariable("TopPreModRadius0",30.0);
   Control.addVariable("TopPreModMat0","H2OAl47"); // email from LZ 15 Jan 2016
-  Control.addVariable("TopPreModHeight1",0);
-  Control.addVariable("TopPreModDepth1",0);
-  Control.addVariable("TopPreModRadius1",0.3);
+  Control.addVariable("TopPreModHeight1",0.3);
+  Control.addVariable("TopPreModDepth1",0.3);
+  Control.addVariable("TopPreModRadius1",30.3);
   Control.addVariable("TopPreModMat1","Aluminium");
   Control.addVariable("TopPreModHeight2",0);
   Control.addVariable("TopPreModDepth2",0);
-  Control.Parse("BeRefRadius-TopPreModRadius0-TopPreModRadius1+BeRefWallThick-0.0"); // 0.0 is TopPreModRadius3
-  Control.addVariable("TopPreModRadius2");
+  Control.addVariable("TopPreModRadius2", 0);
   Control.addVariable("TopPreModMat2","Iron10H2O");
-  Control.addVariable("TopPreModHeight3",0.3);
-  Control.addVariable("TopPreModDepth3",0.3);
-  Control.addVariable("TopPreModRadius3",0.0);
-  Control.addVariable("TopPreModMat3","Aluminium");
+  
   //  Control.Parse("TopAFlightAngleZTop");
   Control.addVariable("TopPreModTiltAngle", 2.0);
   Control.addVariable("TopPreModTiltRadius", 32.17);
@@ -389,21 +380,15 @@ EssButterflyModerator(FuncDataBase& Control)
   Control.Parse("LowPreModFlowGuideGapWidth");
   Control.addVariable("TopPreModFlowGuideGapWidth");
 
-  Control.addVariable("LowCapModNLayers",3);
+  Control.addVariable("LowCapModNLayers",2);
   Control.addVariable("LowCapModHeight0",0.5);
   Control.addVariable("LowCapModDepth0", 0.5);
-  Control.addVariable("LowCapModRadius0",35-3);
+  Control.addVariable("LowCapModRadius0",32);
   Control.addVariable("LowCapModMat0","H2OAl47");
-  Control.addVariable("LowCapModRadius1", 3.3);
   Control.addVariable("LowCapModHeight1",0.0);
-  Control.addVariable("LowCapModDepth1",0.0);
-  Control.Parse("BeRefWallThick+3");
-  Control.addVariable("LowCapModRadius1");
+  Control.addVariable("LowCapModDepth1", 0.0);
+  Control.addVariable("LowCapModRadius1",0.0);
   Control.addVariable("LowCapModMat1","SS316L");
-  Control.addVariable("LowCapModHeight2",0.0);
-  Control.addVariable("LowCapModDepth2",0.3);
-  Control.addVariable("LowCapModRadius2",0.0);
-  Control.addVariable("LowCapModMat2","Aluminium");
   Control.addVariable("LowCapModTiltAngle", 0.0);
 
   Control.addVariable("LowCapModFlowGuideWallThick", 0.3);
@@ -411,20 +396,15 @@ EssButterflyModerator(FuncDataBase& Control)
   Control.addVariable("LowCapModFlowGuideNBaffles", 9);
   Control.addVariable("LowCapModFlowGuideGapWidth", 3);
 
-  Control.addVariable("TopCapModNLayers",3);
+  Control.addVariable("TopCapModNLayers",2);
   Control.addVariable("TopCapModHeight0",0.5);
   Control.addVariable("TopCapModDepth0", 0.5);
-  Control.addVariable("TopCapModRadius0",35-3); // 3 is being used in TopCapModRadius1
+  Control.addVariable("TopCapModRadius0",32); // 3 is being used in TopCapModRadius1
   Control.addVariable("TopCapModMat0","H2OAl47");
   Control.addVariable("TopCapModHeight1",0.0);
-  Control.addVariable("TopCapModDepth1",0.0);
-  Control.Parse("BeRefWallThick+3");
-  Control.addVariable("TopCapModRadius1");
+  Control.addVariable("TopCapModDepth1", 0.0);
+  Control.addVariable("TopCapModRadius1",0.0);
   Control.addVariable("TopCapModMat1","SS316L");
-  Control.addVariable("TopCapModHeight2",0.0);
-  Control.addVariable("TopCapModDepth2",0.3);
-  Control.addVariable("TopCapModRadius2", 0);
-  Control.addVariable("TopCapModMat2","Aluminium");
   Control.addVariable("TopCapModTiltAngle", 0.0);
   Control.Parse("TopPreModTiltRadius");
   Control.addVariable("TopCapModTiltRadius");
