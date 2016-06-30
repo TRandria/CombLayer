@@ -463,7 +463,7 @@ makeESS::buildH2Pipe(Simulation& System, std::string lobeName, std::string water
   // !!! this is extremaly slow. add only cells which are really needed.
   // !!! Actually since cold Al/H can't connect with warm Al or water,
   // !!! instead of doing this horrific thing I need to enlarge void around pipes.
-  pipeAl->addInsertCell(0, CM->getCell("InnerAlSupply"));
+  /*  pipeAl->addInsertCell(0, CM->getCell("InnerAlSupply"));
   pipeConnect->addInsertCell(0, CM->getCell("InnerAlSupply"));
   pipeInvar->addInsertCell(0, CM->getCell("InnerAlSupply"));
 
@@ -484,7 +484,7 @@ makeESS::buildH2Pipe(Simulation& System, std::string lobeName, std::string water
   // createAll arguments:
   // layer level is depth into the object layers [0=> inner]
   // linkPt is normal link point in fixedcomp [2]
-  // layerLevel : linkPoint [2]
+  // layerLevel : linkPoint [2]*/
   pipeAl->createAll(System,*lobe,0,2,2);
 
   System.populateCells();
@@ -1012,16 +1012,16 @@ makeESS::build(Simulation& System,
 
   makeBeamLine(System,IParam);
 
-  if (IParam.flag("eng"))
+  if (IParam.flag("eng")) {
     buildTwister(System);
+    buildTopPipes(System,"");
+    buildLowPipes(System,"");
+  }
   
   //  buildF5Collimator(System, nF5);
   buildF5Collimator(System, IParam);
 
 
-  ELog::EM << "pipes are tmp removed" << ELog::endDiag;
-  //  buildTopPipes(System,"");
-  //  buildLowPipes(System,"");
   return;
 }
 
