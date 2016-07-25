@@ -479,7 +479,7 @@ BilbaoWheelInnerStructure::BilbaoWheelInnerStructure
     System.addCell(MonteCarlo::Qhull(cellIndex++, brickGapMat, temp, Out+vertStr+outerCyl));
 
 
-    ELog::EM << "TODO: simplification of these multiple IFs needed" << ELog::endCrit;
+    // \todo kbat ELog::EM << "TODO: simplification of these multiple IFs needed" << ELog::endCrit;
 
     int mat(0);
     bool firstBrick(false);
