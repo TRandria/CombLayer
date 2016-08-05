@@ -863,7 +863,7 @@ makeESS::build(Simulation& System,
 
   // WARNING: THESE CALL MUST GO AFTER the main void (74123) has
   // been completed. Otherwize we can't find the pipe in the volume.
-  ModPipes->buildLowPipes(System,lowPipeType);
+  //  ModPipes->buildLowPipes(System,lowPipeType);
   ModPipes->buildTopPipes(System,topPipeType);
 
   return;

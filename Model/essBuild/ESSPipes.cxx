@@ -229,15 +229,15 @@ ESSPipes::buildTopPipes(Simulation& System,
       buildH2Pipe(System,"TopFlyLeftLobe","TopFlyLeftWater",pipeUniqName,
 		  "TSupplyLeftAl","TSupplyLeftConnect", "TSupplyLeftInvar");
       
-      buildH2Pipe(System,"TopFlyLeftLobe","TopFlyLeftWater",pipeUniqName,
-		  "TReturnLeftAl","TReturnLeftConnect","TReturnLeftInvar");
+      //      buildH2Pipe(System,"TopFlyLeftLobe","TopFlyLeftWater",pipeUniqName,
+      //	  "TReturnLeftAl","TReturnLeftConnect","TReturnLeftInvar");
       
       
       buildH2Pipe(System,"TopFlyRightLobe","TopFlyRightWater",pipeUniqName,
 		  "TSupplyRightAl","TSupplyRightConnect","TSupplyRightInvar");
       
-      buildH2Pipe(System,"TopFlyRightLobe","TopFlyRightWater",pipeUniqName,
-		  "TReturnRightAl","TReturnRightConnect","TReturnRightInvar");
+      //      buildH2Pipe(System,"TopFlyRightLobe","TopFlyRightWater",pipeUniqName,
+      //	  "TReturnRightAl","TReturnRightConnect","TReturnRightInvar");
     }
   return;
 }

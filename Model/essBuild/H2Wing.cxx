@@ -403,7 +403,7 @@ H2Wing::midNorm(const size_t index) const
   
 
 void
-H2Wing::createSurfaces()
+H2Wing::createSurfaces(const attachSystem::FixedComp& FC)
   /*!
     Create All the surfaces
   */
@@ -414,6 +414,9 @@ H2Wing::createSurfaces()
   // Surfaces 11-16 are the outer blades etc
 
   //  const double PSteps[]={wallThick,flatClearance,0.0};  
+
+  // Divider for BF1
+  ModelSupport::buildPlane(SMap,wingIndex+3,FC.getCentre(),Y);
   
   int triOffset(wingIndex+100);
   std::array<Geometry::Vec3D,3> CPts;
@@ -505,14 +508,14 @@ H2Wing::createObjects(Simulation& System)
       InnerB.makeComplement();
       InnerC.makeComplement();
 
-      OutA=ModelSupport::getComposite(SMap,triOffset,"-1 -3 5 -6 (21:-7)");
+      OutA=ModelSupport::getComposite(SMap,triOffset,wingIndex,"-3M -1 -3 5 -6 (21:-7)");
       OutB=ModelSupport::getComposite(SMap,triOffset,"-1 -2 5 -6 (22:-8)");
       OutC=ModelSupport::getComposite(SMap,triOffset,"-2 -3 5 -6 (23:-9) ");
 
       if (!i && engActive)
 	{
 	  Out=ModelSupport::getComposite
-	    (SMap,triOffset,"-1 -2 -3 5 -6 (21:-7) (22:-8) (23:-9)");
+	    (SMap,triOffset,wingIndex,"-3M -1 -2 -3 5 -6 (21:-7) (22:-8) (23:-9)");
 	  System.addCell(MonteCarlo::Qhull(cellIndex++,mat[i],temp[i],Out));
 	  CellMap::setCell("Inner",cellIndex-1);
 	}
@@ -669,7 +672,7 @@ H2Wing::getLayerString(const size_t layerIndex,
       Out=ModelSupport::getComposite(SMap,triOffset," 6 ");
       break;
     case 7:
-      Out=ModelSupport::getComposite(SMap,triOffset,"-1 -3 (21:-7) ");
+      Out=ModelSupport::getComposite(SMap,triOffset,wingIndex,"-3M -1 -3 (21:-7) ");
       break;
     case 8:
       Out=ModelSupport::getComposite(SMap,triOffset,"-1 -2 (22:-8) ");
@@ -714,7 +717,7 @@ H2Wing::createAll(Simulation& System,
 
   populate(System.getDataBase());
   createUnitVector(FC);
-  createSurfaces();
+  createSurfaces(FC);
   createObjects(System);
 
   createLinks();

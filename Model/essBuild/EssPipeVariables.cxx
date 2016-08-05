@@ -66,8 +66,8 @@ EssPipeVariables(FuncDataBase& Control)
   ELog::RegMethod RegA("EssPipeVariables[F]","EssPipeVariables"); 
   
   const size_t nRad(4);
-  const double invarPipeHeight(30.0);
-  const double invarPipeLength(12.5);
+  const double invarPipeHeight(30.0+4);
+  const double invarPipeLength(12.5+4);
 
   const double AlPPt3X(3.597);
   const double AlPPt3Y(11.0);
@@ -93,10 +93,10 @@ EssPipeVariables(FuncDataBase& Control)
 
     {
       Control.addVariable(MItem+"AlNSegIn",3);
-      Control.addVariable(MItem+"AlPPt0",Geometry::Vec3D(signV*1.9,0,0));
-      Control.addVariable(MItem+"AlPPt1",Geometry::Vec3D(signV*1.9,2.0,0));
-      Control.addVariable(MItem+"AlPPt2",Geometry::Vec3D(signV*AlPPt3X,3.0,0));
-      Control.addVariable(MItem+"AlPPt3",Geometry::Vec3D(signV*AlPPt3X,AlPPt3Y,0));
+      Control.addVariable(MItem+"AlPPt0",Geometry::Vec3D(0,0,0));
+      Control.addVariable(MItem+"AlPPt1",Geometry::Vec3D(0,2.0,0));
+      Control.addVariable(MItem+"AlPPt2",Geometry::Vec3D(0,3.0,0));
+      Control.addVariable(MItem+"AlPPt3",Geometry::Vec3D(0,AlPPt3Y,0));
       Control.addVariable(MItem+"AlNRadii",nRad);
       Control.addVariable(MItem+"AlActive0",3);
       Control.addVariable(MItem+"AlActive1",15);
