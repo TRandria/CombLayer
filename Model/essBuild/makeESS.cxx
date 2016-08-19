@@ -755,7 +755,7 @@ makeESS::buildTwister(Simulation& System)
   Twister = std::shared_ptr<TwisterModule>(new TwisterModule("Twister"));
   OR.addObject(Twister);
 
-  Twister->createAll(System,*Bulk);
+  Twister->createAll(System,*Bulk,0);
 
   attachSystem::addToInsertForced(System, *Bulk, *Twister); // no other option
   attachSystem::addToInsertForced(System, *ShutterBayObj, *Twister);

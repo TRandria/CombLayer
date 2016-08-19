@@ -3,7 +3,7 @@
  
  * File:   essBuild/TwisterModule.cxx
  *
- * Copyright (c) 2004-2015 by Stuart Ansell
+ * Copyright (c) 2004-2016 by Stuart Ansell/Konstantin Batkov
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -65,6 +65,7 @@
 #include "stringCombine.h"
 #include "LinkUnit.h"
 #include "FixedComp.h"
+#include "FixedOffset.h"
 #include "ContainedComp.h"
 #include "BaseMap.h"
 #include "CellMap.h"
@@ -74,7 +75,7 @@ namespace essSystem
 {
 
 TwisterModule::TwisterModule(const std::string& Key) :
-  attachSystem::ContainedComp(),attachSystem::FixedComp(Key,11),
+  attachSystem::ContainedComp(),attachSystem::FixedOffset(Key,11),
   attachSystem::CellMap(),
   tIndex(ModelSupport::objectRegister::Instance().cell(Key)),
   cellIndex(tIndex+1)
@@ -86,12 +87,13 @@ TwisterModule::TwisterModule(const std::string& Key) :
 }
 
 TwisterModule::TwisterModule(const TwisterModule& A) : 
-  attachSystem::ContainedComp(A),attachSystem::FixedComp(A),
+  attachSystem::ContainedComp(A),attachSystem::FixedOffset(A),
   attachSystem::CellMap(A),  
-  tIndex(A.tIndex),cellIndex(A.cellIndex),xStep(A.xStep),
-  yStep(A.yStep),zStep(A.zStep),xyAngle(A.xyAngle),zAngle(A.zAngle),
-  shaftRadius(A.shaftRadius),shaftHeight(A.shaftHeight),shaftWallThick(A.shaftWallThick),
-  shaftBearingRadius(A.shaftBearingRadius),shaftBearingHeight(A.shaftBearingHeight),shaftBearingWallThick(A.shaftBearingWallThick),
+  tIndex(A.tIndex),cellIndex(A.cellIndex),shaftRadius(A.shaftRadius),
+  shaftHeight(A.shaftHeight),shaftWallThick(A.shaftWallThick),
+  shaftBearingRadius(A.shaftBearingRadius),
+  shaftBearingHeight(A.shaftBearingHeight),
+  shaftBearingWallThick(A.shaftBearingWallThick),
   plugFrameRadius(A.plugFrameRadius),plugFrameHeight(A.plugFrameHeight),
   plugFrameDepth(A.plugFrameDepth),plugFrameAngle(A.plugFrameAngle),
   plugFrameWallThick(A.plugFrameWallThick),
@@ -114,14 +116,9 @@ TwisterModule::operator=(const TwisterModule& A)
   if (this!=&A)
     {
       attachSystem::ContainedComp::operator=(A);
-      attachSystem::FixedComp::operator=(A);
+      attachSystem::FixedOffset::operator=(A);
       CellMap::operator=(A);
       cellIndex=A.cellIndex;
-      xStep=A.xStep;
-      yStep=A.yStep;
-      zStep=A.zStep;
-      xyAngle=A.xyAngle;
-      zAngle=A.zAngle;
       shaftRadius=A.shaftRadius;
       shaftHeight=A.shaftHeight;
       shaftWallThick=A.shaftWallThick;
@@ -169,14 +166,7 @@ TwisterModule::populate(const FuncDataBase& Control)
 {
   ELog::RegMethod RegA("TwisterModule","populate");
 
-  engActive=Control.EvalPair<int>(keyName,"","EngineeringActive");
-
-    // Master values
-  xStep=Control.EvalVar<double>(keyName+"XStep");
-  yStep=Control.EvalVar<double>(keyName+"YStep");
-  zStep=Control.EvalVar<double>(keyName+"ZStep");
-  xyAngle=Control.EvalVar<double>(keyName+"XYangle");
-  zAngle=Control.EvalVar<double>(keyName+"Zangle");
+  FixedOffset::populate(Control);
   
   shaftRadius=Control.EvalVar<double>(keyName+"ShaftRadius");   
   shaftHeight=Control.EvalVar<double>(keyName+"ShaftHeight");   
@@ -202,16 +192,17 @@ TwisterModule::populate(const FuncDataBase& Control)
 }
 
 void
-TwisterModule::createUnitVector(const attachSystem::FixedComp& FC)
+TwisterModule::createUnitVector(const attachSystem::FixedComp& FC,
+                                const long int sideIndex)
   /*!
     Create the unit vectors
     \param FC :: Fixed Component
+    \param sideIndex :: Link point [signed]
   */
 {
   ELog::RegMethod RegA("TwisterModule","createUnitVector");
-  attachSystem::FixedComp::createUnitVector(FC);
-  applyShift(xStep,yStep,zStep);
-  applyAngleRotate(xyAngle,zAngle);
+  attachSystem::FixedComp::createUnitVector(FC,sideIndex);
+  applyOffset();
   
   return;
 }
@@ -226,16 +217,21 @@ TwisterModule::createSurfaces()
 
   ModelSupport::buildPlane(SMap,tIndex+5,Origin-Z*plugFrameDepth,Z);
   ModelSupport::buildPlane(SMap,tIndex+6,Origin+Z*plugFrameHeight,Z);
-  ModelSupport::buildPlane(SMap,tIndex+16,Origin+Z*(plugFrameHeight+shaftHeight),Z);
+  ModelSupport::buildPlane(SMap,tIndex+16,Origin+
+                           Z*(plugFrameHeight+shaftHeight),Z);
 
-  ModelSupport::buildPlane(SMap,tIndex+25,Origin-Z*(plugFrameDepth-plugFrameWallThick),Z);
-  ModelSupport::buildPlane(SMap,tIndex+26,Origin+Z*(plugFrameHeight-plugFrameWallThick),Z);
+  ModelSupport::buildPlane(SMap,tIndex+25,Origin-
+                           Z*(plugFrameDepth-plugFrameWallThick),Z);
+  ModelSupport::buildPlane(SMap,tIndex+26,Origin+
+                           Z*(plugFrameHeight-plugFrameWallThick),Z);
 
   ModelSupport::buildCylinder(SMap,tIndex+7,Origin,Z,shaftRadius);
-  ModelSupport::buildCylinder(SMap,tIndex+17,Origin,Z,shaftRadius+shaftWallThick);
+  ModelSupport::buildCylinder(SMap,tIndex+17,Origin,Z,
+                              shaftRadius+shaftWallThick);
 
   ModelSupport::buildCylinder(SMap,tIndex+27,Origin,Z,plugFrameRadius);
-  ModelSupport::buildCylinder(SMap,tIndex+37,Origin,Z,plugFrameRadius-plugFrameWallThick);
+  ModelSupport::buildCylinder(SMap,tIndex+37,Origin,Z,
+                              plugFrameRadius-plugFrameWallThick);
 
   // sector walls
   const double angle = plugFrameAngle/2.0*M_PI/180;
@@ -323,7 +319,11 @@ TwisterModule::createLinks()
     Links/directions going outwards true.
   */
 {
+  ELog::RegMethod RegA("TwisterModule","createLinks");
+  ELog::EM<<"WARNING: EARLY RETURN"<<ELog::endWarn;
+  
   return;
+  
   FixedComp::setConnect(0,Origin+Y*shaftRadius,-Y);
   FixedComp::setLinkSurf(0,SMap.realSurf(tIndex+17));
   FixedComp::addLinkSurf(0,-SMap.realSurf(tIndex+1));
@@ -361,17 +361,20 @@ TwisterModule::createLinks()
 
 void
 TwisterModule::createAll(Simulation& System,
-		   const attachSystem::FixedComp& FC)
-/*!
+                         const attachSystem::FixedComp& FC,
+                         const long int sideIndex)
+  /*!
     Extrenal build everything
     \param System :: Simulation
     \param FC :: FixedComponent for origin
+    \param sideIndex :: Link point [signed]
   */
 {
   ELog::RegMethod RegA("TwisterModule","createAll");
   populate(System.getDataBase());
+  
 
-  createUnitVector(FC);
+  createUnitVector(FC,sideIndex);
   createSurfaces();
   createObjects(System);
   createLinks();
@@ -381,4 +384,4 @@ TwisterModule::createAll(Simulation& System,
 }
 
   
-}  // NAMESPACE instrumentSystem
+}  // NAMESPACE essSystem
