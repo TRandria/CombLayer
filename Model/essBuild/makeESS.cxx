@@ -757,13 +757,16 @@ makeESS::buildTwister(Simulation& System)
 
   Twister->createAll(System,*Bulk,0);
 
-  attachSystem::addToInsertForced(System, *Bulk, *Twister); // no other option
-  attachSystem::addToInsertForced(System, *ShutterBayObj, *Twister);
-  attachSystem::addToInsertSurfCtrl(System, *Twister, PBeam->getCC("Sector0"));
-  attachSystem::addToInsertSurfCtrl(System, *Twister, PBeam->getCC("Sector1")); ELog::EM << "remove this line after R is set correctly " << ELog::endDiag;
+  attachSystem::addToInsertForced(System,*Bulk,Twister->getCC("Shaft"));
+  attachSystem::addToInsertForced(System,*Bulk,Twister->getCC("PlugFrame"));
+  attachSystem::addToInsertForced(System,*Bulk,Twister->getCC("ShaftBearing"));
+  
+  attachSystem::addToInsertForced(System,*ShutterBayObj,Twister->getCC("Shaft"));
+  attachSystem::addToInsertSurfCtrl(System,*Twister,PBeam->getCC("Sector0"));
+  attachSystem::addToInsertSurfCtrl(System,*Twister, PBeam->getCC("Sector1")); //ELog::EM << "remove this line after R is set correctly " << ELog::endDiag;
   attachSystem::addToInsertControl(System, *Twister, *Reflector);
 
-  // split Twister by components (Shaft and Body)
+  // split Twister by components
   // for (const ContainedComp & CC : Twister->getCC()) ...
   // use LineControl for intersections with flight lines
   

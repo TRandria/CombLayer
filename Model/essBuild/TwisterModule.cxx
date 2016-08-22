@@ -67,6 +67,7 @@
 #include "FixedComp.h"
 #include "FixedOffset.h"
 #include "ContainedComp.h"
+#include "ContainedGroup.h"
 #include "BaseMap.h"
 #include "CellMap.h"
 #include "TwisterModule.h"
@@ -75,7 +76,8 @@ namespace essSystem
 {
 
 TwisterModule::TwisterModule(const std::string& Key) :
-  attachSystem::ContainedComp(),attachSystem::FixedOffset(Key,11),
+  attachSystem::ContainedGroup("PlugFrame","Shaft","ShaftBearing"),
+  attachSystem::FixedOffset(Key,11),
   attachSystem::CellMap(),
   tIndex(ModelSupport::objectRegister::Instance().cell(Key)),
   cellIndex(tIndex+1)
@@ -87,7 +89,7 @@ TwisterModule::TwisterModule(const std::string& Key) :
 }
 
 TwisterModule::TwisterModule(const TwisterModule& A) : 
-  attachSystem::ContainedComp(A),attachSystem::FixedOffset(A),
+  attachSystem::ContainedGroup(A),attachSystem::FixedOffset(A),
   attachSystem::CellMap(A),  
   tIndex(A.tIndex),cellIndex(A.cellIndex),shaftRadius(A.shaftRadius),
   shaftHeight(A.shaftHeight),shaftWallThick(A.shaftWallThick),
@@ -115,7 +117,7 @@ TwisterModule::operator=(const TwisterModule& A)
 {
   if (this!=&A)
     {
-      attachSystem::ContainedComp::operator=(A);
+      attachSystem::ContainedGroup::operator=(A);
       attachSystem::FixedOffset::operator=(A);
       CellMap::operator=(A);
       cellIndex=A.cellIndex;
@@ -278,7 +280,9 @@ TwisterModule::createObjects(Simulation& System)
 
   Out=ModelSupport::getComposite(SMap,tIndex," -17 7 25 -16 ");
   System.addCell(MonteCarlo::Qhull(cellIndex++,shaftWallMat,0.0,Out));
-  //  setCell("lowBe",cellIndex-1);
+
+  Out=ModelSupport::getComposite(SMap,tIndex," -17 5 -16 ");
+  addOuterSurf("Shaft", Out);
 
   // plug frame
   Out=ModelSupport::getComposite(SMap,tIndex," -37 25 -26 17 2 -1 11"); //  inside sector
@@ -299,6 +303,9 @@ TwisterModule::createObjects(Simulation& System)
   Out=ModelSupport::getComposite(SMap,tIndex," -17 47 5 -25 "); // bottom wall of the shaft
   System.addCell(MonteCarlo::Qhull(cellIndex++,shaftWallMat,0.0,Out));
 
+  Out=ModelSupport::getComposite(SMap,tIndex, " -27 5 -6 ");
+  addOuterSurf("PlugFrame", Out);
+
   // shaft bearing
   Out=ModelSupport::getComposite(SMap,tIndex, " -47 35 -25 ");
   System.addCell(MonteCarlo::Qhull(cellIndex++,shaftMat,0.0,Out));
@@ -306,9 +313,9 @@ TwisterModule::createObjects(Simulation& System)
   Out=ModelSupport::getComposite(SMap,tIndex, " -57 47 35 -5 ");
   System.addCell(MonteCarlo::Qhull(cellIndex++,shaftWallMat,0.0,Out));
 
-  Out=ModelSupport::getComposite(SMap,tIndex," (-17 6 -16) : (-27 5 -6) : (-57 35 -5) ");
-  addOuterSurf(Out);
-
+  Out=ModelSupport::getComposite(SMap,tIndex, " -57 35 -5 ");
+  addOuterSurf("ShaftBearing", Out);
+    
   return; 
 }
 
@@ -322,7 +329,7 @@ TwisterModule::createLinks()
   ELog::RegMethod RegA("TwisterModule","createLinks");
   ELog::EM<<"WARNING: EARLY RETURN"<<ELog::endWarn;
   
-  return;
+  //  return;
   
   FixedComp::setConnect(0,Origin+Y*shaftRadius,-Y);
   FixedComp::setLinkSurf(0,SMap.realSurf(tIndex+17));
