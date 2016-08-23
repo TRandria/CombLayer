@@ -457,7 +457,7 @@ EssVariables(FuncDataBase& Control)
   Control.addVariable("BulkHeight3",200.0);
   Control.addVariable("BulkDepth3",200.0);
   Control.addVariable("BulkMat3","Iron10H2O");        // SA: using hand-made mixture because CL can't generate volume fractions
-
+  
   // BULK FLIGHT VOID
   Control.addVariable("BulkLAFlightSideIndex",-2);   // Index
   Control.addVariable("BulkLAFlightXStep",0.0);      // Step from centre

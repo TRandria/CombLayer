@@ -763,13 +763,14 @@ makeESS::buildTwister(Simulation& System)
   
   attachSystem::addToInsertForced(System,*ShutterBayObj,Twister->getCC("Shaft"));
   attachSystem::addToInsertSurfCtrl(System,*Twister,PBeam->getCC("Sector0"));
-  attachSystem::addToInsertSurfCtrl(System,*Twister, PBeam->getCC("Sector1")); //ELog::EM << "remove this line after R is set correctly " << ELog::endDiag;
+  attachSystem::addToInsertSurfCtrl(System,*Twister, PBeam->getCC("Sector1"));
   attachSystem::addToInsertControl(System, *Twister, *Reflector);
 
   // split Twister by components
   // for (const ContainedComp & CC : Twister->getCC()) ...
   // use LineControl for intersections with flight lines
-  
+
+  ELog::EM<<"CALLING addInsertForce [INEFFICIENT] "<<ELog::endWarn;
   attachSystem::addToInsertForced(System,*Twister,TopAFL->getCC("outer"));
   attachSystem::addToInsertForced(System,*Twister,TopBFL->getCC("outer"));
   attachSystem::addToInsertForced(System,*Twister,LowAFL->getCC("outer"));
@@ -780,7 +781,7 @@ makeESS::buildTwister(Simulation& System)
 
   return;
 }
-  
+
 void 
 makeESS::build(Simulation& System,
 	       const mainSystem::inputParam& IParam)
