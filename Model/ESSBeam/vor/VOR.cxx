@@ -248,11 +248,11 @@ VOR::build(Simulation& System,
   stopPoint=Control.EvalDefVar<int>(newName+"StopPoint",0);
   ELog::EM<<"Stop point == "<<stopPoint<<ELog::endDiag;
   
-  setBeamAxis(Control,GItem,1);
+  setBeamAxis(Control,GItem,0);
 
   FocusA->addInsertCell(GItem.getCells("Void"));
-  FocusA->addFrontCut(GItem.getKey("Beam"),-1);
-  FocusA->addEndCut(GItem.getKey("Beam"),-2);
+  FocusA->setFront(GItem.getKey("Beam"),-1);
+  FocusA->setBack(GItem.getKey("Beam"),-2);
   FocusA->createAll(System,*vorAxis,-3,*vorAxis,-3);
   if (stopPoint==1) return;
 
