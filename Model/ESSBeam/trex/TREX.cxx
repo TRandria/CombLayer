@@ -337,8 +337,8 @@ TREX::build(Simulation& System,
   
   /// Inside the Monolith
   FocusMono->addInsertCell(GItem.getCells("Void"));
-  FocusMono->addFrontCut(GItem.getKey("Beam"),-1);
-  FocusMono->addEndCut(GItem.getKey("Beam"),-2);
+  FocusMono->setFront(GItem.getKey("Beam"),-1);
+  FocusMono->setBack(GItem.getKey("Beam"),-2);
   //  FocusMono->createAll(System,GItem.getKey("Beam"),-1,
   //		       GItem.getKey("Beam"),-1);
 
