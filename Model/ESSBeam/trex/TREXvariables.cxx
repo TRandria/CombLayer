@@ -87,7 +87,7 @@ void TREXvariables(FuncDataBase& Control)
   Control.addVariable("trexAxisZAngle",0.0);   // rotation
   Control.addVariable("trexAxisZStep",0.0);   // +/- height
 
-  FGen.setGuideMat("Aluminium","CastIron");
+  FGen.setGuideMat("Aluminium","Borosilicate");
   FGen.setThickness(0.8,0.5,0.5);
   FGen.clearYOffset();
 

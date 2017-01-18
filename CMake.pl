@@ -81,7 +81,7 @@ $gM->addDepUnit("ess",      ["essBuild","visit","src","simMC",
 			     "freia","loki","magic","miracles","nmx",
                              "odin","trex","vor","vespa","shortDream",
                              "shortNmx","shortOdin","longLoki",
-			     "commonVar","simpleItem"
+			     "commonVar","simpleItem","skadi"
     	 	             ]);
 
 $gM->addDepUnit("filter", ["filter","photon","visit","src","simMC",

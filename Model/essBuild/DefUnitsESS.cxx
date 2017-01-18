@@ -220,9 +220,9 @@ setESSSingle(defaultConfig& A,
     { 
      {"HEIMDAL","G1BLineLow8"},     // W8
      {"SLEIPNIR","G1BLineLow13"},   // N9
-     {"ANNI","G2BLineTop3"},        // E3
-     {"SURFSCATTER","G2BLineTop8"},        // E8
-     {"SKADI","G2BLineTop5"}         // E5
+     {"ANNI","G2BLineTop3"}        // E3
+     // {"SURFSCATTER","G2BLineTop8"},        // E8
+     //     {"SKADI","G2BLineTop5"}         // E5
     };     
   const std::map<std::string,std::string> beamDef=
     {{"NMX","G1BLineTop1"},        // W1
@@ -242,7 +242,7 @@ setESSSingle(defaultConfig& A,
 
      {"VOR","G2BLineTop10"},       // S10/S11  [CHANGED TO FIT]
      {"VESPA","G2BLineTop15"},     // E7
-
+     {"SKADI","G2BLineTop8"},       // E8
      {"ESTIA","G2BLineTop20"},     // E2
      
      {"SIMPLE","G1BLineTop17"},
@@ -255,7 +255,7 @@ setESSSingle(defaultConfig& A,
     };     
   const std::set<std::string> beamFilled=
     {"BEER","BIFROST","CSPEC","DREAM","FREIA","LOKI",
-     "MAGIC","MIRACLES","NMX","TREX","VESPA",
+     "MAGIC","MIRACLES","NMX","TREX","VESPA","SKADI"
      "VOR","SHORTNMX","SHORTDREAM"};
 
   size_t beamLineIndex(0);

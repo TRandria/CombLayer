@@ -93,6 +93,7 @@
 #include "TREX.h"
 #include "VESPA.h"
 #include "VOR.h"
+#include "SKADI.h"
 
 #include "shortDREAM.h"
 #include "shortNMX.h"
@@ -257,13 +258,19 @@ makeESSBL::build(Simulation& System,
     }
   else if (beamName=="TREX")
     {
-      // Odin beamline
+      // TREX beamline
       TREX TrexBL("trex");
       TrexBL.build(System,*mainGIPtr,bunkerObj,voidCell);
     }
+  else if (beamName=="SKADI")
+    {
+      //SKADI beamline
+      SKADI SkadiBL("skadi");
+      SkadiBL.build(System,*mainGIPtr,bunkerObj,voidCell);
+    }
   else if (beamName=="VESPA")
     {
-      // DREAM beamline
+      // vespa beamline
       VESPA vespaBL("vespa");
       vespaBL.build(System,*mainGIPtr,bunkerObj,voidCell);
     }
