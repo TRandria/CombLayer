@@ -80,7 +80,7 @@ class SKADI : public attachSystem::CopiedComp
   std::shared_ptr<constructSystem::VacuumPipe> VPipeB;
   std::shared_ptr<beamlineSystem::GuideLine> BendB;
 
-  /// First Bender inside Bunker
+  /// Benders inside Bunker
   std::shared_ptr<constructSystem::VacuumPipe> VPipeInA;
   std::shared_ptr<beamlineSystem::GuideLine> BendInA;
 
@@ -96,47 +96,38 @@ class SKADI : public attachSystem::CopiedComp
   std::shared_ptr<beamlineSystem::GuideLine> FocusShutterA;
   std::shared_ptr<beamlineSystem::GuideLine> FocusShutterB;
 
-  //std::shared_ptr<constructSystem::Aperture> AppA;
-  std::shared_ptr<constructSystem::VacuumPipe> VPipeOutA;
-  std::shared_ptr<beamlineSystem::GuideLine> GuideOutA;
-  
-  /// Structure Up to the First Chopper and Polarization chamber Pit
+  /// Structure Up to the First Chopper I  Pit
+
   std::shared_ptr<constructSystem::ChopperPit> PitA;
-  std::shared_ptr<constructSystem::HoleShape> PitACutFront;
   std::shared_ptr<constructSystem::HoleShape> PitACutBack;
 
+  std::shared_ptr<constructSystem::LineShield> ShieldAB;
+  std::shared_ptr<constructSystem::VacuumPipe> VPipeOutA;
+  std::shared_ptr<beamlineSystem::GuideLine> GuideOutA;
+  std::shared_ptr<constructSystem::VacuumPipe> VPipeOutB;
   std::shared_ptr<beamlineSystem::GuideLine> GuideOutB;
-  std::shared_ptr<beamlineSystem::GuideLine> GuideOutC;
- 
-  std::shared_ptr<constructSystem::LineShield> ShieldD;
-  std::shared_ptr<constructSystem::VacuumPipe> VPipeOutD;
-  std::shared_ptr<beamlineSystem::GuideLine> GuideOutD;
 
-  /// First Straight Beamline up to the next ChopperPit
+  /// Structure Up to the First Chopper II  Pit
+
+  std::shared_ptr<constructSystem::ChopperPit> PitC;
+  std::shared_ptr<constructSystem::HoleShape> PitCCutFront;
+  std::shared_ptr<constructSystem::HoleShape> PitCCutBack;
+
+  std::shared_ptr<constructSystem::LineShield> ShieldC;
+  std::shared_ptr<constructSystem::VacuumPipe> VPipeOutC;
+  std::shared_ptr<beamlineSystem::GuideLine> GuideOutC;
+
+  /// Structure Up to the First Chopper III  Pit
+
   std::shared_ptr<constructSystem::ChopperPit> PitD;
   std::shared_ptr<constructSystem::HoleShape> PitDCutFront;
   std::shared_ptr<constructSystem::HoleShape> PitDCutBack;
 
-  std::shared_ptr<constructSystem::ChopperPit> PitE;
-  std::shared_ptr<constructSystem::HoleShape> PitECutFront;
-  std::shared_ptr<constructSystem::HoleShape> PitECutBack;
-  std::shared_ptr<constructSystem::LineShield> ShieldE;
-  std::shared_ptr<constructSystem::VacuumPipe> VPipeOutE;
-  std::shared_ptr<beamlineSystem::GuideLine> GuideOutE;
+  std::shared_ptr<constructSystem::LineShield> ShieldD;
+  std::shared_ptr<constructSystem::VacuumPipe> VPipeOutD;
+  std::shared_ptr<beamlineSystem::GuideLine> GuideOutD;
   
-  std::shared_ptr<constructSystem::LineShield> ShieldF;
-  std::shared_ptr<constructSystem::VacuumPipe> VPipeOutF;
-  std::shared_ptr<beamlineSystem::GuideLine> GuideOutF;
-
-  std::shared_ptr<beamlineSystem::GuideLine> GuideOutG;
-
-  std::shared_ptr<constructSystem::LineShield> ShieldH;
-  std::shared_ptr<constructSystem::VacuumPipe> VPipeOutH;
-  std::shared_ptr<beamlineSystem::GuideLine> GuideOutH;
-  
-  
-  void setBeamAxis(const FuncDataBase&,const GuideItem&,
-		   const bool);
+  void setBeamAxis(const FuncDataBase&,const GuideItem&,const bool);
     
  public:
   

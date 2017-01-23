@@ -94,8 +94,8 @@ void TREXvariables(FuncDataBase& Control)
   FGen.generateTaper(Control,"trexFMono",350.0,9.0,6.38,3.0,4.43);
 
   //  Gamma blocker 
-  PipeGen.generatePipe(Control,"trexPipeBridge",1.0,50.0);
-  FGen.generateTaper(Control,"trexFBridge",48.0,6.38,6.0,4.43,4.59);
+  PipeGen.generatePipe(Control,"trexPipeBridge",7.0,41.0);
+  FGen.generateTaper(Control,"trexFBridge",39.0,6.38,6.0,4.43,4.59);
 
   //   Vac pipe +  horizontal bender (Inside Bunker)
   PipeGen.generatePipe(Control,"trexPipeInA",1.5,447.5);
