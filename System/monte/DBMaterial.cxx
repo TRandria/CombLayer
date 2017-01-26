@@ -468,7 +468,7 @@ DBMaterial::initMaterial()
   setMaterial(MObj);
 
   // Material #62 Para : Ortho 50/50 hydrogen
-  MObj.setMaterial(62,"ParaOrtho","1001.70c 0.0209785 1004.70c 0.0209785",
+  MObj.setMaterial(62,"ParaOrtho","1001.70c 0.0209785 1001.74c 0.0209785",
 		   "parah.20t orthh.99t",MLib);
   setMaterial(MObj);
 
@@ -1335,7 +1335,7 @@ DBMaterial::createOrthoParaMix(const std::string& Name,
     }
   if (1.0-PFrac>1e-5)
     {
-      Unit+=" 1004.70c "+StrFunc::makeString(H2density*(1.0-PFrac));
+      Unit+=" 1001.74c "+StrFunc::makeString(H2density*(1.0-PFrac));
       SQW+="hortho.10t ";
     }
   

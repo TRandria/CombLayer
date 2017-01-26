@@ -128,7 +128,7 @@ setESSFull(defaultConfig& A)
       // {"CSPEC","G4BLine3"},
        {"VESPA","G2BLineTop7"},
       {"FREIA","G1BLineTop15"},     // N5
-      {"ODIN","G1BLineLow2"}
+      {"ODIN","G1BLineLow2"},
     };
   
   const std::set<std::string> beamFilled=
@@ -220,8 +220,8 @@ setESSSingle(defaultConfig& A,
     { 
      {"HEIMDAL","G1BLineLow8"},     // W8
      {"SLEIPNIR","G1BLineLow13"},   // N9
-     {"ANNI","G2BLineTop3"}        // E3
-     // {"SURFSCATTER","G2BLineTop8"},        // E8
+     {"ANNI","G2BLineTop3"},        // E3
+     {"SURFSCATTER","G2BLineTop8"}        // E8
      //     {"SKADI","G2BLineTop5"}         // E5
     };     
   const std::map<std::string,std::string> beamDef=
@@ -243,6 +243,7 @@ setESSSingle(defaultConfig& A,
      {"VOR","G2BLineTop10"},       // S10/S11  [CHANGED TO FIT]
      {"VESPA","G2BLineTop15"},     // E7
      {"SKADI","G2BLineTop8"},       // E8
+     
      {"ESTIA","G2BLineTop20"},     // E2
      
      {"SIMPLE","G1BLineTop17"},
@@ -255,7 +256,7 @@ setESSSingle(defaultConfig& A,
     };     
   const std::set<std::string> beamFilled=
     {"BEER","BIFROST","CSPEC","DREAM","FREIA","LOKI",
-     "MAGIC","MIRACLES","NMX","TREX","VESPA","SKADI"
+     "MAGIC","MIRACLES","NMX","TREX","VESPA","SKADI",
      "VOR","SHORTNMX","SHORTDREAM"};
 
   size_t beamLineIndex(0);

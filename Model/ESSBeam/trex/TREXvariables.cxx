@@ -87,7 +87,7 @@ void TREXvariables(FuncDataBase& Control)
   Control.addVariable("trexAxisZAngle",0.0);   // rotation
   Control.addVariable("trexAxisZStep",0.0);   // +/- height
 
-  FGen.setGuideMat("Aluminium","Borosilicate");
+  FGen.setGuideMat("Aluminium","CastIron");
   FGen.setThickness(0.8,0.5,0.5);
   FGen.clearYOffset();
 
@@ -154,7 +154,7 @@ void TREXvariables(FuncDataBase& Control)
   SGen.generateShield(Control,"trexShieldA",366.5,40.0,40.0,40.0,4,8);
   PipeGen.generatePipe(Control,"trexPipeOutA",1.5,331.5);
   Control.addVariable("trexPipeOutAXYAngle",-0.1);
-  FGen.setGuideMat("B4C","CastIron");
+  FGen.setGuideMat("Borosilicate","CastIron");
   FGen.setThickness(0.5,0.5,0.5);
   FGen.generateBender(Control,"trexBOutA",329.5,6.0,6.0,8.07,8.27,
 		      190000.0,0.0);
