@@ -101,51 +101,77 @@ void TREXvariables(FuncDataBase& Control)
   PipeGen.generatePipe(Control,"trexPipeInA",1.5,447.5);
   Control.addVariable("trexPipeInAXYAngle",-0.1);
   FGen.generateBender(Control,"trexBInA",445.5,6.0,6.0,4.59,5.75,
-                      190000.0,0.0);
+                      1900000.0,0.0);
   
-  FGen.setYOffset(2.0);
+  //FGen.setYOffset(2.0);
   PipeGen.generatePipe(Control,"trexPipeInB",1.0,400.0);
   Control.addVariable("trexPipeInBXYAngle",-0.1);
   FGen.generateBender(Control,"trexBInB",398.0,6.0,6.0,5.75,6.51,
-                      190000.0,0.0);
+                      1900000.0,0.0);
 
   PipeGen.generatePipe(Control,"trexPipeInC",1.0,400.0);
   Control.addVariable("trexPipeInCXYAngle",-0.1);
   FGen.generateBender(Control,"trexBInC",398.0,6.0,6.0,6.51,7.11,
-		      190000.0,0.0);
+		      1900000.0,0.0);
   
-  PipeGen.generatePipe(Control,"trexPipeInD",1.0,400.0);
+  PipeGen.generatePipe(Control,"trexPipeInD",1.0,366.0);
   Control.addVariable("trexPipeInDXYAngle",-0.1);
-  FGen.generateBender(Control,"trexBInD",398.0,6.0,6.0,7.11,7.57,
-		      190000.0,0.0);
+  FGen.generateBender(Control,"trexBInD",364.0,6.0,6.0,7.11,7.57,
+		      1900000.0,0.0);
 
-  FGen.clearYOffset();
+  // FGen.clearYOffset();
   PipeGen.generatePipe(Control,"trexPipeInE",1.5,200.0);
-  FGen.generateBender(Control,"trexBInE",198.0,6.0,6.0,7.57,7.76,
-		      190000.0,0.0);
+  FGen.generateBender(Control,"trexBInE",198.0,6.0,6.0,7.57,7.72,
+		      1900000.0,0.0);
  
   // BEAM INSERT
-  Control.addVariable("trexBInsertNBox",1);
-  Control.addVariable("trexBInsertHeight",35.0);
-  Control.addVariable("trexBInsertWidth",35.0);
-  //  Control.addVariable("trexBInsertLength0",399.0);
-  Control.addVariable("trexBInsertLength0",365.0);
-  Control.addVariable("trexBInsertMat0","Void");
+  Control.addVariable("trexBInsertANBox",1);
+  Control.addVariable("trexBInsertAHeight",25.7);
+  Control.addVariable("trexBInsertAWidth",25.7);
+  Control.addVariable("trexBInsertALength",204.4);
+  Control.addVariable("trexBInsertAMat","Void");
+  Control.addVariable("trexBInsertANWall",1);
+  Control.addVariable("trexBInsertAWallThick",0.35);
+  Control.addVariable("trexBInsertAWallMat","Stainless304");
 
-  Control.addVariable("trexBInsertNWall",1);
-  Control.addVariable("trexBInsertWallThick0",1.0);
-  //  Control.addVariable("trexBInsertWallMat0","Stainless304");
-  Control.addVariable("trexBInsertWallMat0","Nickel");
+  FGen.setYOffset(0.0);
+  FGen.generateBender(Control,"trexFWallA",204.4,6.0,6.0,7.72,7.89,
+		      1900000.0,0.0);
+  Control.setVariable("trexFWallANShapeLayers",5); 
+  Control.addVariable("trexFWallALayerThick1",0.8);
+  Control.addVariable("trexFWallALayerThick2",0.2);
+  Control.addVariable("trexFWallALayerThick3",5.0);
+  Control.addVariable("trexFWallALayerThick4",3.5); 
+  Control.addVariable("trexFWallALayerMat1","Copper");
+  Control.addVariable("trexFWallALayerMat2","Void");
+  Control.addVariable("trexFWallALayerMat3","Steel71");
+  Control.addVariable("trexFWallALayerMat4","Stainless304");
+
+  Control.addVariable("trexBInsertBNBox",1);
+  Control.addVariable("trexBInsertBHeight",42.4);
+  Control.addVariable("trexBInsertBWidth",42.4);
+  Control.addVariable("trexBInsertBLength",195.6);
+  Control.addVariable("trexBInsertBMat","Void");
+  Control.addVariable("trexBInsertBNWall",1);
+  Control.addVariable("trexBInsertBWallThick",0.35);
+  Control.addVariable("trexBInsertBWallMat","Stainless304");
     
-
-  PipeGen.generatePipe(Control,"trexPipeWall",1.25,398.5);
-  FGen.generateBender(Control,"trexFWall",396.5,6.0,6.0,7.76,8.07,
-		      190000.0,0.0);
+  FGen.generateBender(Control,"trexFWallB",195.6,6.0,6.0,7.89,8.04,
+		      1900000.0,0.0);
+  Control.setVariable("trexFWallBNShapeLayers",5); 
+  Control.addVariable("trexFWallBLayerThick1",3.8);
+  Control.addVariable("trexFWallBLayerThick2",0.2);
+  Control.addVariable("trexFWallBLayerThick3",10.35);
+  Control.addVariable("trexFWallBLayerThick4",3.5); 
+  Control.addVariable("trexFWallBLayerMat1","Copper");
+  Control.addVariable("trexFWallBLayerMat2","Void");
+  Control.addVariable("trexFWallBLayerMat3","Steel71");
+  Control.addVariable("trexFWallBLayerMat4","Stainless304");
 
   //Out of bunker
   PGen.setFeLayer(6.0);
   PGen.setConcLayer(10.0);
-  PGen.generatePit(Control,"trexPitA",366.5,25.0,220.0,210.0,40.0);
+  PGen.generatePit(Control,"trexPitA",333.0,25.0,220.0,210.0,40.0);
   Control.addVariable("trexPitACutFrontShape","Square");
   Control.addVariable("trexPitACutFrontRadius",5.0);
   Control.addVariable("trexPitACutBackShape","Square");
@@ -154,10 +180,12 @@ void TREXvariables(FuncDataBase& Control)
   SGen.generateShield(Control,"trexShieldA",366.5,40.0,40.0,40.0,4,8);
   PipeGen.generatePipe(Control,"trexPipeOutA",1.5,331.5);
   Control.addVariable("trexPipeOutAXYAngle",-0.1);
+ 
   FGen.setGuideMat("Borosilicate","CastIron");
   FGen.setThickness(0.5,0.5,0.5);
+  FGen.clearYOffset();
   FGen.generateBender(Control,"trexBOutA",329.5,6.0,6.0,8.07,8.27,
-		      190000.0,0.0);
+		      1900000.0,0.0);
 
   PGen.generatePit(Control,"trexPitB",800.0,25.0,220.0,210.0,40.0);
   Control.addVariable("trexPitBCutFrontShape","Square");
@@ -171,11 +199,11 @@ void TREXvariables(FuncDataBase& Control)
   PipeGen.generatePipe(Control,"trexPipeOutB1",0.0,380.5);
   Control.addVariable("trexPipeOutB1XYAngle",-0.1);
   FGen.generateBender(Control,"trexBOutB1",378.5,6.0,6.0,8.27,8.42,
- 		      190000.0,0.0);
+ 		      1900000.0,0.0);
   PipeGen.generatePipe(Control,"trexPipeOutB2",1.0,380.5);
   Control.addVariable("trexPipeOutB2XYAngle",-0.1);
   FGen.generateBender(Control,"trexBOutB2",378.5,6.0,6.0,8.42,8.49,
-		      190000.0,0.0);
+		      1900000.0,0.0);
 
   /// After BW2 Chopper pit
   //  PGen.generatePit(Control,"trexOutPitC",4995.0,25.0,220.0,210.0,40.0);
@@ -201,7 +229,7 @@ void TREXvariables(FuncDataBase& Control)
       Control.addVariable("trexPipeOutC"+strNum+"XYAngle",-0.1);
 
       FGen.generateBender(Control,"trexBOutC"+strNum,493.5,6.0,6.0,8.50,
-			  8.50,190000.0,0.0);
+			  8.50,1900000.0,0.0);
     }
   
   SGen.generateShield(Control,"trexShieldD",581.5,40.0,40.0,40.0,4,8);
@@ -209,7 +237,7 @@ void TREXvariables(FuncDataBase& Control)
   Control.addVariable("trexShieldDYStep",38.5);
   PipeGen.generatePipe(Control,"trexPipeOutD",0.5,581.5);
   FGen.generateBender(Control,"trexBOutD",579.5,6.0,6.0,8.50,8.50,
-		      190000.0,0.0);
+		      1900000.0,0.0);
 
   // End LOS
 

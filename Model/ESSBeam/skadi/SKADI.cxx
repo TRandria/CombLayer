@@ -118,8 +118,9 @@ SKADI::SKADI(const std::string& keyName):
   
   BInsert(new CompBInsert(newName+"BInsert")),
   FocusWall(new beamlineSystem::GuideLine(newName+"FWall")),
-  FocusShutterA(new beamlineSystem::GuideLine(newName+"FSA")),
-  FocusShutterB(new beamlineSystem::GuideLine(newName+"FSB")),
+  
+  CInsert(new CompBInsert(newName+"CInsert")),
+  FocusShutter(new beamlineSystem::GuideLine(newName+"FShutter")),
   
   PitA(new constructSystem::ChopperPit(newName+"PitA")),
   PitACutBack(new constructSystem::HoleShape(newName+"PitACutBack")),
@@ -172,8 +173,9 @@ SKADI::SKADI(const std::string& keyName):
 
   OR.addObject(BInsert);
   OR.addObject(FocusWall);
-  OR.addObject(FocusShutterA);
-  OR.addObject(FocusShutterB);
+
+  OR.addObject(CInsert);
+  OR.addObject(FocusShutter);
 
   OR.addObject(PitA);
   OR.addObject(PitACutBack);
@@ -294,23 +296,26 @@ SKADI::build(Simulation& System,
   if (stopPoint==2) return;         // Stop at last pipe in Bunker
   
   BInsert->addInsertCell(bunkerObj.getCell("MainVoid"));
-  BInsert->addInsertCell(voidCell);
+  //  BInsert->addInsertCell(voidCell);
   BInsert->createAll(System,*VPipeInC,2,bunkerObj);
   attachSystem::addToInsertSurfCtrl(System,bunkerObj,"frontWall",*BInsert);
   FocusWall->addInsertCell(BInsert->getCells("Item"));
-  FocusWall->createAll(System,*BInsert,-1,*BInsert,-1);
-  FocusShutterA->addInsertCell(BInsert->getCells("Item"));
-  FocusShutterA->createAll(System,FocusWall->getKey("Guide0"),2,
-			   FocusWall->getKey("Guide0"),2);
-  FocusShutterB->addInsertCell(BInsert->getCells("Item"));
-  FocusShutterB->createAll(System,FocusShutterA->getKey("Guide0"),2,
-  			  FocusShutterA->getKey("Guide0"),2);
+  //FocusWall->addInsertCell(BInsert->getCells("Void"));
+  FocusWall->createAll(System,*BInsert,0,*BInsert,0);
+
+  CInsert->addInsertCell(bunkerObj.getCell("MainVoid"));
+  CInsert->addInsertCell(voidCell);
+  CInsert->setBack(bunkerObj,-2);
+  CInsert->createAll(System,*BInsert,2,bunkerObj);
+  attachSystem::addToInsertSurfCtrl(System,bunkerObj,"frontWall",*CInsert);
+  FocusShutter->addInsertCell(CInsert->getCells("Item"));
+  FocusShutter->createAll(System,*CInsert,-1,*CInsert,-1);
   
   if (stopPoint==3) return;
 
   PitA->addInsertCell(voidCell); //Chopper I pit
   PitA->addFrontWall(bunkerObj,2);
-  PitA->createAll(System,FocusShutterB->getKey("Guide0"),2);
+  PitA->createAll(System,FocusShutter->getKey("Guide0"),2);
 
   PitACutBack->addInsertCell(PitA->getCells("MidLayerBack"));
   PitACutBack->addInsertCell(PitA->getCells("Collet"));
@@ -353,7 +358,7 @@ SKADI::build(Simulation& System,
   ShieldAB->addInsertCell(PitC->getCells("Outer"));
   ShieldAB->addInsertCell(PitC->getCells("MidLayer"));
   ShieldAB->setBack(PitC->getKey("Mid"),1);  
-  ShieldAB->createAll(System,FocusShutterB->getKey("Guide0"),2);
+  ShieldAB->createAll(System,FocusShutter->getKey("Guide0"),2);
 
   VPipeOutA->addInsertCell(ShieldAB->getCell("Void"));
   VPipeOutA->createAll(System,*ShieldAB,-1);

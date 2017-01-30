@@ -100,10 +100,10 @@ class TREX : public attachSystem::CopiedComp
   std::shared_ptr<beamlineSystem::GuideLine> BendInE;
   
   /// Bunker Insert
-  //std::shared_ptr<essSystem::BunkerInsert> BInsert;
-  std::shared_ptr<essSystem::CompBInsert> BInsert;
-  std::shared_ptr<constructSystem::VacuumPipe> VPipeWall;
-  std::shared_ptr<beamlineSystem::GuideLine> FocusWall;
+  std::shared_ptr<essSystem::CompBInsert> BInsertA;
+  std::shared_ptr<beamlineSystem::GuideLine> FocusWallA;
+  std::shared_ptr<essSystem::CompBInsert> BInsertB;
+  std::shared_ptr<beamlineSystem::GuideLine> FocusWallB;
 
   /// Structure Up to the First Chopper Pit
   std::shared_ptr<constructSystem::ChopperPit> PitA;

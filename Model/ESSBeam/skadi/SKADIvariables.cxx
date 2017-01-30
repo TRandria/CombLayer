@@ -115,34 +115,37 @@ void SKADIvariables(FuncDataBase& Control)
   FGen.generateRectangle(Control,"skadiGInC",48.0,w,w);
 
   //Beam Insert
-  Control.addVariable("skadiBInsertNBox",3);
+  Control.addVariable("skadiBInsertNBox",1);
   Control.addVariable("skadiBInsertYStep",1.0);
-  Control.addVariable("skadiBInsertHeight",30.0);
-  Control.addVariable("skadiBInsertWidth",48.0);
-  Control.addVariable("skadiBInsertHeight1",152.0);
-  Control.addVariable("skadiBInsertWidth1",152.0);
-  Control.addVariable("skadiBInsertHeight2",218.0);
-  Control.addVariable("skadiBInsertWidth2",202.0);
-  Control.addVariable("skadiBInsertLength0",100.0);
-  Control.addVariable("skadiBInsertLength1",180.0);
-  Control.addVariable("skadiBInsertLength2",70.0);
-  Control.addVariable("skadiBInsertMat0","Void");
-  Control.addVariable("skadiBInsertMat1","Void");
-  Control.addVariable("skadiBInsertMat2","Void");
-
+  Control.addVariable("skadiBInsertLength",170.0);
+  Control.addVariable("skadiBInsertHeight",26.0);
+  Control.addVariable("skadiBInsertWidth",26.0);
+  Control.addVariable("skadiBInsertMat","Void");
   Control.addVariable("skadiBInsertNWall",1);
-  Control.addVariable("skadiBInsertWallThick0",1.0);
-  Control.addVariable("skadiBInsertWallMat0","Nickel");
-  Control.addVariable("skadiBInsertWallThick1",2.0);
-  Control.addVariable("skadiBInsertWallMat1","Void");
+  Control.addVariable("skadiBInsertWallThick",1.0);
+  Control.addVariable("skadiBInsertWallMat","Steel71");
 
-  FGen.setYOffset(1.0);
-  FGen.generateRectangle(Control,"skadiFWall",98.0,w,w);
-  FGen.setYOffset(2.0);
-  FGen.generateRectangle(Control,"skadiFSA",178.0,w,w);
-  FGen.generateRectangle(Control,"skadiFSB",68.0,w,w);
+  FGen.setYOffset(0.0);
+  FGen.generateRectangle(Control,"skadiFWall",170.0,w,w);
 
+  Control.addVariable("skadiCInsertNBox",2);
+  Control.addVariable("skadiCInsertHeight",61.0);
+  Control.addVariable("skadiCInsertWidth",61.0);
+  Control.addVariable("skadiCInsertHeight1",81.0);
+  Control.addVariable("skadiCInsertWidth1",81.0);
+  Control.addVariable("skadiCInsertLength0",124.0);
+  Control.addVariable("skadiCInsertLength1",56.0);
+  Control.addVariable("skadiCInsertZStep1",-35.0);
+  Control.addVariable("skadiCInsertMat0","Concrete");
+  Control.addVariable("skadiCInsertMat1","Concrete");
+  Control.addVariable("skadiCInsertNWall",2);
+  Control.addVariable("skadiCInsertWallThick0",24.5);
+  Control.addVariable("skadiCInsertWallMat0","Steel71");
+  Control.addVariable("skadiCInsertWallThick1",20.0);
+  Control.addVariable("skadiCInsertWallMat1","Concrete");
 
+  FGen.generateRectangle(Control,"skadiFShutter",180.0,w,w);
+  
   PGen.setFeLayer(6.0);
   PGen.setConcLayer(10.0);
   PGen.generatePit(Control,"skadiPitA",0.0,30.0,180.0,180.0,30.0);
@@ -156,27 +159,27 @@ void SKADIvariables(FuncDataBase& Control)
   FGen.generateRectangle(Control,"skadiGOutA",45.0,w,w);
   
   PipeGen.generatePipe(Control,"skadiPipeOutB",1.0,670.0);
-  FGen.generateRectangle(Control,"skadiGOutB",668.0,10.0,10.0);
+  FGen.generateRectangle(Control,"skadiGOutB",668.0,w,w);
 
   PGen.generatePit(Control,"skadiPitC",709.0,30.0,180.0,180.0,30.0);
   Control.addVariable("skadiPitCCutFrontShape","Square");
-  Control.addVariable("skadiPitCCutFrontRadius",12.0);
+  Control.addVariable("skadiPitCCutFrontRadius",5.0);
   Control.addVariable("skadiPitCCutBackShape","Square");
-  Control.addVariable("skadiPitCCutBackRadius",12.0);
+  Control.addVariable("skadiPitCCutBackRadius",5.0);
 
   SGen.generateShield(Control,"skadiShieldC",300.0,40.0,40.0,60.0,4,8);
   PipeGen.generatePipe(Control,"skadiPipeOutC",1.0,298.0);
-  FGen.generateRectangle(Control,"skadiGOutC",296.0,10.0,10.0);
+  FGen.generateRectangle(Control,"skadiGOutC",296.0,w,w);
   
   PGen.generatePit(Control,"skadiPitD",290.0,60.0,180.0,180.0,30.0);
   Control.addVariable("skadiPitDCutFrontShape","Square");
-  Control.addVariable("skadiPitDCutFrontRadius",12.0);
+  Control.addVariable("skadiPitDCutFrontRadius",5.0);
   Control.addVariable("skadiPitDCutBackShape","Square");
-  Control.addVariable("skadiPitDCutBackRadius",12.0);
+  Control.addVariable("skadiPitDCutBackRadius",5.0);
 
   SGen.generateShield(Control,"skadiShieldD",917.0,40.0,40.0,60.0,4,8);
   PipeGen.generatePipe(Control,"skadiPipeOutD",1.0,916.0);
-  FGen.generateRectangle(Control,"skadiGOutD",914.0,10.0,10.0);
+  FGen.generateRectangle(Control,"skadiGOutD",914.0,w,w);
   
     
   return;

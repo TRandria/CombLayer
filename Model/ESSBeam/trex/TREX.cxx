@@ -117,10 +117,11 @@ TREX::TREX(const std::string& keyName):
   VPipeInE(new constructSystem::VacuumPipe(newName+"PipeInE")),
   BendInE(new beamlineSystem::GuideLine(newName+"BInE")),
 
-//BInsert(new BunkerInsert(newName+"BInsert")),
-  BInsert(new CompBInsert(newName+"BInsert")),
-  VPipeWall(new constructSystem::VacuumPipe(newName+"PipeWall")),
-  FocusWall(new beamlineSystem::GuideLine(newName+"FWall")),
+  BInsertA(new CompBInsert(newName+"BInsertA")),
+  FocusWallA(new beamlineSystem::GuideLine(newName+"FWallA")),
+
+  BInsertB(new CompBInsert(newName+"BInsertB")),
+  FocusWallB(new beamlineSystem::GuideLine(newName+"FWallB")),
 
   PitA(new constructSystem::ChopperPit(newName+"PitA")),
   PitACutFront(new constructSystem::HoleShape(newName+"PitACutFront")),
@@ -129,7 +130,6 @@ TREX::TREX(const std::string& keyName):
   VPipeOutA(new constructSystem::VacuumPipe(newName+"PipeOutA")),
   BendOutA(new beamlineSystem::GuideLine(newName+"BOutA")),
   
-
   PitB(new constructSystem::ChopperPit(newName+"PitB")),
   PitBCutFront(new constructSystem::HoleShape(newName+"PitBCutFront")),
   PitBCutBack(new constructSystem::HoleShape(newName+"PitBCutBack")),
@@ -194,9 +194,11 @@ TREX::TREX(const std::string& keyName):
   OR.addObject(VPipeInE);
   OR.addObject(BendInE);
 
-  OR.addObject(BInsert);
-  OR.addObject(VPipeWall);
-  OR.addObject(FocusWall);
+  OR.addObject(BInsertA);
+  OR.addObject(FocusWallA);
+
+  OR.addObject(BInsertB);
+  OR.addObject(FocusWallB);
 
   OR.addObject(PitA);
   OR.addObject(PitACutFront);
@@ -339,9 +341,6 @@ TREX::build(Simulation& System,
   FocusMono->addInsertCell(GItem.getCells("Void"));
   FocusMono->setFront(GItem.getKey("Beam"),-1);
   FocusMono->setBack(GItem.getKey("Beam"),-2);
-  //  FocusMono->createAll(System,GItem.getKey("Beam"),-1,
-  //		       GItem.getKey("Beam"),-1);
-
   FocusMono->createAll(System,*trexAxis,-3,*trexAxis,-3);
   
   if (stopPoint==1) return;                      // STOP At monolith
@@ -363,22 +362,19 @@ TREX::build(Simulation& System,
   VPipeInB->setFront(*VPipeInA,2,true);
   VPipeInB->createAll(System,BendInA->getKey("Guide0"),2);
   BendInB->addInsertCell(VPipeInB->getCells("Void"));
-  BendInB->createAll(System,BendInA->getKey("Guide0"),2,
-		   BendInA->getKey("Guide0"),2);
+  BendInB->createAll(System,*VPipeInB,0,*VPipeInB,0);
 
   VPipeInC->addInsertCell(bunkerObj.getCell("MainVoid"));
   VPipeInC->setFront(*VPipeInB,2,true);
   VPipeInC->createAll(System,BendInB->getKey("Guide0"),2);
   BendInC->addInsertCell(VPipeInC->getCells("Void"));
-  BendInC->createAll(System,BendInB->getKey("Guide0"),2,
-		   BendInB->getKey("Guide0"),2);
+  BendInC->createAll(System,*VPipeInC,0,*VPipeInC,0);
 
   VPipeInD->addInsertCell(bunkerObj.getCell("MainVoid"));
   VPipeInD->setFront(*VPipeInC,2,true);
   VPipeInD->createAll(System,BendInC->getKey("Guide0"),2);
   BendInD->addInsertCell(VPipeInD->getCells("Void"));
-  BendInD->createAll(System,BendInC->getKey("Guide0"),2,
-		   BendInC->getKey("Guide0"),2);
+  BendInD->createAll(System,*VPipeInD,0,*VPipeInD,0);
 
   VPipeInE->addInsertCell(bunkerObj.getCell("MainVoid"));
   VPipeInE->createAll(System,BendInD->getKey("Guide0"),2);
@@ -387,32 +383,36 @@ TREX::build(Simulation& System,
 
   if (stopPoint==2) return;       // STOP at the bunker edge
   
-  BInsert->addInsertCell(bunkerObj.getCell("MainVoid"));
-  BInsert->addInsertCell(voidCell);
-  BInsert->createAll(System,*VPipeInE,2,bunkerObj);
-  attachSystem::addToInsertSurfCtrl(System,bunkerObj,"frontWall",*BInsert);
+  BInsertA->addInsertCell(bunkerObj.getCell("MainVoid"));
+  BInsertA->addInsertCell(voidCell);
+  BInsertA->createAll(System,*VPipeInE,2,bunkerObj);
+  attachSystem::addToInsertSurfCtrl(System,bunkerObj,"frontWall",*BInsertA);
+
+  FocusWallA->addInsertCell(BInsertA->getCells("Item"));
+  FocusWallA->createAll(System,*BInsertA,0,*BInsertA,0);
+
+  BInsertB->addInsertCell(bunkerObj.getCell("MainVoid"));
+  BInsertB->addInsertCell(voidCell);
+  BInsertB->createAll(System,*BInsertA,2,bunkerObj);
+  attachSystem::addToInsertSurfCtrl(System,bunkerObj,"frontWall",*BInsertB);
+
+  FocusWallB->addInsertCell(BInsertB->getCells("Item"));
+  FocusWallB->createAll(System,*BInsertB,0,*BInsertB,0);
 
   PitA->addInsertCell(voidCell);  // First pit wrt bunker insert
-  PitA->createAll(System,*BInsert,2); 
+  PitA->createAll(System,*BInsertB,2); 
   
   ShieldA->addInsertCell(voidCell);
-  ShieldA->setFront(*BInsert,2);
+  ShieldA->setFront(*BInsertB,2);
   ShieldA->addInsertCell(PitA->getCells("Outer"));
   ShieldA->addInsertCell(PitA->getCells("MidLayer"));
   ShieldA->setBack(PitA->getKey("Mid"),1);
-  ShieldA->createAll(System,*BInsert,2);
-
-  VPipeWall->addInsertCell(BInsert->getCell("Item"));
-  VPipeWall->addInsertCell(ShieldA->getCell("Void"));
-  VPipeWall->createAll(System,BendInE->getKey("Guide0"),2);
-  FocusWall->addInsertCell(VPipeWall->getCells("Void"));
-  FocusWall->createAll(System,*VPipeWall,0,*VPipeWall,0);
+  ShieldA->createAll(System,*BInsertB,2);
 
   VPipeOutA->addInsertCell(ShieldA->getCell("Void"));
-  VPipeOutA->setFront(*VPipeWall,2,true);
   VPipeOutA->addInsertCell(PitA->getCells("MidLayer"));
   VPipeOutA->setBack(PitA->getKey("Mid"),1);
-  VPipeOutA->createAll(System,FocusWall->getKey("Guide0"),2);
+  VPipeOutA->createAll(System,FocusWallB->getKey("Guide0"),2);
   BendOutA->addInsertCell(VPipeOutA->getCells("Void"));
   BendOutA->createAll(System,*VPipeOutA,0,*VPipeOutA,0);
   
@@ -456,12 +456,8 @@ TREX::build(Simulation& System,
   BendOutB2->addInsertCell(VPipeOutB2->getCells("Void"));
   BendOutB2->createAll(System,*VPipeOutB2,0,*VPipeOutB2,0);
 
-  
   if (stopPoint==4) return; // Up to BW2 Chopper Pit
-  //  Geometry::Vec3D pos0=ShieldB->getSignedLinkPt(-1);
-  //  Geometry::Vec3D pos1=ShieldB->getSignedLinkPt(2);
-  // ELog::EM<<pos1.Distance(pos0)<<ELog::endDiag;
-  
+    
   ShieldCs[0]->addInsertCell(voidCell);
   ShieldCs[0]->addInsertCell(PitB->getCells("Outer"));
   ShieldCs[0]->addInsertCell(PitB->getCells("MidLayer"));

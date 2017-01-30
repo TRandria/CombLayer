@@ -242,7 +242,7 @@ setESSSingle(defaultConfig& A,
 
      {"VOR","G2BLineTop10"},       // S10/S11  [CHANGED TO FIT]
      {"VESPA","G2BLineTop15"},     // E7
-     {"SKADI","G2BLineTop8"},       // E8
+     {"SKADI","G2BLineTop3"},       // E3
      
      {"ESTIA","G2BLineTop20"},     // E2
      

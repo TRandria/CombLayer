@@ -93,8 +93,8 @@ class SKADI : public attachSystem::CopiedComp
   /// Bunker Insert
   std::shared_ptr<essSystem::CompBInsert> BInsert;
   std::shared_ptr<beamlineSystem::GuideLine> FocusWall;
-  std::shared_ptr<beamlineSystem::GuideLine> FocusShutterA;
-  std::shared_ptr<beamlineSystem::GuideLine> FocusShutterB;
+  std::shared_ptr<essSystem::CompBInsert> CInsert;
+  std::shared_ptr<beamlineSystem::GuideLine> FocusShutter;
 
   /// Structure Up to the First Chopper I  Pit
 
