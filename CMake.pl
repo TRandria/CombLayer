@@ -212,6 +212,7 @@ $gM->addDepUnit("pipe", ["pipeBuild","visit","src","simMC",
 			 "transport","scatMat","endf","crystal",
 			 "source","monte","funcBase","log","monte",
 			 "tally","geometry","mersenne","src","world",
+			 "attachComp","beamline","support","commonVar",
 			 "work","xml","poly","support","weights",
 			 "md5","global","attachComp","visit","poly"]);
 
