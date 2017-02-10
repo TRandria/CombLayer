@@ -1041,7 +1041,7 @@ DBMaterial::initMaterial()
                    "14029.70c 0.000562111 14030.70c 0.000370548 "
                    "16032.70c 9.59317e-05 16033.70c 7.6802e-07 "
                    "16034.70c 4.33527e-06 16036.70c 2.0211e-08 "
-                   "17037.70c 8.95621e-07 17037.70c 2.86249e-07 "
+                   "17035.70c 8.95621e-07 17037.70c 2.86249e-07 "
                    "19039.70c 0.00037788 19040.70c 4.74082e-08 "
                    "19041.70c 2.72698e-06 20040.70c 0.00231121 "
                    "20042.70c 1.54254e-05 20043.70c 3.21859e-06 "
@@ -1169,7 +1169,7 @@ DBMaterial::initMaterial()
   setMaterial(MObj);
 
   // Borosilicate - Glass - rho=2.230 g/cc
-  MObj.setMaterial(132,"Borosilicate",
+  MObj.setMaterial(301,"Borosilicate",
 		   "5010.70c 0.000950607 5011.70c 0.003986577  "
                    "8016.70c 0.045289 11023.70c 0.001647  "
                    "13027.70c 0.000580 14028.70c 0.016630114  "
@@ -1178,6 +1178,15 @@ DBMaterial::initMaterial()
                    "19041.70c 7.672e-06 ",
                    "",MLib);
   setMaterial(MObj);
+  
+  // He3 for detectors [1bar]
+  MObj.setMaterial(132,"He3_1Bar","2003.70c 2.45e-5","",MLib);
+  setMaterial(MObj);
+
+  // He3 for detectors [10bar]
+  MObj.setMaterial(133,"He3_10Bar","2003.70c 2.45e-4","",MLib);
+  setMaterial(MObj);
+  
   return;
 }
 

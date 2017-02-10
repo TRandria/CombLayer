@@ -14,7 +14,8 @@ sub new
     ccomp => "clang",
     cflag => "-fPIC -Wconversion -W -Wall -Wextra -Wno-comment -fexceptions -std=c++11",
     boostLib => "-L/opt/local/lib -lboost_regex ",
-    
+    boostReq => "regex system filesystem ",
+
     masterProg => undef,
     definitions => undef,
     depLists => undef,
@@ -243,6 +244,11 @@ sub writeHeader
   print $DX "\${CMAKE_SHARED_LIBRARY_CREATE_CXX_FLAGS} ";
   print $DX "-undefined dynamic_lookup\")\n";
   print $DX "endif()\n";
+  print $DX "\n";
+  print $DX "set(BOOST_ROOT \"",$ENV{'BOOST_ROOT'},"\")\n";
+  print $DX "FIND_PACKAGE(Boost \${Boost_VERSION} REQUIRED COMPONENTS ",$self->{boostReq},")\n";
+  print $DX "\n";
+
   return;
 }
  
@@ -251,6 +257,10 @@ sub writeIncludes
 {
   my $self=shift;
   my $DX=shift;
+
+  print $DX "if(Boost_FOUND)\n";
+  print $DX "include_directories(SYSTEM \${Boost_INCLUDE_DIR})\n";
+  print $DX "endif()\n";
 
   foreach my $item (@{$self->{incDir}})
     {
@@ -299,11 +309,13 @@ sub writeExcutables
         {
 	  print $DX "target_link_libraries(",$item,"  lib",$dItem,")\n";
         }
-      if (!$self->{noregex})
-        {
-          print $DX "target_link_libraries(",$item," boost_regex)\n";
-          print $DX "target_link_libraries(",$item," boost_filesystem)\n";
-	}
+#      if (!$self->{noregex})
+#       {
+#          print $DX "target_link_libraries(",$item," boost_regex)\n";
+#          print $DX "target_link_libraries(",$item," boost_filesystem)\n";
+#	}
+      print $DX "target_link_libraries(",$item," \${Boost_LIBRARIES})\n";
+
       print $DX "target_link_libraries(",$item," stdc++)\n";
       print $DX "target_link_libraries(",$item," gsl)\n";
       print $DX "target_link_libraries(",$item," gslcblas)\n";

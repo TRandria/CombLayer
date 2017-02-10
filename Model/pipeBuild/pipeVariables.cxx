@@ -50,6 +50,12 @@
 #include "FuncDataBase.h"
 #include "variableSetup.h"
 
+#include "ChopperGenerator.h"
+#include "BladeGenerator.h"
+#include "PipeGenerator.h"
+#include "FocusGenerator.h"
+#include "PitGenerator.h"
+
 namespace setVariable
 {
 
@@ -113,7 +119,45 @@ PipeVariables(FuncDataBase& Control)
   Control.addVariable("diskSourceASpread",90.0);
   Control.addVariable("diskSourceEnergy",3.0);
   Control.addVariable("diskSourceEProb",1.0);
+
+
+  setVariable::ChopperGenerator CGen;
+  setVariable::BladeGenerator BGen;
+  setVariable::PipeGenerator PGen;
+  setVariable::FocusGenerator FGen;
+  setVariable::PitGenerator pitGen;
+
+  CGen.setMainRadius(12.0);
+  CGen.setFrame(50.0,50.0);
+  CGen.generateChopper(Control,"ChopperA",10.0,14.0,7.0);
+
+  BGen.setMaterials("Copper","B4C");
+  BGen.setThick({1.0});
+  BGen.addPhase({95,275},{35,25});
+  BGen.generateBlades(Control,"BandADisk",0.0,6.0,10.0);
+
+  PGen.setPipe(8.0,0.5);
+  PGen.setWindow(-2.0,0.5);
+  PGen.setFlange(-4.0,1.0);
+  PGen.generatePipe(Control,"PipeA",1.0,100.0);
+
+  FGen.setGuideMat("Copper","Borosilicate");
+  FGen.setThickness(0.8,0.5,0.5);
+  FGen.generateBender(Control,"GuideA",98.0,6.0,6.0,6.0,6.0,1550.0,90.0);
+
+  PGen.generatePipe(Control,"PipeB",3.0,100.0);
+  FGen.generateBender(Control,"GuideB",98.0,6.0,6.0,6.0,6.0,1550.0,270.0);
   
+  pitGen.setFeLayer(6.0);
+  pitGen.setConcLayer(10.0);
+  pitGen.generatePit(Control,"PitA",220.0,25.0,220.0,210.0,40.0);
+
+  Control.addVariable("CutFrontAShape","Square");
+  Control.addVariable("CutFrontARadius",5.0);
+  
+  Control.addVariable("CutBackAShape","Square");
+  Control.addVariable("CutBackARadius",15.0);
+    
 
   return;
 }

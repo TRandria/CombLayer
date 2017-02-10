@@ -68,6 +68,7 @@
 #include "FixedOffset.h"
 #include "ContainedComp.h"
 #include "ContainedGroup.h"
+#include "FrontBackCut.h"
 #include "LayerComp.h"
 #include "BaseMap.h"
 #include "CellMap.h"
@@ -75,6 +76,19 @@
 #include "World.h"
 #include "AttachSupport.h"
 #include "pipeTube.h"
+
+/// needed fro chopper and Co
+#include "FixedGroup.h"
+#include "FixedOffsetGroup.h"
+#include "DiskChopper.h"
+#include "ChopperPit.h"
+#include "ChopperUnit.h"
+#include "ChopperHousing.h"
+#include "HoleShape.h"
+
+/// Pipe and GL
+#include "VacuumPipe.h"
+#include "GuideLine.h"
 
 #include "makePipe.h"
 
@@ -84,7 +98,18 @@ namespace pipeSystem
 makePipe::makePipe() :
   ATube(new pipeSystem::pipeTube("ATube")),
   BTube(new pipeSystem::pipeTube("BTube")),
-  CTube(new pipeSystem::pipeTube("CTube"))
+  CTube(new pipeSystem::pipeTube("CTube")),
+  ChopperA(new constructSystem::ChopperUnit("ChopperA")),
+  BandADisk(new constructSystem::DiskChopper("BandADisk")),
+  PipeA(new constructSystem::VacuumPipe("PipeA")),
+  GuideA(new beamlineSystem::GuideLine("GuideA")),
+  PipeB(new constructSystem::VacuumPipe("PipeB")),
+  GuideB(new beamlineSystem::GuideLine("GuideB")),
+  PipeC(new constructSystem::VacuumPipe("PipeC")),
+  GuideC(new beamlineSystem::GuideLine("GuideC")),
+  PitA(new constructSystem::ChopperPit("PitA")),
+  CutFrontA(new constructSystem::HoleShape("CutFrontA")),
+  CutBackA(new constructSystem::HoleShape("CutBackA"))
   /*!
     Constructor
   */
@@ -95,6 +120,24 @@ makePipe::makePipe() :
   OR.addObject(ATube);
   OR.addObject(BTube);
   OR.addObject(CTube);
+
+  OR.addObject(ChopperA);
+  OR.addObject(BandADisk);
+
+  OR.addObject(PipeA);
+  OR.addObject(GuideA);
+
+  OR.addObject(PipeB);
+  OR.addObject(GuideB);
+
+  OR.addObject(PipeC);
+  OR.addObject(GuideC);
+
+  OR.addObject(PitA);
+
+  OR.addObject(CutFrontA);
+  OR.addObject(CutBackA);
+    
 
 }
 
@@ -149,14 +192,48 @@ makePipe::build(Simulation* SimPtr,
   ATube->createAll(*SimPtr,World::masterOrigin(),0);
 
   BTube->addInsertCell(voidCell);
-  
   BTube->createAll(*SimPtr,*ATube,2);
 
   CTube->addInsertCell(voidCell);
   CTube->createAll(*SimPtr,*BTube,2);
+
+  ChopperA->addInsertCell(voidCell);
+  ChopperA->createAll(*SimPtr,*CTube,2);
+
+  BandADisk->addInsertCell(ChopperA->getCell("Void"));
+  BandADisk->setCentreFlag(3);
+  BandADisk->setOffsetFlag(1);
+  BandADisk->createAll(*SimPtr,ChopperA->getKey("Beam"),0);
+
+  PipeA->addInsertCell(voidCell);
+  PipeA->createAll(*SimPtr,ChopperA->getKey("Beam"),2);
+  GuideA->addInsertCell(PipeA->getCells("Void"));
+  GuideA->createAll(*SimPtr,*PipeA,0,*PipeA,0);
+
+  PitA->addInsertCell(voidCell);
+  PitA->createAll(*SimPtr,*CTube,2);
+  
+  PipeB->addInsertCell(voidCell);
+  PipeB->addInsertCell(PitA->getCells("Outer"));
+  PipeB->setBack(PitA->getKey("Mid"),1);
+  PipeB->createAll(*SimPtr,GuideA->getKey("Guide0"),2);
+  
+  GuideB->addInsertCell(PipeB->getCells("Void"));
+  GuideB->createAll(*SimPtr,*PipeB,0,*PipeB,0);
+
+  CutFrontA->addInsertCell(PitA->getCells("MidLayerFront"));
+  CutFrontA->setFaces(PitA->getKey("Mid").getSignedFullRule(-1),
+		      PitA->getKey("Inner").getSignedFullRule(1));
+  CutFrontA->createAll(*SimPtr,GuideB->getKey("Guide0"),2);
+  
+  CutBackA->addInsertCell(PitA->getCells("MidLayerBack"));
+  CutBackA->addInsertCell(PitA->getCells("Collet"));
+  CutBackA->setFaces(PitA->getKey("Mid").getSignedFullRule(-2),
+		      PitA->getKey("Inner").getSignedFullRule(2));
+  CutBackA->createAll(*SimPtr,GuideB->getKey("Guide0"),2);
   return;
+
 }
-
-
+  
 }   // NAMESPACE pipeSystem
 

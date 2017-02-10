@@ -31,6 +31,21 @@
   \author S. Ansell
 */
 
+namespace constructSystem
+{
+  class ChopperPit;
+  class DiskChopper;
+  class ChopperUnit;
+  class ChopperHousing;
+  class VacuumPipe;
+  class HoleShape;
+}
+
+namespace beamlineSystem
+{
+  class GuideLine;
+}
+
 namespace pipeSystem
 {
   class pipeTube;
@@ -42,26 +57,42 @@ namespace pipeSystem
     \brief General pipe building system
   */
 
-class makePipe
-{
- private:
+  class makePipe
+  {
+  private:
 
 
-  std::shared_ptr<pipeSystem::pipeTube> ATube;   ///< pre-tube
-  std::shared_ptr<pipeSystem::pipeTube> BTube;   ///< Main tube
-  std::shared_ptr<pipeSystem::pipeTube> CTube;   ///< collector tube
+    std::shared_ptr<pipeSystem::pipeTube> ATube;   ///< pre-tube
+    std::shared_ptr<pipeSystem::pipeTube> BTube;   ///< Main tube
+    std::shared_ptr<pipeSystem::pipeTube> CTube;   ///< collector tube
+    
+    std::shared_ptr<constructSystem::ChopperUnit> ChopperA;
+    std::shared_ptr<constructSystem::DiskChopper> BandADisk;
+    
+    std::shared_ptr<constructSystem::VacuumPipe> PipeA;
+    std::shared_ptr<beamlineSystem::GuideLine> GuideA;
 
+    std::shared_ptr<constructSystem::VacuumPipe> PipeB;
+    std::shared_ptr<beamlineSystem::GuideLine> GuideB;
 
- public:
-  
-  makePipe();
-  makePipe(const makePipe&);
-  makePipe& operator=(const makePipe&);
-  ~makePipe();
-  
-  void build(Simulation*,const mainSystem::inputParam&);
+    std::shared_ptr<constructSystem::VacuumPipe> PipeC;
+    std::shared_ptr<beamlineSystem::GuideLine> GuideC;
 
-};
+    std::shared_ptr<constructSystem::ChopperPit> PitA;
+    std::shared_ptr<constructSystem::HoleShape> CutFrontA;
+    std::shared_ptr<constructSystem::HoleShape> CutBackA;
+    
+    
+  public:
+    
+    makePipe();
+    makePipe(const makePipe&);
+    makePipe& operator=(const makePipe&);
+    ~makePipe();
+    
+    void build(Simulation*,const mainSystem::inputParam&);
+    
+  };
 
 }
 
