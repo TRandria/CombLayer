@@ -48,12 +48,18 @@ class TubeDetBox : public attachSystem::ContainedComp,
   const int detIndex;           ///< Index of surface offset
   int cellIndex;                ///< Cell index
 
+  int active;                   ///< Build / no build flag
   double centRadius;            ///< Radius of from centre
   double tubeRadius;            ///< Radius of detector
   double wallThick;             ///< Outer wall thickness
   double height;                ///< Height/depth
-  int wallMat;                  ///< Wall material
+
+  double gap;              ///< Gap thickness
+  double outerThick;        ///< Wall thickness
+
   int detMat;                   ///< Detector material
+  int wallMat;                  ///< Wall material
+  int outerMat;                 ///< Outer material
 
   size_t nDet;                  ///< Number of detectors
   std::vector<Geometry::Vec3D> DPoints;  ///< Centre points

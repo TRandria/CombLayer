@@ -3,7 +3,7 @@
  
  * File:   monte/DBMaterial.cxx
  *
- * Copyright (c) 2004-2016 by Stuart Ansell
+ * Copyright (c) 2004-2017 by Stuart Ansell
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -533,8 +533,8 @@ DBMaterial::initMaterial()
 		   "94239.70c 2.874713E-05 94240.70c 2.248326E-06 "
 		   "94241.70c 3.508395E-07 94242.70c 1.371115E-08 ","",MLib);
   setMaterial(MObj);
-    // #69 Hafnium
 
+  // #69 Hafnium
   MObj.setMaterial(69,"Hafnium",
 		   "72174.70c 7.18534e-05 72176.70c 0.00236218 "
 		   "72177.70c 0.00835296 72178.70c 0.012251 "
@@ -1186,7 +1186,12 @@ DBMaterial::initMaterial()
   // He3 for detectors [10bar]
   MObj.setMaterial(133,"He3_10Bar","2003.70c 2.45e-4","",MLib);
   setMaterial(MObj);
-  
+
+  // Material #134: liquid N2
+  // Total density 0.807g/cc 
+  MObj.setMaterial(134,"LiqN2","7014.70c 0.034718","",MLib);
+  setMaterial(MObj);
+
   return;
 }
 
@@ -1740,6 +1745,31 @@ DBMaterial::writeFLUKA(std::ostream& OX) const
 	  
 	  if (mp->first)
 	    mp->second.writeFLUKA(OX);
+	}
+    }
+  return;
+}
+
+void
+DBMaterial::writePOVRay(std::ostream& OX) const
+  /*!
+    Write materials out to the POV-Ray system
+    \param OX :: Output stream
+  */
+{
+  ELog::RegMethod RegA("DBMaterial","writePOVRay");
+
+  for(const int sActive : active)
+    {
+      if (sActive)
+	{
+	  MTYPE::const_iterator mp=MStore.find(sActive);
+	  if (mp==MStore.end())
+	    throw ColErr::InContainerError<int>
+	      (sActive,"MStore find(active item)");
+	  
+	  if (mp->first)
+	    mp->second.writePOVRay(OX);
 	}
     }
   return;
