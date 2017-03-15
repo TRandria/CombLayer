@@ -52,9 +52,10 @@ namespace essSystem
 {
   class CompBInsert;
   class GuideItem;
+  class SkadiHut;
   
   /*!
-    \class TREX
+    \class SKADI
     \version 1.0
     \author T. Randriamalala
     \date October 2016
@@ -98,35 +99,57 @@ class SKADI : public attachSystem::CopiedComp
 
   /// Structure Up to the First Chopper I  Pit
 
-  std::shared_ptr<constructSystem::ChopperPit> PitA;
-  std::shared_ptr<constructSystem::HoleShape> PitACutBack;
-
-  std::shared_ptr<constructSystem::LineShield> ShieldAB;
+  std::shared_ptr<constructSystem::LineShield> ShieldA;
+  std::shared_ptr<constructSystem::LineShield> ShieldA1;
   std::shared_ptr<constructSystem::VacuumPipe> VPipeOutA;
   std::shared_ptr<beamlineSystem::GuideLine> GuideOutA;
+
+  std::shared_ptr<constructSystem::ChopperPit> PitA;
+  std::shared_ptr<constructSystem::HoleShape> PitACutFront;
+  std::shared_ptr<constructSystem::HoleShape> PitACutBack;
+  std::shared_ptr<constructSystem::ChopperUnit> ChopperA;
+  std::shared_ptr<constructSystem::DiskChopper> DiskA;
+
+  /// Structure Up to the First Chopper II  Pit
+
+  std::shared_ptr<constructSystem::LineShield> ShieldB;
+  std::shared_ptr<constructSystem::LineShield> ShieldB1;
   std::shared_ptr<constructSystem::VacuumPipe> VPipeOutB;
   std::shared_ptr<beamlineSystem::GuideLine> GuideOutB;
 
-  /// Structure Up to the First Chopper II  Pit
+  std::shared_ptr<constructSystem::ChopperPit> PitB;
+  std::shared_ptr<constructSystem::HoleShape> PitBCutFront;
+  std::shared_ptr<constructSystem::HoleShape> PitBCutBack;
+  std::shared_ptr<constructSystem::ChopperUnit> ChopperB;
+  std::shared_ptr<constructSystem::DiskChopper> DiskB;
+
+  /// Structure Up to the First Chopper III  Pit
+
+  std::shared_ptr<constructSystem::LineShield> ShieldC;
+  std::shared_ptr<constructSystem::LineShield> ShieldC1;
+  std::shared_ptr<constructSystem::VacuumPipe> VPipeOutC;
+  std::shared_ptr<beamlineSystem::GuideLine> GuideOutC;
 
   std::shared_ptr<constructSystem::ChopperPit> PitC;
   std::shared_ptr<constructSystem::HoleShape> PitCCutFront;
   std::shared_ptr<constructSystem::HoleShape> PitCCutBack;
-
-  std::shared_ptr<constructSystem::LineShield> ShieldC;
-  std::shared_ptr<constructSystem::VacuumPipe> VPipeOutC;
-  std::shared_ptr<beamlineSystem::GuideLine> GuideOutC;
-
-  /// Structure Up to the First Chopper III  Pit
-
-  std::shared_ptr<constructSystem::ChopperPit> PitD;
-  std::shared_ptr<constructSystem::HoleShape> PitDCutFront;
-  std::shared_ptr<constructSystem::HoleShape> PitDCutBack;
+  std::shared_ptr<constructSystem::ChopperUnit> ChopperC1;
+  std::shared_ptr<constructSystem::DiskChopper> DiskC1;
+  std::shared_ptr<constructSystem::ChopperUnit> ChopperC2;
+  std::shared_ptr<constructSystem::DiskChopper> DiskC2;
 
   std::shared_ptr<constructSystem::LineShield> ShieldD;
+  std::shared_ptr<constructSystem::LineShield> ShieldD1;
   std::shared_ptr<constructSystem::VacuumPipe> VPipeOutD;
   std::shared_ptr<beamlineSystem::GuideLine> GuideOutD;
   
+  std::shared_ptr<beamlineSystem::GuideLine> GuideOutE;
+  
+  std::shared_ptr<SkadiHut> Cave;
+  std::shared_ptr<constructSystem::HoleShape> CaveFrontCut;
+
+  std::shared_ptr<constructSystem::LineShield> ShieldF; 
+
   void setBeamAxis(const FuncDataBase&,const GuideItem&,const bool);
     
  public:

@@ -3,7 +3,7 @@
  
  * File:   ESSBeam/trex/TREX.cxx
  *
- * Copyright (c) 2004-2016 by Tsitohaina Randriamalala/Stuart Ansell
+ * Copyright (c) 2004-2017 by Tsitohaina Randriamalala/Stuart Ansell
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -311,6 +311,8 @@ TREX::setBeamAxis(const FuncDataBase& Control,
 
   if (reverseZ)
     trexAxis->reverseZ();
+
+  return;
 }
 
 
@@ -470,7 +472,9 @@ TREX::build(Simulation& System,
   VPipeOutCs[0]->createAll(System,*ShieldCs[0],-1);
   BendOutCs[0]->addInsertCell(VPipeOutCs[0]->getCells("Void"));
   BendOutCs[0]->createAll(System,*VPipeOutCs[0],0,*VPipeOutCs[0],0);
-
+  
+  if (stopPoint==5) return; // Up to Chopper Pit
+  
   PitBCutFront->addInsertCell(PitB->getCells("MidLayerFront"));
   PitBCutFront->setFaces(PitB->getKey("Mid").getSignedFullRule(-1),
 			 PitB->getKey("Inner").getSignedFullRule(1));
@@ -507,8 +511,9 @@ TREX::build(Simulation& System,
 
       LinkPtr= &BendOutCs[i]->getKey("Guide0");
     }
+  
+  if (stopPoint==6) return; // Up to Chopper Pit      
 
-      
   PitCCutFront->addInsertCell(PitC->getCells("MidLayerFront"));
   PitCCutFront->setFaces(PitC->getKey("Mid").getSignedFullRule(-1),
 			 PitC->getKey("Inner").getSignedFullRule(1));
@@ -532,7 +537,7 @@ TREX::build(Simulation& System,
 			 PitC->getKey("Mid").getSignedFullRule(-2));
   PitCCutBack->createAll(System,BendOutD->getKey("Guide0"),1);
   
-  if (stopPoint==5) return; // END of LOS
+  if (stopPoint==7) return; // END of LOS
 
   /// End  Curve
   

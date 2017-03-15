@@ -92,6 +92,8 @@
 #include "PipeCollimator.h"
 #include "Aperture.h"
 
+#include "SkadiHut.h"
+
 #include "SKADI.h"
 
 namespace essSystem
@@ -121,34 +123,53 @@ SKADI::SKADI(const std::string& keyName):
   
   CInsert(new CompBInsert(newName+"CInsert")),
   FocusShutter(new beamlineSystem::GuideLine(newName+"FShutter")),
-  
-  PitA(new constructSystem::ChopperPit(newName+"PitA")),
-  PitACutBack(new constructSystem::HoleShape(newName+"PitACutBack")),
 
-  ShieldAB(new constructSystem::LineShield(newName+"ShieldAB")),
+  ShieldA(new constructSystem::LineShield(newName+"ShieldA")),
+  ShieldA1(new constructSystem::LineShield(newName+"ShieldA1")),
   VPipeOutA(new constructSystem::VacuumPipe(newName+"PipeOutA")),
-  GuideOutA(new beamlineSystem::GuideLine(newName+"GOutA")),
+  GuideOutA(new beamlineSystem::GuideLine(newName+"GOutA")),  
+  PitA(new constructSystem::ChopperPit(newName+"PitA")),
+  PitACutFront(new
+  constructSystem::HoleShape(newName+"PitACutFront")),
+  PitACutBack(new constructSystem::HoleShape(newName+"PitACutBack")),
+  ChopperA(new constructSystem::ChopperUnit(newName+"ChopperA")),
+  DiskA(new constructSystem::DiskChopper(newName+"ADisk")),
+
+  ShieldB(new constructSystem::LineShield(newName+"ShieldB")),
+  ShieldB1(new constructSystem::LineShield(newName+"ShieldB1")),
   VPipeOutB(new constructSystem::VacuumPipe(newName+"PipeOutB")),
   GuideOutB(new beamlineSystem::GuideLine(newName+"GOutB")),
-  
+  PitB(new constructSystem::ChopperPit(newName+"PitB")),
+  PitBCutFront(new
+  constructSystem::HoleShape(newName+"PitBCutFront")),
+  PitBCutBack(new constructSystem::HoleShape(newName+"PitBCutBack")),
+  ChopperB(new constructSystem::ChopperUnit(newName+"ChopperB")),
+  DiskB(new constructSystem::DiskChopper(newName+"BDisk")),
+
+  ShieldC(new constructSystem::LineShield(newName+"ShieldC")),
+  ShieldC1(new constructSystem::LineShield(newName+"ShieldC1")),
+  VPipeOutC(new constructSystem::VacuumPipe(newName+"PipeOutC")),
+  GuideOutC(new beamlineSystem::GuideLine(newName+"GOutC")),
   PitC(new constructSystem::ChopperPit(newName+"PitC")),
   PitCCutFront(new
   constructSystem::HoleShape(newName+"PitCCutFront")),
   PitCCutBack(new constructSystem::HoleShape(newName+"PitCCutBack")),
-
-  ShieldC(new constructSystem::LineShield(newName+"ShieldC")),
-  VPipeOutC(new constructSystem::VacuumPipe(newName+"PipeOutC")),
-  GuideOutC(new beamlineSystem::GuideLine(newName+"GOutC")),
-
-  PitD(new constructSystem::ChopperPit(newName+"PitD")),
-  PitDCutFront(new
-  constructSystem::HoleShape(newName+"PitDCutFront")),
-  PitDCutBack(new constructSystem::HoleShape(newName+"PitDCutBack")),
+  ChopperC1(new constructSystem::ChopperUnit(newName+"ChopperC1")),
+  DiskC1(new constructSystem::DiskChopper(newName+"C1Disk")),
+  ChopperC2(new constructSystem::ChopperUnit(newName+"ChopperC2")),
+  DiskC2(new constructSystem::DiskChopper(newName+"C2Disk")),
 
   ShieldD(new constructSystem::LineShield(newName+"ShieldD")),
+  ShieldD1(new constructSystem::LineShield(newName+"ShieldD1")),
   VPipeOutD(new constructSystem::VacuumPipe(newName+"PipeOutD")),
-  GuideOutD(new beamlineSystem::GuideLine(newName+"GOutD"))
+  GuideOutD(new beamlineSystem::GuideLine(newName+"GOutD")),
+
+  GuideOutE(new beamlineSystem::GuideLine(newName+"GOutE")),
+  Cave(new SkadiHut(newName+"Cave")),
+  CaveFrontCut(new constructSystem::HoleShape(newName+"CaveFrontCut")),
   
+  ShieldF(new constructSystem::LineShield(newName+"ShieldF"))
+ 
 {
   ELog::RegMethod RegA("SKADI","SKADI");
   
@@ -177,31 +198,49 @@ SKADI::SKADI(const std::string& keyName):
   OR.addObject(CInsert);
   OR.addObject(FocusShutter);
 
-  OR.addObject(PitA);
-  OR.addObject(PitACutBack);
-
-  OR.addObject(ShieldAB);
+  OR.addObject(ShieldA);
+  OR.addObject(ShieldA1);
   OR.addObject(VPipeOutA);
   OR.addObject(GuideOutA);
+  OR.addObject(PitA);
+  OR.addObject(PitACutBack);
+  OR.addObject(PitACutFront);
+  OR.addObject(ChopperA);
+  OR.addObject(DiskA);
+
+  OR.addObject(ShieldB);
+  OR.addObject(ShieldB1);
   OR.addObject(VPipeOutB);
   OR.addObject(GuideOutB);
+  OR.addObject(PitB);
+  OR.addObject(PitBCutFront);
+  OR.addObject(PitBCutBack);
+  OR.addObject(ChopperB);
+  OR.addObject(DiskB);
 
+  OR.addObject(ShieldC);
+  OR.addObject(ShieldC1);
+  OR.addObject(VPipeOutC);
+  OR.addObject(GuideOutC);
   OR.addObject(PitC);
   OR.addObject(PitCCutFront);
   OR.addObject(PitCCutBack);
-
-  OR.addObject(ShieldC);
-  OR.addObject(VPipeOutC);
-  OR.addObject(GuideOutC);
-
-  OR.addObject(PitD);
-  OR.addObject(PitDCutFront);
-  OR.addObject(PitDCutBack);
+  OR.addObject(ChopperC1);
+  OR.addObject(DiskC1);
+  OR.addObject(ChopperC2);
+  OR.addObject(DiskC2);
 
   OR.addObject(ShieldD);
+  OR.addObject(ShieldD1);
   OR.addObject(VPipeOutD);
   OR.addObject(GuideOutD);  
 
+  OR.addObject(GuideOutE);
+
+  OR.addObject(Cave);
+  OR.addObject(CaveFrontCut); 
+
+  OR.addObject(ShieldF);
 }
 
 SKADI::~SKADI()
@@ -255,6 +294,8 @@ SKADI::build(Simulation& System,
   ELog::RegMethod RegA("SKADI", "build");
   
   ELog::EM<<"\n Building SKADI on:"<<GItem.getKeyName()<<ELog::endDiag;
+
+  ELog::EM<<"\n First Cell w/ SKADI : "<<GItem.getCell("Void")<<ELog::endDiag;
   
   const FuncDataBase& Control=System.getDataBase();
   CopiedComp::process(System.getDataBase());
@@ -305,7 +346,7 @@ SKADI::build(Simulation& System,
 
   CInsert->addInsertCell(bunkerObj.getCell("MainVoid"));
   CInsert->addInsertCell(voidCell);
-  CInsert->setBack(bunkerObj,-2);
+  //  CInsert->setBack(bunkerObj,-2);
   CInsert->createAll(System,*BInsert,2,bunkerObj);
   attachSystem::addToInsertSurfCtrl(System,bunkerObj,"frontWall",*CInsert);
   FocusShutter->addInsertCell(CInsert->getCells("Item"));
@@ -314,88 +355,175 @@ SKADI::build(Simulation& System,
   if (stopPoint==3) return;
 
   PitA->addInsertCell(voidCell); //Chopper I pit
-  PitA->addFrontWall(bunkerObj,2);
   PitA->createAll(System,FocusShutter->getKey("Guide0"),2);
+ 
+  ShieldA->addInsertCell(voidCell);
+  //ShieldA->setFront(*CInsert,2);
+  ShieldA->addInsertCell(PitA->getCells("Outer"));
+  ShieldA->addInsertCell(PitA->getCells("MidLayer"));
+  ShieldA->setBack(PitA->getKey("Mid"),1);  
+  ShieldA->createAll(System,FocusShutter->getKey("Guide0"),2);
+  
+  ShieldA1->addInsertCell(ShieldA->getCell("Void"));
+  // ShieldA1->setFront(*CInsert,2);
+  ShieldA1->addInsertCell(PitA->getCells("Outer"));
+  ShieldA1->addInsertCell(PitA->getCells("MidLayer"));
+  ShieldA1->setBack(PitA->getKey("Mid"),1);  
+  ShieldA1->createAll(System,*ShieldA,-1);
 
+  VPipeOutA->addInsertCell(ShieldA1->getCell("Void"));
+  VPipeOutA->createAll(System,*ShieldA1,-1);
+  GuideOutA->addInsertCell(VPipeOutA->getCells("Void"));
+  GuideOutA->createAll(System,*VPipeOutA,0,*VPipeOutA,0);
+
+  PitACutFront->addInsertCell(PitA->getCells("MidLayerFront"));
+  PitACutFront->setFaces(PitA->getKey("Mid").getSignedFullRule(-1),
+			 PitA->getKey("Inner").getSignedFullRule(1));
+  PitACutFront->createAll(System,PitA->getKey("Inner"),-1);
   PitACutBack->addInsertCell(PitA->getCells("MidLayerBack"));
   PitACutBack->addInsertCell(PitA->getCells("Collet"));
   PitACutBack->setFaces(PitA->getKey("Mid").getSignedFullRule(-2),
 			 PitA->getKey("Inner").getSignedFullRule(2));
   //  PitACutBack->createAll(System,GuideOutA->getKey("Guide0"),1);
   PitACutBack->createAll(System,PitA->getKey("Inner"),2);
+ 
+  ChopperA->addInsertCell(PitA->getCell("Void"));
+  //  ChopperA->createAll(System,GuideOutA->getKey("Guide0"),2);
+  ChopperA->createAll(System,*PitA,0);
+  DiskA->addInsertCell(ChopperA->getCell("Void"));
+  DiskA->setCentreFlag(3);
+  DiskA->setOffsetFlag(1);
+  DiskA->createAll(System,ChopperA->getKey("Beam"),0);
+
   
-  PitC->addInsertCell(voidCell); //Chopper II pit
-  PitC->createAll(System,PitA->getKey("Outer"),2);
+  PitB->addInsertCell(voidCell); //Chopper II pit
+  PitB->createAll(System,PitA->getKey("Outer"),2);
+  PitBCutFront->addInsertCell(PitB->getCells("MidLayerFront"));
+  PitBCutFront->setFaces(PitB->getKey("Mid").getSignedFullRule(-1),
+			 PitB->getKey("Inner").getSignedFullRule(1));
+  PitBCutFront->createAll(System,PitB->getKey("Inner"),-1);
+  PitBCutBack->addInsertCell(PitB->getCells("MidLayerBack"));
+  PitBCutBack->addInsertCell(PitB->getCells("Collet"));
+  PitBCutBack->setFaces(PitB->getKey("Mid").getSignedFullRule(-2),
+			 PitB->getKey("Inner").getSignedFullRule(2));
+  PitBCutBack->createAll(System,PitB->getKey("Inner"),2);
+
+  ShieldB->addInsertCell(voidCell);
+  ShieldB->addInsertCell(PitA->getCells("Outer"));
+  ShieldB->addInsertCell(PitA->getCells("MidLayer"));
+  ShieldB->setFront(PitA->getKey("Mid"),2);
+  ShieldB->addInsertCell(PitB->getCells("Outer"));
+  ShieldB->addInsertCell(PitB->getCells("MidLayer"));
+  ShieldB->setBack(PitB->getKey("Mid"),1);  
+  ShieldB->createAll(System,*VPipeOutA,2);
+
+  ShieldB1->addInsertCell(ShieldB->getCell("Void"));
+  ShieldB1->addInsertCell(PitA->getCells("Outer"));
+  ShieldB1->addInsertCell(PitA->getCells("MidLayer"));
+  ShieldB1->setFront(PitA->getKey("Mid"),2);
+  ShieldB1->addInsertCell(PitB->getCells("Outer"));
+  ShieldB1->addInsertCell(PitB->getCells("MidLayer"));
+  ShieldB1->setBack(PitB->getKey("Mid"),1);  
+  ShieldB1->createAll(System,*ShieldB,-1);
+
+  VPipeOutB->addInsertCell(ShieldB1->getCell("Void"));
+  VPipeOutB->createAll(System,*ShieldB1,-1);
+  GuideOutB->addInsertCell(VPipeOutB->getCells("Void"));
+  GuideOutB->createAll(System,*VPipeOutB,0,*VPipeOutB,0);
+  
+  ChopperB->addInsertCell(PitB->getCell("Void"));
+  ChopperB->createAll(System,*PitB,0);
+  DiskB->addInsertCell(ChopperB->getCell("Void"));
+  DiskB->setCentreFlag(3);
+  DiskB->setOffsetFlag(1);
+  DiskB->createAll(System,ChopperB->getKey("Beam"),0);
+ 
+  PitC->addInsertCell(voidCell); //Chopper III & IV pit
+  PitC->createAll(System,PitB->getKey("Outer"),2);
   PitCCutFront->addInsertCell(PitC->getCells("MidLayerFront"));
   PitCCutFront->setFaces(PitC->getKey("Mid").getSignedFullRule(-1),
 			 PitC->getKey("Inner").getSignedFullRule(1));
   PitCCutFront->createAll(System,PitC->getKey("Inner"),-1);
-
   PitCCutBack->addInsertCell(PitC->getCells("MidLayerBack"));
   PitCCutBack->addInsertCell(PitC->getCells("Collet"));
   PitCCutBack->setFaces(PitC->getKey("Mid").getSignedFullRule(-2),
 			 PitC->getKey("Inner").getSignedFullRule(2));
   PitCCutBack->createAll(System,PitC->getKey("Inner"),2);
   
-  PitD->addInsertCell(voidCell); //Chopper III & IV pit
-  PitD->createAll(System,PitC->getKey("Outer"),2);
-  PitDCutFront->addInsertCell(PitD->getCells("MidLayerFront"));
-  PitDCutFront->setFaces(PitD->getKey("Mid").getSignedFullRule(-1),
-			 PitD->getKey("Inner").getSignedFullRule(1));
-  PitDCutFront->createAll(System,PitD->getKey("Inner"),-1);
-
-  PitDCutBack->addInsertCell(PitD->getCells("MidLayerBack"));
-  PitDCutBack->addInsertCell(PitD->getCells("Collet"));
-  PitDCutBack->setFaces(PitD->getKey("Mid").getSignedFullRule(-2),
-			 PitD->getKey("Inner").getSignedFullRule(2));
-  PitDCutBack->createAll(System,PitD->getKey("Inner"),2);
-  
-
-  ShieldAB->addInsertCell(voidCell);
-  ShieldAB->addInsertCell(PitA->getCells("Outer"));
-  ShieldAB->addInsertCell(PitA->getCells("MidLayer"));
-  ShieldAB->setFront(PitA->getKey("Mid"),2);
-  ShieldAB->addInsertCell(PitC->getCells("Outer"));
-  ShieldAB->addInsertCell(PitC->getCells("MidLayer"));
-  ShieldAB->setBack(PitC->getKey("Mid"),1);  
-  ShieldAB->createAll(System,FocusShutter->getKey("Guide0"),2);
-
-  VPipeOutA->addInsertCell(ShieldAB->getCell("Void"));
-  VPipeOutA->createAll(System,*ShieldAB,-1);
-  GuideOutA->addInsertCell(VPipeOutA->getCells("Void"));
-  GuideOutA->createAll(System,*VPipeOutA,0,*VPipeOutA,0);
-    
-  VPipeOutB->addInsertCell(ShieldAB->getCell("Void"));
-  //  VPipeOutB->setBack(PitC->getKey("Mid"),1);
-  VPipeOutB->createAll(System,*VPipeOutA,2);
-  GuideOutB->addInsertCell(VPipeOutB->getCells("Void"));
-  GuideOutB->createAll(System,*VPipeOutB,0,*VPipeOutB,0);
-  
   ShieldC->addInsertCell(voidCell);
+  ShieldC->addInsertCell(PitB->getCells("Outer"));
+  ShieldC->addInsertCell(PitB->getCells("MidLayer"));
+  ShieldC->setFront(PitB->getKey("Mid"),2);
   ShieldC->addInsertCell(PitC->getCells("Outer"));
   ShieldC->addInsertCell(PitC->getCells("MidLayer"));
-  ShieldC->setFront(PitC->getKey("Mid"),2);
-  ShieldC->addInsertCell(PitD->getCells("Outer"));
-  ShieldC->addInsertCell(PitD->getCells("MidLayer"));
-  ShieldC->setBack(PitD->getKey("Mid"),1);  
-  ShieldC->createAll(System,PitC->getKey("Mid"),2);
+  ShieldC->setBack(PitC->getKey("Mid"),1);  
+  ShieldC->createAll(System,*VPipeOutB,2);
 
-  VPipeOutC->addInsertCell(ShieldC->getCell("Void"));
-  VPipeOutC->createAll(System,*ShieldC,-1);
+  ShieldC1->addInsertCell(ShieldC->getCell("Void"));
+  ShieldC1->addInsertCell(PitB->getCells("Outer"));
+  ShieldC1->addInsertCell(PitB->getCells("MidLayer"));
+  ShieldC1->setFront(PitB->getKey("Mid"),2);
+  ShieldC1->addInsertCell(PitC->getCells("Outer"));
+  ShieldC1->addInsertCell(PitC->getCells("MidLayer"));
+  ShieldC1->setBack(PitC->getKey("Mid"),1);  
+  ShieldC1->createAll(System,*ShieldC,-1);
+
+  VPipeOutC->addInsertCell(ShieldC1->getCell("Void"));
+  VPipeOutC->createAll(System,*ShieldC1,-1);
   GuideOutC->addInsertCell(VPipeOutC->getCells("Void"));
   GuideOutC->createAll(System,*VPipeOutC,0,*VPipeOutC,0);
 
-  ShieldD->addInsertCell(voidCell);
-  ShieldD->addInsertCell(PitD->getCells("Outer"));
-  ShieldD->addInsertCell(PitD->getCells("MidLayer"));
-  ShieldD->setFront(PitD->getKey("Mid"),2);
-  ShieldD->createAll(System,PitD->getKey("Mid"),2);
+  ChopperC1->addInsertCell(PitC->getCell("Void"));
+  ChopperC1->createAll(System,*PitC,0);
+  DiskC1->addInsertCell(ChopperC1->getCell("Void"));
+  DiskC1->setCentreFlag(3);
+  DiskC1->setOffsetFlag(1);
+  DiskC1->createAll(System,ChopperC1->getKey("Beam"),0);
 
-  VPipeOutD->addInsertCell(ShieldD->getCell("Void"));
-  VPipeOutD->createAll(System,*ShieldD,-1);
+  
+  ChopperC2->addInsertCell(PitC->getCell("Void"));
+  ChopperC2->createAll(System,*PitC,0);
+  DiskC2->addInsertCell(ChopperC2->getCell("Void"));
+  DiskC2->setCentreFlag(3);
+  DiskC2->setOffsetFlag(1);
+  DiskC2->createAll(System,ChopperC2->getKey("Beam"),0);
+
+  ShieldD->addInsertCell(voidCell);
+  ShieldD->addInsertCell(PitC->getCells("Outer"));
+  ShieldD->addInsertCell(PitC->getCells("MidLayer"));
+  ShieldD->setFront(PitC->getKey("Mid"),2);
+  ShieldD->createAll(System,*VPipeOutC,2);
+
+  ShieldD1->addInsertCell(ShieldD->getCell("Void"));
+  ShieldD1->addInsertCell(PitC->getCells("Outer"));
+  ShieldD1->addInsertCell(PitC->getCells("MidLayer"));
+  ShieldD1->setFront(PitC->getKey("Mid"),2);
+  ShieldD1->setBack(*ShieldD,-2);
+  ShieldD1->createAll(System,*ShieldD,-1);
+
+  VPipeOutD->addInsertCell(ShieldD1->getCell("Void"));
+  VPipeOutD->setBack(*ShieldD,-2);
+  VPipeOutD->createAll(System,*ShieldD1,-1);
   GuideOutD->addInsertCell(VPipeOutD->getCells("Void"));
   GuideOutD->createAll(System,*VPipeOutD,0,*VPipeOutD,0);
+
+  ShieldF->addInsertCell(voidCell);  
+  ShieldF->createAll(System,*ShieldD,2);
+
+  Cave->addInsertCell(voidCell);
+  Cave->addInsertCell(ShieldF->getCell("Void"));
+  Cave->createAll(System,*ShieldD,2);
   
+  CaveFrontCut->addInsertCell(Cave->getCells("FrontWall"));
+  CaveFrontCut->setFaces(Cave->getKey("Outer").getSignedFullRule(-1),
+			 Cave->getKey("Inner").getSignedFullRule(1));
+  CaveFrontCut->createAll(System,*ShieldD,2);
+  
+  GuideOutE->addInsertCell(voidCell);
+  GuideOutE->addInsertCell(CaveFrontCut->getCells("Void"));
+  GuideOutE->addInsertCell(Cave->getCell("Void"));
+  GuideOutE->createAll(System,*ShieldD,2,*ShieldD,2);
+
 
   return;  
 }

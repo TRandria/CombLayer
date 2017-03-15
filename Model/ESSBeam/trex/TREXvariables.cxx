@@ -74,13 +74,6 @@ void TREXvariables(FuncDataBase& Control)
   PipeGen.setWindow(-2.0,0.5);
   PipeGen.setFlange(-4.0,1.0);
 
-  SGen.addWall(1,20.0,"CastIron");
-  SGen.addRoof(1,20.0,"CastIron");
-  SGen.addFloor(1,20.0,"CastIron");
-  SGen.addFloorMat(5,"Concrete");
-  SGen.addRoofMat(5,"Concrete");
-  SGen.addWallMat(5,"Concrete");
-
   // extent of beamline
   Control.addVariable("trexStopPoint",0);
   Control.addVariable("trexAxisXYAngle",0.0);   // rotation
@@ -126,7 +119,7 @@ void TREXvariables(FuncDataBase& Control)
  
   // BEAM INSERT
   Control.addVariable("trexBInsertANBox",1);
-  Control.addVariable("trexBInsertAHeight",25.7);
+  Control.addVariable("trexBInsertAHeight",27.0);
   Control.addVariable("trexBInsertAWidth",25.7);
   Control.addVariable("trexBInsertALength",204.4);
   Control.addVariable("trexBInsertAMat","Void");
@@ -148,7 +141,7 @@ void TREXvariables(FuncDataBase& Control)
   Control.addVariable("trexFWallALayerMat4","Stainless304");
 
   Control.addVariable("trexBInsertBNBox",1);
-  Control.addVariable("trexBInsertBHeight",42.4);
+  Control.addVariable("trexBInsertBHeight",44.0);
   Control.addVariable("trexBInsertBWidth",42.4);
   Control.addVariable("trexBInsertBLength",195.6);
   Control.addVariable("trexBInsertBMat","Void");
@@ -177,6 +170,14 @@ void TREXvariables(FuncDataBase& Control)
   Control.addVariable("trexPitACutBackShape","Square");
   Control.addVariable("trexPitACutBackRadius",5.0);
   
+
+  SGen.addWall(1,20.0,"CastIron");
+  SGen.addRoof(1,20.0,"CastIron");
+  SGen.addFloor(1,20.0,"CastIron");
+  SGen.addFloorMat(5,"Concrete");
+  SGen.addRoofMat(5,"Concrete");
+  SGen.addWallMat(5,"Concrete");
+
   SGen.generateShield(Control,"trexShieldA",366.5,40.0,40.0,40.0,4,8);
   PipeGen.generatePipe(Control,"trexPipeOutA",1.5,331.5);
   Control.addVariable("trexPipeOutAXYAngle",-0.1);
