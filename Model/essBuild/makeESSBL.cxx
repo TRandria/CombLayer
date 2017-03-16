@@ -3,7 +3,7 @@
  
  * File:   essBuild/makeESSBL.cxx
  *
- * Copyright (c) 2004-2016 by Stuart Ansell
+ * Copyright (c) 2004-2017 by Stuart Ansell
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -89,6 +89,7 @@
 #include "MAGIC.h"
 #include "MIRACLES.h"
 #include "NMX.h"
+#include "NNBAR.h"
 #include "ODIN.h"
 #include "TREX.h"
 #include "VESPA.h"
@@ -243,6 +244,12 @@ makeESSBL::build(Simulation& System,
       // NMX beamline
       MIRACLES miraclesBL("miracles");
       miraclesBL.build(System,*mainGIPtr,bunkerObj,voidCell);
+    }
+  else if (beamName=="NNBAR")
+    {
+      // DREAM beamline
+      NNBAR nnbarBL("nnbar");
+      nnbarBL.build(System,*mainGIPtr,bunkerObj,voidCell);
     }
   else if (beamName=="NMX")
     {

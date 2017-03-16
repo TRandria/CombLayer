@@ -39,7 +39,10 @@ namespace constructSystem
   class ChopperHousing;
   class VacuumPipe;
   class HoleShape;
+  class LineShield;
+
 }
+
 
 namespace beamlineSystem
 {
@@ -49,6 +52,7 @@ namespace beamlineSystem
 namespace pipeSystem
 {
   class pipeTube;
+  class AHut;
   /*!
     \class makePipe
     \version 1.0
@@ -82,6 +86,10 @@ namespace pipeSystem
     std::shared_ptr<constructSystem::HoleShape> CutFrontA;
     std::shared_ptr<constructSystem::HoleShape> CutBackA;
     
+    std::shared_ptr<constructSystem::LineShield> ShieldA;
+    std::shared_ptr<constructSystem::LineShield> ShieldB;
+    
+    std::shared_ptr<pipeSystem::AHut> Cave;
     
   public:
     
