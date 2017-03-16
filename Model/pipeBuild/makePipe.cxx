@@ -85,12 +85,15 @@
 #include "ChopperUnit.h"
 #include "ChopperHousing.h"
 #include "HoleShape.h"
+#include "LineShield.h"
 
 /// Pipe and GL
 #include "VacuumPipe.h"
 #include "GuideLine.h"
 
 #include "makePipe.h"
+
+#include "AHut.h"
 
 namespace pipeSystem
 {
@@ -109,7 +112,12 @@ makePipe::makePipe() :
   GuideC(new beamlineSystem::GuideLine("GuideC")),
   PitA(new constructSystem::ChopperPit("PitA")),
   CutFrontA(new constructSystem::HoleShape("CutFrontA")),
-  CutBackA(new constructSystem::HoleShape("CutBackA"))
+  CutBackA(new constructSystem::HoleShape("CutBackA")),
+  ShieldA(new constructSystem::LineShield("ShieldA")),
+  ShieldB(new constructSystem::LineShield("ShieldB")),
+  
+  Cave(new pipeSystem::AHut("Cave"))
+
   /*!
     Constructor
   */
@@ -138,7 +146,10 @@ makePipe::makePipe() :
   OR.addObject(CutFrontA);
   OR.addObject(CutBackA);
     
+  OR.addObject(ShieldA);
+  OR.addObject(ShieldB);
 
+  OR.addObject(Cave);
 }
 
 makePipe::makePipe(const makePipe& A) : 
@@ -187,37 +198,41 @@ makePipe::build(Simulation* SimPtr,
   ELog::RegMethod RControl("makePipe","build");
 
   int voidCell(74123);
-
+  /*
   ATube->addInsertCell(voidCell);
   ATube->createAll(*SimPtr,World::masterOrigin(),0);
 
   BTube->addInsertCell(voidCell);
   BTube->createAll(*SimPtr,*ATube,2);
-
+ 
   CTube->addInsertCell(voidCell);
   CTube->createAll(*SimPtr,*BTube,2);
+  */
+  /*
+  PitA->addInsertCell(voidCell);
+  //  PitA->createAll(*SimPtr,*CTube,2);
+  PitA->createAll(*SimPtr,World::masterOrigin(),0);
 
-  ChopperA->addInsertCell(voidCell);
-  ChopperA->createAll(*SimPtr,*CTube,2);
+  ChopperA->addInsertCell(PitA->getCell("Void"));
+  ChopperA->createAll(*SimPtr,*PitA,0);
 
   BandADisk->addInsertCell(ChopperA->getCell("Void"));
   BandADisk->setCentreFlag(3);
   BandADisk->setOffsetFlag(1);
   BandADisk->createAll(*SimPtr,ChopperA->getKey("Beam"),0);
+*/
+
+  /*  
+  PipeB->addInsertCell(voidCell);
+  PipeB->addInsertCell(PitA->getCells("Outer"));
+  PipeB->setBack(PitA->getKey("Mid"),1);
+  PipeB->createAll(*SimPtr,GuideA->getKey("Guide0"),2);
 
   PipeA->addInsertCell(voidCell);
   PipeA->createAll(*SimPtr,ChopperA->getKey("Beam"),2);
   GuideA->addInsertCell(PipeA->getCells("Void"));
   GuideA->createAll(*SimPtr,*PipeA,0,*PipeA,0);
-
-  PitA->addInsertCell(voidCell);
-  PitA->createAll(*SimPtr,*CTube,2);
-  
-  PipeB->addInsertCell(voidCell);
-  PipeB->addInsertCell(PitA->getCells("Outer"));
-  PipeB->setBack(PitA->getKey("Mid"),1);
-  PipeB->createAll(*SimPtr,GuideA->getKey("Guide0"),2);
-  
+ 
   GuideB->addInsertCell(PipeB->getCells("Void"));
   GuideB->createAll(*SimPtr,*PipeB,0,*PipeB,0);
 
@@ -231,6 +246,19 @@ makePipe::build(Simulation* SimPtr,
   CutBackA->setFaces(PitA->getKey("Mid").getSignedFullRule(-2),
 		      PitA->getKey("Inner").getSignedFullRule(2));
   CutBackA->createAll(*SimPtr,GuideB->getKey("Guide0"),2);
+  */
+
+  //  ShieldA->addInsertCell(voidCell);
+  //  ShieldA->createAll(*SimPtr,World::masterOrigin(),0);
+  //
+  //  ShieldB->addInsertCell(ShieldA->getCell("Void"));
+  //  ShieldB->createAll(*SimPtr,*ShieldA,-1);
+
+  Cave->addInsertCell(voidCell);
+  Cave->createAll(*SimPtr,World::masterOrigin(),0);
+
+
+  
   return;
 
 }

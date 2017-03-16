@@ -55,6 +55,7 @@
 #include "PipeGenerator.h"
 #include "FocusGenerator.h"
 #include "PitGenerator.h"
+#include "ShieldGenerator.h"
 
 namespace setVariable
 {
@@ -127,14 +128,19 @@ PipeVariables(FuncDataBase& Control)
   setVariable::FocusGenerator FGen;
   setVariable::PitGenerator pitGen;
 
-  CGen.setMainRadius(12.0);
-  CGen.setFrame(50.0,50.0);
-  CGen.generateChopper(Control,"ChopperA",10.0,14.0,7.0);
+  pitGen.setFeLayer(6.0);
+  pitGen.setConcLayer(10.0);
+  //  pitGen.generatePit(Control,"PitA",220.0,25.0,220.0,210.0,40.0);
+  pitGen.generatePit(Control,"PitA",0.0,25.0,160.0,210.0,40.0);
+  
+  CGen.setMainRadius(38.122);
+  CGen.setFrame(86.5,86.5);
+  CGen.generateChopper(Control,"ChopperA",6.0,12.0,6.55);
 
   BGen.setMaterials("Copper","B4C");
-  BGen.setThick({1.0});
-  BGen.addPhase({95,275},{35,25});
-  BGen.generateBlades(Control,"BandADisk",0.0,6.0,10.0);
+  BGen.setThick({0.2});
+  BGen.addPhase({95},{60});
+  BGen.generateBlades(Control,"BandADisk",0.0,25.0,35.0);
 
   PGen.setPipe(8.0,0.5);
   PGen.setWindow(-2.0,0.5);
@@ -148,16 +154,72 @@ PipeVariables(FuncDataBase& Control)
   PGen.generatePipe(Control,"PipeB",3.0,100.0);
   FGen.generateBender(Control,"GuideB",98.0,6.0,6.0,6.0,6.0,1550.0,270.0);
   
-  pitGen.setFeLayer(6.0);
-  pitGen.setConcLayer(10.0);
-  pitGen.generatePit(Control,"PitA",220.0,25.0,220.0,210.0,40.0);
 
   Control.addVariable("CutFrontAShape","Square");
   Control.addVariable("CutFrontARadius",5.0);
   
   Control.addVariable("CutBackAShape","Square");
   Control.addVariable("CutBackARadius",15.0);
-    
+
+  setVariable::ShieldGenerator SGen;
+  
+  SGen.addWall(1,30.0,"Concrete");
+  SGen.addRoof(1,20.0,"Concrete");
+  SGen.addFloor(1,0.0,"Concrete");
+  SGen.addWallMat(7,"CastIron");
+  SGen.addRoofMat(7,"CastIron");
+  
+  SGen.generateShield(Control,"ShieldA",100.0,100.0,90.0,20.0,4,8);
+  
+  setVariable::ShieldGenerator SGen1;
+  SGen1.addWall(1,29.5,"B4C");
+  SGen1.addRoof(1,19.5,"B4C");
+  SGen1.generateShield(Control,"ShieldB",100.0,30.0,20.0,0.0,4,2);
+
+
+  // HUT:
+  
+  Control.addVariable("CaveYStep",0.0);
+  Control.addVariable("CaveXStep",0.0);
+  Control.addVariable("CaveVoidFront",60.0);
+  Control.addVariable("CaveVoidHeight",300.0);
+  Control.addVariable("CaveVoidDepth",183.0);
+  Control.addVariable("CaveVoidWidth",500.0);
+  Control.addVariable("CaveVoidLength",600.0);
+
+  Control.addVariable("CaveL1Front",25.0);
+  Control.addVariable("CaveL1LeftWall",15.0);
+  Control.addVariable("CaveL1RightWall",15.0);
+  Control.addVariable("CaveL1Roof",15.0);
+  Control.addVariable("CaveL1Floor",15.0);
+  Control.addVariable("CaveL1Back",15.0);
+
+  Control.addVariable("CaveL2Front",35.0);
+  Control.addVariable("CaveL2LeftWall",35.0);
+  Control.addVariable("CaveL2RightWall",35.0);
+  Control.addVariable("CaveL2Roof",35.0);
+  Control.addVariable("CaveL2Floor",50.0);
+  Control.addVariable("CaveL2Back",35.0);
+
+  Control.addVariable("CaveL3Front",50.0);
+  Control.addVariable("CaveL3LeftWall",55.0);
+  Control.addVariable("CaveL3RightWall",55.0);
+  Control.addVariable("CaveL3Roof",55.0);
+  Control.addVariable("CaveL3Floor",60.0);
+  Control.addVariable("CaveL3Back",55.0);
+
+
+  Control.addVariable("CaveL1Mat","Stainless304");
+  Control.addVariable("CaveL2Mat","Concrete");
+  Control.addVariable("CaveL3Mat","B4C");
+
+  Control.addVariable("CaveL2PipeMat","CastIron");
+  Control.addVariable("CaveL1PipeMat","B4C");
+  
+  Control.addVariable("CaveL1PipeThick",7.5);
+  Control.addVariable("CaveL2PipeThick",7.5);
+  Control.addVariable("CaveRadius",100.0);
+  Control.addVariable("CaveLength",2000.0);
 
   return;
 }

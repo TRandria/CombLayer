@@ -7,7 +7,7 @@ use strict;
 
 ## EXECUTABLES
 my @masterprog=("fullBuild","ess","muBeam","pipe","photonMod2","t1Real",
-		"sns","reactor","t1MarkII","linac","essBeamline",
+		"sns","reactor","t1MarkII","essBeamline",
 		"filter","singleItem","testMain"); 
 
 
@@ -84,16 +84,16 @@ $gM->addDepUnit("ess",      ["essBuild","visit","src","simMC",
 			     "commonVar","simpleItem","skadi"
     	 	             ]);
 
-$gM->addDepUnit("linac",
-		["essLinac","visit","src","simMC",
-		 "beamline","physics","support",
-		 "input","instrument","source","monte",
-		 "funcBase","log","tally","construct",
-		 "crystal","transport","scatMat","md5",
-		 "endf","process","world","work",
-		 "monte","geometry","mersenne","src","xml","poly",
-		 "weights","global","attachComp","visit"
-		]);
+#$gM->addDepUnit("linac",
+#		["essLinac","visit","src","simMC",
+#		 "beamline","physics","support",
+#		 "input","instrument","source","monte",
+#		 "funcBase","log","tally","construct",
+#		 "crystal","transport","scatMat","md5",
+#		 "endf","process","world","work",
+#		 "monte","geometry","mersenne","src","xml","poly",
+#		 "weights","global","attachComp","visit"
+#		]);
 
 $gM->addDepUnit("essBeamline",
 		             ["essBuild","visit","src","simMC",
