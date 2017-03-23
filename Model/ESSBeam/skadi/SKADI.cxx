@@ -117,7 +117,11 @@ SKADI::SKADI(const std::string& keyName):
 
   VPipeInC(new constructSystem::VacuumPipe(newName+"PipeInC")),
   GuideInC(new beamlineSystem::GuideLine(newName+"GInC")),
-  
+
+  CollimA(new constructSystem::PipeCollimator(newName+"CollimA")),
+  CollimB(new constructSystem::PipeCollimator(newName+"CollimB")),
+  CollimC(new constructSystem::PipeCollimator(newName+"CollimC")),
+
   BInsert(new CompBInsert(newName+"BInsert")),
   FocusWall(new beamlineSystem::GuideLine(newName+"FWall")),
   
@@ -191,6 +195,10 @@ SKADI::SKADI(const std::string& keyName):
 
   OR.addObject(VPipeInC);
   OR.addObject(GuideInC);
+
+  OR.addObject(CollimA);
+  OR.addObject(CollimB);
+  OR.addObject(CollimC);
 
   OR.addObject(BInsert);
   OR.addObject(FocusWall);
@@ -317,18 +325,33 @@ SKADI::build(Simulation& System,
   VPipeB->createAll(System,BendA->getKey("Guide0"),2);
   BendB->addInsertCell(VPipeB->getCells("Void"));
   BendB->createAll(System,*VPipeB,0,*VPipeB,0);
-  
+
   VPipeInA->addInsertCell(bunkerObj.getCell("MainVoid"));
   VPipeInA->createAll(System,BendB->getKey("Guide0"),2);
   BendInA->addInsertCell(VPipeInA->getCells("Void"));
   BendInA->createAll(System,*VPipeInA,0,*VPipeInA,0);
+
+  CollimA->setOuter(VPipeInA->getSignedFullRule(-6));
+  CollimA->setInner(BendInA->getXSection(0,0)); 
+  CollimA->addInsertCell(VPipeInA->getCell("Void"));
+  CollimA->createAll(System,*VPipeInA,-1);
   
   VPipeInB->addInsertCell(bunkerObj.getCell("MainVoid"));
   VPipeInB->createAll(System,BendInA->getKey("Guide0"),2);
   BendInB->addInsertCell(VPipeInB->getCells("Void"));
   BendInB->createAll(System,BendInA->getKey("Guide0"),2,
 		     BendInA->getKey("Guide0"),2);
-   
+  
+  CollimB->setOuter(VPipeInB->getSignedFullRule(-6));
+  CollimB->setInner(BendInB->getXSection(0,0)); 
+  CollimB->addInsertCell(VPipeInB->getCell("Void"));
+  CollimB->createAll(System,*VPipeInB,-1);
+
+  CollimC->setOuter(VPipeInB->getSignedFullRule(-6)); 
+  CollimC->setInner(BendInB->getXSection(0,0)); 
+  CollimC->addInsertCell(VPipeInB->getCell("Void"));
+  CollimC->createAll(System,*VPipeInB,-1);
+
   VPipeInC->addInsertCell(bunkerObj.getCell("MainVoid"));
   VPipeInC->createAll(System,BendInB->getKey("Guide0"),2);
   GuideInC->addInsertCell(VPipeInC->getCells("Void"));
@@ -395,7 +418,6 @@ SKADI::build(Simulation& System,
   DiskA->setOffsetFlag(1);
   DiskA->createAll(System,ChopperA->getKey("Beam"),0);
 
-  
   PitB->addInsertCell(voidCell); //Chopper II pit
   PitB->createAll(System,PitA->getKey("Outer"),2);
   PitBCutFront->addInsertCell(PitB->getCells("MidLayerFront"));
@@ -479,7 +501,6 @@ SKADI::build(Simulation& System,
   DiskC1->setCentreFlag(3);
   DiskC1->setOffsetFlag(1);
   DiskC1->createAll(System,ChopperC1->getKey("Beam"),0);
-
   
   ChopperC2->addInsertCell(PitC->getCell("Void"));
   ChopperC2->createAll(System,*PitC,0);

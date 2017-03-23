@@ -76,6 +76,7 @@
 #include "World.h"
 #include "AttachSupport.h"
 #include "pipeTube.h"
+#include "SurfMap.h"
 
 /// needed fro chopper and Co
 #include "FixedGroup.h"
@@ -86,6 +87,8 @@
 #include "ChopperHousing.h"
 #include "HoleShape.h"
 #include "LineShield.h"
+#include "PipeCollimator.h"
+#include "Aperture.h"
 
 /// Pipe and GL
 #include "VacuumPipe.h"
@@ -116,8 +119,9 @@ makePipe::makePipe() :
   ShieldA(new constructSystem::LineShield("ShieldA")),
   ShieldB(new constructSystem::LineShield("ShieldB")),
   
-  Cave(new pipeSystem::AHut("Cave"))
-
+  Cave(new pipeSystem::AHut("Cave")),
+  AppA(new constructSystem::Aperture("AppA")),
+  CollimA(new constructSystem::PipeCollimator("CollimA"))
   /*!
     Constructor
   */
@@ -150,6 +154,8 @@ makePipe::makePipe() :
   OR.addObject(ShieldB);
 
   OR.addObject(Cave);
+  OR.addObject(AppA);
+  OR.addObject(CollimA);
 }
 
 makePipe::makePipe(const makePipe& A) : 
@@ -201,7 +207,7 @@ makePipe::build(Simulation* SimPtr,
   /*
   ATube->addInsertCell(voidCell);
   ATube->createAll(*SimPtr,World::masterOrigin(),0);
-
+  
   BTube->addInsertCell(voidCell);
   BTube->createAll(*SimPtr,*ATube,2);
  
@@ -222,43 +228,56 @@ makePipe::build(Simulation* SimPtr,
   BandADisk->createAll(*SimPtr,ChopperA->getKey("Beam"),0);
 */
 
-  /*  
-  PipeB->addInsertCell(voidCell);
-  PipeB->addInsertCell(PitA->getCells("Outer"));
-  PipeB->setBack(PitA->getKey("Mid"),1);
-  PipeB->createAll(*SimPtr,GuideA->getKey("Guide0"),2);
-
-  PipeA->addInsertCell(voidCell);
-  PipeA->createAll(*SimPtr,ChopperA->getKey("Beam"),2);
-  GuideA->addInsertCell(PipeA->getCells("Void"));
-  GuideA->createAll(*SimPtr,*PipeA,0,*PipeA,0);
- 
-  GuideB->addInsertCell(PipeB->getCells("Void"));
-  GuideB->createAll(*SimPtr,*PipeB,0,*PipeB,0);
-
-  CutFrontA->addInsertCell(PitA->getCells("MidLayerFront"));
-  CutFrontA->setFaces(PitA->getKey("Mid").getSignedFullRule(-1),
-		      PitA->getKey("Inner").getSignedFullRule(1));
-  CutFrontA->createAll(*SimPtr,GuideB->getKey("Guide0"),2);
   
-  CutBackA->addInsertCell(PitA->getCells("MidLayerBack"));
-  CutBackA->addInsertCell(PitA->getCells("Collet"));
-  CutBackA->setFaces(PitA->getKey("Mid").getSignedFullRule(-2),
-		      PitA->getKey("Inner").getSignedFullRule(2));
-  CutBackA->createAll(*SimPtr,GuideB->getKey("Guide0"),2);
-  */
+  //  PipeB->addInsertCell(voidCell);
+  //  PipeB->addInsertCell(PitA->getCells("Outer"));
+  //  PipeB->setBack(PitA->getKey("Mid"),1);
+  //  PipeB->createAll(*SimPtr,GuideA->getKey("Guide0"),2);
+  
+  PipeA->addInsertCell(voidCell);
+  //  PipeA->createAll(*SimPtr,ChopperA->getKey("Beam"),2);
+  PipeA->createAll(*SimPtr,World::masterOrigin(),0);
+  GuideA->addInsertCell(PipeA->getCells("Void"));
+  //  GuideA->addInsertCell(voidCell);
+  GuideA->createAll(*SimPtr,*PipeA,0,*PipeA,0);
+  
+  // GuideB->addInsertCell(PipeB->getCells("Void"));
+  //GuideB->createAll(*SimPtr,*PipeB,0,*PipeB,0);
 
+  //  CutFrontA->addInsertCell(PitA->getCells("MidLayerFront"));
+  //  CutFrontA->setFaces(PitA->getKey("Mid").getSignedFullRule(-1),
+  //		      PitA->getKey("Inner").getSignedFullRule(1));
+  //  CutFrontA->createAll(*SimPtr,GuideB->getKey("Guide0"),2);
+  //
+  //  CutBackA->addInsertCell(PitA->getCells("MidLayerBack"));
+  //  CutBackA->addInsertCell(PitA->getCells("Collet"));
+  //  CutBackA->setFaces(PitA->getKey("Mid").getSignedFullRule(-2),
+  //		      PitA->getKey("Inner").getSignedFullRule(2));
+  //  CutBackA->createAll(*SimPtr,GuideB->getKey("Guide0"),2);
+  //  
+  //
   //  ShieldA->addInsertCell(voidCell);
   //  ShieldA->createAll(*SimPtr,World::masterOrigin(),0);
   //
   //  ShieldB->addInsertCell(ShieldA->getCell("Void"));
   //  ShieldB->createAll(*SimPtr,*ShieldA,-1);
 
-  Cave->addInsertCell(voidCell);
-  Cave->createAll(*SimPtr,World::masterOrigin(),0);
+  //  Cave->addInsertCell(voidCell);
+  //  Cave->createAll(*SimPtr,World::masterOrigin(),0);
+  //AppA->addInsertCell(voidCell);
+  //AppA->createAll(*SimPtr,World::masterOrigin(),0);
+   
+  CollimA->setOuter(PipeA->getSignedFullRule(-6));
+ 
+  CollimA->setInner(GuideA->getXSection(0,0));
+   //   CollimA->setInnerExclude(GuideA->getSignedFullRule(3));
 
-
+  CollimA->addInsertCell(PipeA->getCells("Void"));
   
+  CollimA->createAll(*SimPtr,*PipeA,0);
+  std::cout<<PipeA->NConnect()<<std::endl;
+  std::cout<<GuideA->nGroups()<<std::endl;
+
   return;
 
 }

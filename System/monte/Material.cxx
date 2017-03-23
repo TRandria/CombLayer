@@ -813,7 +813,61 @@ Material::writeFLUKA(std::ostream& OX) const
     }
   return;
 } 
+void 
+Material::writePHITS(std::ostream& OX) const
+  /*!
+    Write out the information about the material
+    in a humman readable form (same as mcnpx file)
+    \param OX :: Output stream
+  */
+{
+  ELog::RegMethod RegA("Material","writePHITS");
+  
+  std::ostringstream cx;
+  cx<<"c\nc Material : "<<Name<<" rho="<<atomDensity;
+  StrFunc::writeMCNPX(cx.str(),OX);
+  cx.str("");
 
+  cx.precision(10);
+  cx<<"m"<<Mnum<<"     ";
+  if (Mnum<10) cx<<" ";
+  std::vector<Zaid>::const_iterator zc;
+  std::vector<std::string>::const_iterator vc;
+  for(zc=zaidVec.begin();zc!=zaidVec.end();zc++)
+    cx<<zc->getZaidNum()<<".50c "<<zc->getDensity()<<" ";
+
+  cx<<"plib=50p  elib=50e ";
+ 
+  StrFunc::writeMCNPX(cx.str(),OX);
+
+  std::vector<std::string> zaid_phits=
+    {"lwtr","h_zr","hwtr","be","beo","grph","poly","benz",
+     "zr_h","lmeth","smeth","hpara","hortho","dpara","dortho"};
+  
+  std::ostringstream rx;
+  if (!SQW.empty())
+    {
+      std::string zaid;
+      bool write_mt = false;
+      for(vc=SQW.begin();vc!=SQW.end();vc++)
+	{
+	  std::string zd = vc->substr(0,vc->find("."));
+	  std::replace(zd.begin(),zd.end(),'/','_');
+	  write_mt = bool(std::count(zaid_phits.begin(),zaid_phits.end(),zd));
+	  zaid += zd+".20t ";
+	}
+      if(write_mt)
+	{
+	  rx.str("");
+	  rx<<"mt"<<Mnum<<"    ";
+	  if (Mnum<10) rx<<" ";
+	  rx<<zaid<<" ";
+	}
+      
+      StrFunc::writeMCNPX(rx.str(),OX);
+    }
+  return;
+} 
 void 
 Material::writePOVRay(std::ostream& OX) const
   /*!

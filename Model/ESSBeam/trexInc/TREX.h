@@ -51,6 +51,7 @@ namespace essSystem
 {
   class CompBInsert;
   class GuideItem;
+  class TrexHut;
   
   /*!
     \class TREX
@@ -95,6 +96,10 @@ class TREX : public attachSystem::CopiedComp
   std::shared_ptr<constructSystem::VacuumPipe> VPipeInD;
   std::shared_ptr<beamlineSystem::GuideLine> BendInD;
 
+  std::shared_ptr<constructSystem::PipeCollimator> CollimA;
+  std::shared_ptr<constructSystem::PipeCollimator> CollimB;
+  std::shared_ptr<constructSystem::PipeCollimator> CollimC;
+
   /// !! Heavy Shutter !!
   std::shared_ptr<constructSystem::VacuumPipe> VPipeInE;
   std::shared_ptr<beamlineSystem::GuideLine> BendInE;
@@ -109,6 +114,8 @@ class TREX : public attachSystem::CopiedComp
   std::shared_ptr<constructSystem::ChopperPit> PitA;
   std::shared_ptr<constructSystem::HoleShape> PitACutFront;
   std::shared_ptr<constructSystem::HoleShape> PitACutBack;
+  std::shared_ptr<constructSystem::ChopperUnit> ChopperA;
+  std::shared_ptr<constructSystem::DiskChopper> DiskA;
   std::shared_ptr<constructSystem::LineShield> ShieldA;
   std::shared_ptr<constructSystem::VacuumPipe> VPipeOutA;
   std::shared_ptr<beamlineSystem::GuideLine> BendOutA;
@@ -117,6 +124,8 @@ class TREX : public attachSystem::CopiedComp
   std::shared_ptr<constructSystem::ChopperPit> PitB;
   std::shared_ptr<constructSystem::HoleShape> PitBCutFront;
   std::shared_ptr<constructSystem::HoleShape> PitBCutBack;
+  std::shared_ptr<constructSystem::ChopperUnit> ChopperB;
+  std::shared_ptr<constructSystem::DiskChopper> DiskB;
   std::shared_ptr<constructSystem::LineShield> ShieldB;
   std::shared_ptr<constructSystem::VacuumPipe> VPipeOutB1;
   std::shared_ptr<beamlineSystem::GuideLine> BendOutB1;
@@ -127,6 +136,8 @@ class TREX : public attachSystem::CopiedComp
   std::shared_ptr<constructSystem::ChopperPit> PitC;
   std::shared_ptr<constructSystem::HoleShape> PitCCutFront;
   std::shared_ptr<constructSystem::HoleShape> PitCCutBack;
+  std::shared_ptr<constructSystem::ChopperUnit> ChopperC;
+  std::shared_ptr<constructSystem::DiskChopper> DiskC;
   std::array<std::shared_ptr<constructSystem::LineShield>,10> ShieldCs;
   std::array<std::shared_ptr<constructSystem::VacuumPipe>,10>
   VPipeOutCs;
@@ -141,30 +152,36 @@ class TREX : public attachSystem::CopiedComp
   std::shared_ptr<constructSystem::ChopperPit> PitE;
   std::shared_ptr<constructSystem::HoleShape> PitECutFront;
   std::shared_ptr<constructSystem::HoleShape> PitECutBack;
+  std::shared_ptr<constructSystem::ChopperUnit> ChopperE;
+  std::shared_ptr<constructSystem::DiskChopper> DiskE1;
+  std::shared_ptr<constructSystem::DiskChopper> DiskE2;
   std::shared_ptr<constructSystem::LineShield> ShieldE;
   std::shared_ptr<constructSystem::VacuumPipe> VPipeOutE;
   std::shared_ptr<beamlineSystem::GuideLine> GuideOutE;
 
-  std::shared_ptr<constructSystem::ChopperPit> PitF;
-  std::shared_ptr<constructSystem::HoleShape> PitFCutFront;
-  std::shared_ptr<constructSystem::HoleShape> PitFCutBack;
   std::shared_ptr<constructSystem::LineShield> ShieldF;
   std::array<std::shared_ptr<constructSystem::VacuumPipe>,8>
   VPipeOutFs;
   std::array<std::shared_ptr<beamlineSystem::GuideLine>,8> GuideOutFs;
 
-  std::shared_ptr<constructSystem::ChopperPit> PitG;
-  std::shared_ptr<constructSystem::HoleShape> PitGCutFront;
-  std::shared_ptr<constructSystem::HoleShape> PitGCutBack;
-  std::shared_ptr<constructSystem::LineShield> ShieldG;
+  std::shared_ptr<TrexHut> Cave;
+  std::shared_ptr<constructSystem::HoleShape> CaveFrontCut;
+ 
   std::shared_ptr<constructSystem::VacuumPipe> VPipeOutG;
   std::shared_ptr<beamlineSystem::GuideLine> GuideOutG;
 
-  std::shared_ptr<constructSystem::LineShield> ShieldH;
+  std::shared_ptr<constructSystem::ChopperUnit> ChopperG;
+  std::shared_ptr<constructSystem::DiskChopper> DiskG;
+  
   std::shared_ptr<constructSystem::VacuumPipe> VPipeOutH;
   std::shared_ptr<beamlineSystem::GuideLine> GuideOutH;
-  
-  
+
+  std::shared_ptr<constructSystem::ChopperUnit> ChopperH;
+  std::shared_ptr<constructSystem::DiskChopper> DiskH1;
+  std::shared_ptr<constructSystem::DiskChopper> DiskH2;
+
+  std::shared_ptr<beamlineSystem::GuideLine> GuideOutI;
+ 
   void setBeamAxis(const FuncDataBase&,const GuideItem&,
 		   const bool);
     

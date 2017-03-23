@@ -116,7 +116,7 @@ DBMaterial::initMaterial()
 {
   ELog::RegMethod RegA("DBMaterial","initMaterial");
 
-  const std::string MLib="hlib=.70h pnlib=70u";
+  const std::string MLib="hlib=70h pnlib=70u";
 
   MonteCarlo::Material MObj;
   // TWO ULTRA SPECIAL MATERIALS!!!
@@ -399,6 +399,7 @@ DBMaterial::initMaterial()
 
   // Material #52: 5% borated poly  
   // Total atom density 0.1154 atom/barn-cm
+
   MObj.setMaterial(52,"B-Poly","1001.70c  0.0752 6000.70c "
 		   "0.0376 5010.70c  0.00051 5011.70c  0.002053",
 		   "poly.01t",MLib);
@@ -544,7 +545,7 @@ DBMaterial::initMaterial()
   MObj.setMaterial(70,"Glass",
 		   "20040.70c 2.719913e-03 20042.70c 1.815314e-05 "
 		   "20043.70c 3.787750e-06 20044.70c 5.852775e-05 "
-		   "20046.70c 1.122296e-07 20048.70c 5.246735e-06 " 
+		   "20046.70c 1.122296e-07 20048.70c 5.246735e-06 "
 		   "11023.70c 6.423108e-03  8016.70c 4.307240e-02 "
 		   "14028.70c 1.708774e-02 14029.70c 8.676740e-04 "
 		   "14030.70c 5.719771e-04 ","",MLib);
@@ -1211,21 +1212,13 @@ DBMaterial::initMaterial()
   MObj.setDensity(-2.35);
   setMaterial(MObj);
 
-  // Material #136 Silver
+  // Silver
   // Density 10.49g/cc atomic rho=0.058573
   MObj.setMaterial(136,"Silver","47107.70c 0.043778 "
                    "47109.70c 0.040672 ","",MLib); 
   MObj.setDensity(-10.49); // wikipedia
   setMaterial(MObj);
 
-  // 
-  // Material #137 Hi-DensityPoly:
-  MObj.setMaterial(137,"HighDensPoly","6000.70c 0.0333333 "
-		   "1001.70c 0.0666666666","poly.01t",MLib);
-  MObj.setDensity(-1.05);
-  setMaterial(MObj);
-
-  
   return;
 }
 
@@ -1779,6 +1772,33 @@ DBMaterial::writeFLUKA(std::ostream& OX) const
 	  
 	  if (mp->first)
 	    mp->second.writeFLUKA(OX);
+	}
+    }
+  return;
+}
+void
+DBMaterial::writePHITS(std::ostream& OX) const
+  /*!
+    Write everything out to the fluka system
+    \param OX :: Output stream
+  */
+{
+  ELog::RegMethod RegA("DBMaterial","writePHITS");
+
+  for(const int sActive : active)
+    {
+      if (sActive)
+	{
+	  MTYPE::const_iterator mp=MStore.find(sActive);
+	  if (mp==MStore.end())
+	    throw ColErr::InContainerError<int>
+	      (sActive,"MStore find(active item)");
+	  
+	  if (mp->first)
+	    {
+	      //ELog::EM<<mp->second.getAtomDensity()<<ELog::endDiag;
+	      mp->second.writePHITS(OX);
+	    }
 	}
     }
   return;

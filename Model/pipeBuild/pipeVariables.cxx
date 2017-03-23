@@ -163,7 +163,7 @@ PipeVariables(FuncDataBase& Control)
   Control.addVariable("CutBackARadius",15.0);
 
   setVariable::ShieldGenerator SGen;
-  
+  /*
   SGen.addWall(1,30.0,"Concrete");
   SGen.addRoof(1,20.0,"Concrete");
   SGen.addFloor(1,0.0,"Concrete");
@@ -171,7 +171,7 @@ PipeVariables(FuncDataBase& Control)
   SGen.addRoofMat(7,"CastIron");
   
   SGen.generateShield(Control,"ShieldA",100.0,100.0,90.0,20.0,4,8);
-  
+  */
   setVariable::ShieldGenerator SGen1;
   SGen1.addWall(1,29.5,"B4C");
   SGen1.addRoof(1,19.5,"B4C");
@@ -221,6 +221,24 @@ PipeVariables(FuncDataBase& Control)
   Control.addVariable("CaveL2PipeThick",7.5);
   Control.addVariable("CaveRadius",100.0);
   Control.addVariable("CaveLength",2000.0);
+
+
+  Control.addVariable("AppAInnerWidth",4.0);
+  Control.addVariable("AppAInnerHeight",4.0);
+  Control.addVariable("AppAWidth",12.0);
+  Control.addVariable("AppAHeight",12.0);
+  Control.addVariable("AppADepth",5.0);
+  Control.addVariable("AppAYStep",7.0);
+  Control.addVariable("AppADefMat","Tungsten");
+
+  SGen.addWall(1,30.0,"Tungsten");
+  SGen.addRoof(1,30.0,"Tungsten");
+  SGen.addFloor(1,30.0,"Tungsten");
+  
+  SGen.generateShield(Control,"ShieldA",10.0,31.0,31.0,31.0,1,2);
+
+  Control.addVariable("CollimALength",10.0);
+  Control.addVariable("CollimAMat","Copper");
 
   return;
 }

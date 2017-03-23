@@ -42,6 +42,7 @@ class SimPHITS : public Simulation
   void writeTally(std::ostream&) const;
   void writePhysics(std::ostream&) const;
   void writeVariables(std::ostream&) const;
+  void writeSimParams(std::ostream&) const;
   
  public:
   

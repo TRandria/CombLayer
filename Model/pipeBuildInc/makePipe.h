@@ -40,7 +40,8 @@ namespace constructSystem
   class VacuumPipe;
   class HoleShape;
   class LineShield;
-
+  class PipeCollimator;
+  class Aperture;
 }
 
 
@@ -90,7 +91,11 @@ namespace pipeSystem
     std::shared_ptr<constructSystem::LineShield> ShieldB;
     
     std::shared_ptr<pipeSystem::AHut> Cave;
+
+    std::shared_ptr<constructSystem::Aperture> AppA;
     
+    std::shared_ptr<constructSystem::PipeCollimator> CollimA;
+
   public:
     
     makePipe();

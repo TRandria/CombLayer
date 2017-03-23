@@ -94,16 +94,26 @@ void SKADIvariables(FuncDataBase& Control)
   FGen.clearYOffset();
   FGen.generateBender(Control,"skadiBB",40.0,w,w,w,w,8400.0,90.0);
 
-  PipeGen.generatePipe(Control,"skadiPipeInA",2.0,48);
-  FGen.generateBender(Control,"skadiBInA",46,w,w,w,w,8400.0,90.0);
+  PipeGen.generatePipe(Control,"skadiPipeInA",1.5,48.5);
+  FGen.generateBender(Control,"skadiBInA",46.5,w,w,w,w,8400.0,90.0);
+
+  Control.addVariable("skadiCollimAYStep",24.25);
+  Control.addVariable("skadiCollimALength",46.5);
+  Control.addVariable("skadiCollimAMat","Copper"); 
 
   // Second part of the S
-  PipeGen.generatePipe(Control,"skadiPipeInB",2.0,449.0);
+  PipeGen.generatePipe(Control,"skadiPipeInB",1.5,449.5);
   Control.addVariable("skadiPipeInBZAngle",1.5);
-  FGen.setYOffset(3.0);
-  FGen.generateBender(Control,"skadiBInB",447.0,w,w,w,w,8400.0,270.0);
-  
-  // Heavy Shutter !!
+  FGen.setYOffset(2.5);
+  FGen.generateBender(Control,"skadiBInB",447.5,w,w,w,w,8400.0,270.0);
+
+  Control.addVariable("skadiCollimBYStep",200.5);
+  Control.addVariable("skadiCollimBLength",50.0);
+  Control.addVariable("skadiCollimBMat","Copper");
+  Control.addVariable("skadiCollimCYStep",423.5);
+  Control.addVariable("skadiCollimCLength",50.0);
+  Control.addVariable("skadiCollimCMat","Copper");
+
   PipeGen.generatePipe(Control,"skadiPipeInC",2.0,20.0);
   FGen.clearYOffset();
   FGen.generateRectangle(Control,"skadiGInC",18.0,w,w);

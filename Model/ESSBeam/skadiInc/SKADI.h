@@ -90,6 +90,11 @@ class SKADI : public attachSystem::CopiedComp
 
   std::shared_ptr<constructSystem::VacuumPipe> VPipeInC;
   std::shared_ptr<beamlineSystem::GuideLine> GuideInC;
+
+  //Collimator inside bunker
+  std::shared_ptr<constructSystem::PipeCollimator> CollimA;
+  std::shared_ptr<constructSystem::PipeCollimator> CollimB;
+  std::shared_ptr<constructSystem::PipeCollimator> CollimC;
   
   /// Bunker Insert
   std::shared_ptr<essSystem::CompBInsert> BInsert;

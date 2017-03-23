@@ -145,16 +145,17 @@ SimPHITS::writeTally(std::ostream& OX) const
     \param OX :: Output stream
    */
 {
-  OX<<"c -----------------------------------------------------------"<<std::endl;
-  OX<<"c ------------------- TALLY CARDS ---------------------------"<<std::endl;
-  OX<<"c -----------------------------------------------------------"<<std::endl;
+  // OX<<"c -----------------------------------------------------------"<<std::endl;
+  //OX<<"c ------------------- TALLY CARDS ---------------------------"<<std::endl;
+  //OX<<"c -----------------------------------------------------------"<<std::endl;
+  OX<<"[ T - ]"<<std::endl;
   // The totally insane line below does the following
   // It iterats over the Titems and since they are a map
   // uses the mathSupport:::PSecond
   // _1 refers back to the TItem pair<int,tally*>
   for(const TallyTYPE::value_type& TI : TItem)
     TI.second->write(OX);
-
+  OX<<std::endl;
   return;
 }
 
@@ -167,13 +168,15 @@ SimPHITS::writeTransform(std::ostream& OX) const
   */
 
 {
-  OX<<"[transform]"<<std::endl;
+  OX<<"[ T r a n s f o r m ]"<<std::endl;
 
   TransTYPE::const_iterator vt;
   for(vt=TList.begin();vt!=TList.end();vt++)
     {
-      vt->second.write(OX);
+      OX<<" "; vt->second.write(OX);
     }
+  
+  OX<<"\n";
   return;
 }
 
@@ -187,14 +190,19 @@ SimPHITS::writeCells(std::ostream& OX) const
   */
 {
   boost::format FmtStr("  %1$d%|20t|%2$d\n");
-  OX<<"[cell]"<<std::endl;
+  OX<<"[ C e l l ]"<<std::endl;
+  OX<<" 1 -1  1  $";
+  
   OTYPE::const_iterator mp;
+  
   for(mp=OList.begin();mp!=OList.end();mp++)
-    mp->second->writePHITS(OX);
-
+    {
+      OX<<" "; mp->second->writePHITS(OX);
+    }
+ 
   OX<<std::endl;  // Empty line manditory for MCNPX
-
-  OX<<"[temperature]"<<std::endl;
+  /*
+  OX<<"[ T e m p e r a t u r e ]"<<std::endl;
   for(mp=OList.begin();mp!=OList.end();mp++)
     {
       const double T=mp->second->getTemp();
@@ -203,6 +211,8 @@ SimPHITS::writeCells(std::ostream& OX) const
 	  OX<<FmtStr % mp->second->getName() % (T*8.6173422e11);
 	}
     }
+  OX<<std::endl;
+  */  
 
   return;
 }
@@ -216,15 +226,17 @@ SimPHITS::writeSurfaces(std::ostream& OX) const
   */
 
 {
-  OX<<"  [surface] " <<std::endl;
+  OX<<"[ S u r f a c e ] " <<std::endl;
 
   const ModelSupport::surfIndex::STYPE& SurMap=
     ModelSupport::surfIndex::Instance().surMap();
   std::map<int,Geometry::Surface*>::const_iterator mp;
   for(mp=SurMap.begin();mp!=SurMap.end();mp++)
     {
+      OX<<" ";
       (mp->second)->write(OX);
     }
+  OX<<std::endl;
   return;
 } 
 
@@ -236,8 +248,23 @@ SimPHITS::writeMaterial(std::ostream& OX) const
     \param OX :: Output stream
   */
 {
-  OX<<"    [material]"<<std::endl;
-  ModelSupport::DBMaterial::Instance().writeMCNPX(OX);
+  OX<<"[ M a t e r i a l ]"<<std::endl;
+ 
+  ModelSupport::DBMaterial&  DB= ModelSupport::DBMaterial::Instance();
+  DB.resetActive();
+
+  if(!PhysPtr->getMode().hasElm("h"))
+    DB.deactivateParticle("h");
+
+  OTYPE::const_iterator mp;
+  for(mp=OList.begin();mp!=OList.end();mp++)
+    {
+      DB.setActive(mp->second->getMat());
+    }
+  DB.writePHITS(OX);
+  
+  OX<<std::endl;
+
   return;
 }
 
@@ -254,8 +281,9 @@ SimPHITS::writeWeights(std::ostream& OX) const
   WeightSystem::weightManager& WM=
     WeightSystem::weightManager::Instance();
   
-  OX<<"[weight]"<<std::endl;
+  OX<<"[ W e i g h t ]"<<std::endl;
   WM.write(OX);
+  OX<<std::endl;
   return;
 }
 
@@ -299,9 +327,22 @@ SimPHITS::writePhysics(std::ostream& OX) const
 
   // Remaining Physics cards
   PhysPtr->write(OX,cellOutOrder,voidCells);
-  OX<<"c ++++++++++++++++++++++ END ++++++++++++++++++++++++++++"<<std::endl;
+  //OX<<"[ END ++++++++++++++++++++++++++++"<<std::endl;
   OX<<std::endl;  // MCNPX requires a blank line to terminate
   return;
+}
+
+void
+SimPHITS::writeSimParams(std::ostream& OX) const
+  /*!
+    Writes all parameters for PHITS simulation
+    \param OX :: Output stream
+  */
+{
+
+  OX<<"[ P a r a m e t e r s ]"<<std::endl;
+
+  OX<<"\n";
 }
 
 void
@@ -311,15 +352,24 @@ SimPHITS::write(const std::string& Fname) const
     \param Fname :: Output file 
   */
 {
-  std::ofstream OX(Fname.c_str());
-  Simulation::writeVariables(OX);
-  writeCells(OX);
-  writeSurfaces(OX);
+  std::string oname=Fname.c_str();
+  oname=oname.substr(0,oname.find("."));
+  oname+=".inp";
+  std::ofstream OX(oname);
+
+  //  Simulation::writeVariables(OX);
+  // writeSimParams(OX);
   writeMaterial(OX);
-  writeTransform(OX);
-  writeWeights(OX);
-  writeTally(OX);
-  writePhysics(OX);
+  writeSurfaces(OX);
+  writeCells(OX);  
+  //writeTransform(OX);
+  //writeWeights(OX);
+  //  writeTally(OX);
+  //  writePhysics(OX);
+  //OX<<"[ E N D ]"<<std::endl;
+  //OX<<std::endl;
+
   OX.close();
+
   return;
 }
