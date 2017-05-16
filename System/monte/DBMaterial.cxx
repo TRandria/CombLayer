@@ -120,7 +120,9 @@ DBMaterial::initMaterial()
 
   MonteCarlo::Material MObj;
   // TWO ULTRA SPECIAL MATERIALS!!!
-  MObj.setMaterial(-1,"InValid","00000.00c 1.0","",MLib); 
+  MObj.setMaterial(-2,"InValid","00000.00c 1.0","",MLib); 
+  setMaterial(MObj);
+  MObj.setMaterial(-1,"Empty","00000.00c 1.0","",MLib); 
   setMaterial(MObj);
   MObj.setMaterial(0,"Void","00000.00c 1.0","",MLib);
   setMaterial(MObj);
@@ -1219,6 +1221,20 @@ DBMaterial::initMaterial()
   MObj.setDensity(-10.49); // wikipedia
   setMaterial(MObj);
 
+  // 
+  // Material #137 Hi-DensityPoly:
+  MObj.setMaterial(137,"HighDensPoly","6000.70c 0.0333333 "
+		   "1001.70c 0.0666666666","poly.01t",MLib);
+  MObj.setDensity(-1.05);
+  setMaterial(MObj);
+
+  // 
+  // Material #138 Ammonia [695kg/m^3]
+  MObj.setMaterial(138,"Ammonia","7014.70c 0.024801 "
+		   "1001.70c 0.074402","orthh.99t",MLib);
+  setMaterial(MObj);
+
+  
   return;
 }
 

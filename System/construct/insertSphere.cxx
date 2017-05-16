@@ -3,7 +3,7 @@
  
  * File:   construct/insertSphere.cxx
  *
- * Copyright (c) 2004-2016 by Stuart Ansell
+ * Copyright (c) 2004-2017 by Stuart Ansell
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -144,24 +144,6 @@ insertSphere::populate(const FuncDataBase& Control)
 }
 
 void
-insertSphere::createUnitVector(const attachSystem::FixedComp& FC,
-			       const long int sideIndex)
-  /*!
-    Create the unit vectors
-    \param FC :: Fixed coordinate system
-    \param sideIndex :: link index
-  */
-{
-  ELog::RegMethod RegA("insertSphere","createUnitVector(FC,index)");
-
-
-  FixedComp::createUnitVector(FC,sideIndex);
-  applyOffset();
-  return;
-}
-
-
-void
 insertSphere::createSurfaces()
   /*!
     Create all the surfaces
@@ -183,6 +165,7 @@ insertSphere::createLinks()
 {
   ELog::RegMethod RegA("insertSphere","createLinks");
 
+  FixedComp::setNConnect(6);
   const Geometry::Vec3D Dir[3]={Y,X,Z};
 
   for(size_t i=0;i<6;i++)

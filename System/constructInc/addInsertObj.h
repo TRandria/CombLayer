@@ -28,14 +28,20 @@ namespace constructSystem
 {
 
 void
-addInsertCylinderCell(Simulation&,const std::string&,
-		   const std::string&,const std::string&,
-		   const Geometry::Vec3D&,const double,
-		   const double,const std::string&);
+addInsertCurveCell(Simulation&,const std::string&,
+		   const Geometry::Vec3D&,const Geometry::Vec3D&,
+		   const int,const Geometry::Vec3D&,
+		   const double,const double,const double,
+		   const std::string&);
 void
 addInsertCylinderCell(Simulation&,const std::string&,
-		   const Geometry::Vec3D&,const Geometry::Vec3D&,
-		   const double,const double,const std::string&);
+		      const std::string&,const std::string&,
+		      const Geometry::Vec3D&,const double,
+		      const double,const std::string&);
+void
+addInsertCylinderCell(Simulation&,const std::string&,
+		      const Geometry::Vec3D&,const Geometry::Vec3D&,
+		      const double,const double,const std::string&);
 void
 addInsertPlateCell(Simulation&,const std::string&,
 		   const std::string&,const std::string&,
@@ -55,7 +61,24 @@ void
 addInsertSphereCell(Simulation&,const std::string&,
 		   const Geometry::Vec3D&,const double,
 		   const std::string&);
-  
+
+void
+addInsertGridCell(Simulation&,const std::string&,
+		  const std::string&,const std::string&,
+		  const Geometry::Vec3D&,
+		  const size_t,const double,
+		  const double,const double,
+		  const std::string&);
+
+void
+addInsertGridCell(Simulation&,const std::string&,
+		  const Geometry::Vec3D&,const Geometry::Vec3D&,
+		  const Geometry::Vec3D&,
+		  const size_t,const double,
+		  const double,const double,
+		  const std::string&);
+
+ 
 }
 
 #endif

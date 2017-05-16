@@ -18,7 +18,7 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>. 
  *
- ****************************************************************************/
+ *************************************************************************/
 #include <fstream>
 #include <iomanip>
 #include <iostream>
@@ -448,7 +448,7 @@ LineShield::createLinks()
     }
   else
     {
-      FixedComp::setLinkSurf(0,backSurf,1,backCut,0);      
+      FixedComp::setLinkSurf(1,backSurf,1,backCut,0);      
       FixedComp::setConnect
         (1,SurInter::getLinePoint(Origin,Y,backSurf,backCut),Y);
     }

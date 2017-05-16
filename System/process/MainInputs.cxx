@@ -171,7 +171,9 @@ createInputs(inputParam& IParam)
   IParam.regMulti("wwgE","wwgE",25,0);
   IParam.regItem("wwgVTK","wwgVTK",1,10);
   IParam.regItem("wwgNorm","wwgNorm",0,30);
+  IParam.regMulti("wwgAdjoint","wwgAdjoint",100,1);
   IParam.regMulti("wwgCalc","wwgCalc",100,1);
+  IParam.regMulti("wwgMarkov","wwgMarkov",100,1);
   IParam.regItem("wwgRPtMesh","wwgRPtMesh",1,125);
   IParam.regItem("wwgXMesh","wwgXMesh",3,125);
   IParam.regItem("wwgYMesh","wwgYMesh",3,125);
@@ -257,6 +259,8 @@ createInputs(inputParam& IParam)
   IParam.setDesc("wDXT","Dxtran sphere addition [set -wDXT help] ");
   IParam.setDesc("wDD","Dxtran Diagnostic [set -wDXT help] ");
   IParam.setDesc("wWWG","Weight WindowGenerator Mesh  ");
+  IParam.setDesc("wwgCalc","Single step evolve for the calculate for WWG/WWCell  ");
+  IParam.setDesc("wwgMarkov","Evolve the calculate for WWG/WWCell  ");
   IParam.setDesc("wIMP","set imp partile imp object(s)  ");
   IParam.setDesc("wFCL","Forced Collision ");
   IParam.setDesc("wPWT","Photon Bias [set -wPWT help]");

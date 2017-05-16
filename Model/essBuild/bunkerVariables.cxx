@@ -86,6 +86,32 @@ setBunkerVar(FuncDataBase& Control,const std::string& AKey,
   
   for(const std::string& KItem : {AKey,BKey})
     {
+
+      // Control.addVariable(KItem+"BunkerWallMat0","Lead");
+      // Control.addVariable(KItem+"BunkerWallMat1","CarstonConc");
+      // Control.addVariable(KItem+"BunkerWallMat2","ChipIRSteel");
+      // Control.addVariable(KItem+"BunkerWallMat3","CarstonConc");
+      // Control.addVariable(KItem+"BunkerWallMat4","ChipIRSteel");
+      // Control.addVariable(KItem+"BunkerWallMat5","CarstonConc");
+      // Control.addVariable(KItem+"BunkerWallMat6","ChipIRSteel");
+      // Control.addVariable(KItem+"BunkerWallMat7","ChipIRSteel");
+      // Control.addVariable(KItem+"BunkerWallMat8","CarstonConc");
+      // Control.addVariable(KItem+"BunkerWallMat9","CarstonConc");
+      // Control.addVariable(KItem+"BunkerWallMat10","ChipIRSteel");
+      // Control.addVariable(KItem+"BunkerWallMat11","CarstonConc");
+      
+      // Control.addVariable(KItem+"BunkerWallLen1",10.0);  
+      // Control.addVariable(KItem+"BunkerWallLen2",15.5);  // c 
+      // Control.addVariable(KItem+"BunkerWallLen3",15.5);  // s
+      // Control.addVariable(KItem+"BunkerWallLen4",15.5);  // c
+      // Control.addVariable(KItem+"BunkerWallLen5",15.5);  // s
+      // Control.addVariable(KItem+"BunkerWallLen6",46.5);  // c
+      // Control.addVariable(KItem+"BunkerWallLen7",46.5);  // s
+      // Control.addVariable(KItem+"BunkerWallLen8",46.5);  // s
+      // Control.addVariable(KItem+"BunkerWallLen9",46.5);  // c
+      // Control.addVariable(KItem+"BunkerWallLen10",46.5); // c
+      // Control.addVariable(KItem+"BunkerWallLen11",31.0); // s
+      // Control.addVariable(KItem+"BunkerWallLen12",15.5); // c
       Control.addVariable(KItem+"BunkerWallActive",0);
 
       Control.addVariable(KItem+"BunkerWallNVert",8);
@@ -106,7 +132,7 @@ setBunkerVar(FuncDataBase& Control,const std::string& AKey,
       
       Control.addVariable(KItem+"BunkerWallThick",350.0);
       Control.addVariable(KItem+"BunkerSideThick",80.0);
-      Control.addVariable(KItem+"BunkerRoofThick",175.0);
+      Control.addVariable(KItem+"BunkerRoofThick",155.0);
       Control.addVariable(KItem+"BunkerFloorThick",100.0);
       
       Control.addVariable(KItem+"BunkerVoidMat","Void");
@@ -115,47 +141,53 @@ setBunkerVar(FuncDataBase& Control,const std::string& AKey,
 
 
       // WALL LAYERED
-      Control.addVariable(KItem+"BunkerWallNBasic",12);      
+      Control.addVariable(KItem+"BunkerWallNBasic",15);      
 
       // ROOF LAYERED
       Control.addVariable(KItem+"BunkerNBasicVert",5);
       Control.addVariable(KItem+"BunkerRoofVert1",30.0);
       Control.addVariable(KItem+"BunkerRoofVert2",40.0);
-      Control.addVariable(KItem+"BunkerRoofVert3",55.0);
+      Control.addVariable(KItem+"BunkerRoofVert3",40.0);
       Control.addVariable(KItem+"BunkerRoofVert4",30.0);
   
       
-      Control.addVariable(KItem+"BunkerRoofMat0","CarstonConc");
+      Control.addVariable(KItem+"BunkerRoofMat0","Poly");
       Control.addVariable(KItem+"BunkerRoofMat1","ChipIRSteel");
-      Control.addVariable(KItem+"BunkerRoofMat2","CarstonConc");
+      Control.addVariable(KItem+"BunkerRoofMat2","Poly");
       Control.addVariable(KItem+"BunkerRoofMat3","ChipIRSteel");
-      Control.addVariable(KItem+"BunkerRoofMat4","CarstonConc");
+      Control.addVariable(KItem+"BunkerRoofMat4","Poly");
 
-      Control.addVariable(KItem+"BunkerWallMat0","Lead");
-      Control.addVariable(KItem+"BunkerWallMat1","CarstonConc");
-      Control.addVariable(KItem+"BunkerWallMat2","ChipIRSteel");
-      Control.addVariable(KItem+"BunkerWallMat3","CarstonConc");
-      Control.addVariable(KItem+"BunkerWallMat4","ChipIRSteel");
-      Control.addVariable(KItem+"BunkerWallMat5","CarstonConc");
-      Control.addVariable(KItem+"BunkerWallMat6","ChipIRSteel");
+
+      Control.addVariable(KItem+"BunkerWallMat0","Poly");
+      Control.addVariable(KItem+"BunkerWallMat1","ChipIRSteel");
+      Control.addVariable(KItem+"BunkerWallMat2","Poly");
+      Control.addVariable(KItem+"BunkerWallMat3","ChipIRSteel");
+      Control.addVariable(KItem+"BunkerWallMat4","Poly");
+      Control.addVariable(KItem+"BunkerWallMat5","ChipIRSteel");
+      Control.addVariable(KItem+"BunkerWallMat6","Poly");
       Control.addVariable(KItem+"BunkerWallMat7","ChipIRSteel");
-      Control.addVariable(KItem+"BunkerWallMat8","CarstonConc");
-      Control.addVariable(KItem+"BunkerWallMat9","CarstonConc");
-      Control.addVariable(KItem+"BunkerWallMat10","ChipIRSteel");
-      Control.addVariable(KItem+"BunkerWallMat11","CarstonConc");
+      Control.addVariable(KItem+"BunkerWallMat8","Poly");
+      Control.addVariable(KItem+"BunkerWallMat9","ChipIRSteel");
+      Control.addVariable(KItem+"BunkerWallMat10","Poly");
+      Control.addVariable(KItem+"BunkerWallMat11","ChipIRSteel");
+      Control.addVariable(KItem+"BunkerWallMat12","Poly");
+      Control.addVariable(KItem+"BunkerWallMat13","ChipIRSteel");
+      Control.addVariable(KItem+"BunkerWallMat14","Poly");
       
-      Control.addVariable(KItem+"BunkerWallLen1",10.0);
-      Control.addVariable(KItem+"BunkerWallLen2",15.5);
-      Control.addVariable(KItem+"BunkerWallLen3",15.5);
-      Control.addVariable(KItem+"BunkerWallLen4",15.5);
-      Control.addVariable(KItem+"BunkerWallLen5",15.5);
-      Control.addVariable(KItem+"BunkerWallLen6",46.5);
-      Control.addVariable(KItem+"BunkerWallLen7",46.5);
-      Control.addVariable(KItem+"BunkerWallLen8",46.5);
-      Control.addVariable(KItem+"BunkerWallLen9",46.5);
-      Control.addVariable(KItem+"BunkerWallLen10",46.5);
-      Control.addVariable(KItem+"BunkerWallLen11",31.0);
-      Control.addVariable(KItem+"BunkerWallLen12",15.5);
+      Control.addVariable(KItem+"BunkerWallLen1",45.0);   // p
+      Control.addVariable(KItem+"BunkerWallLen2",15.0);   // s 1
+      Control.addVariable(KItem+"BunkerWallLen3",15.0);   // p
+      Control.addVariable(KItem+"BunkerWallLen4",30.0);   // s 3 
+      Control.addVariable(KItem+"BunkerWallLen5",15.0);   // p
+      Control.addVariable(KItem+"BunkerWallLen6",20.0);   // s 5
+      Control.addVariable(KItem+"BunkerWallLen7",15.0);   // p
+      Control.addVariable(KItem+"BunkerWallLen8",20.0);   // s 6
+      Control.addVariable(KItem+"BunkerWallLen9",30.0);   // p 
+      Control.addVariable(KItem+"BunkerWallLen10",15.0);  // s   
+      Control.addVariable(KItem+"BunkerWallLen11",31.0);  // p
+      Control.addVariable(KItem+"BunkerWallLen12",15.5);  // s
+      Control.addVariable(KItem+"BunkerWallLen13",25.5);  // p
+      Control.addVariable(KItem+"BunkerWallLen14",15.5);  // s
     }
   
   Control.addVariable(AKey+"BunkerLoadFile","ABunkerDef.xml");
@@ -267,11 +299,24 @@ EssBunkerVariables(FuncDataBase& Control)
   Control.addVariable("ABunkerQuake1PtA10",Geometry::Vec3D(1171.5,1804.0,0));
   Control.addVariable("ABunkerQuake1PtA11",Geometry::Vec3D(1007.5,1899.2,0));
 
-  
+  // BBUNKER : 
+  Control.addVariable("BBunkerQuakeNPath",1);
+  Control.addVariable("BBunkerQuake0NPoint",2);
+  Control.addVariable("BBunkerQuake0XGap",5.0);
+  Control.addVariable("BBunkerQuake0ZGap",22.0);
+  Control.addVariable("BBunkerQuake0PtA0",Geometry::Vec3D(600,0,0));
+  Control.addVariable("BBunkerQuake0PtA1",
+		      Geometry::Vec3D(600.0/sqrt(2),-600.0/sqrt(2.0),0.0));
+  Control.addVariable("BBunkerQuake0Radius0",600.0);
+  Control.addVariable("BBunkerQuake0YFlag0",1);
+
+
   Control.addVariable("CurtainLeftPhase",-65.0);
   Control.addVariable("CurtainRightPhase",65.0);
   Control.addVariable("CurtainWallThick",30.0);
   Control.addVariable("CurtainInnerStep",30.0);
+  Control.addVariable("CurtainBaseGap",5.0);
+  Control.addVariable("CurtainOuterGap",5.0);
   Control.addVariable("CurtainTopRaise",60.0);
   Control.addVariable("CurtainHeight",250.0);
   Control.addVariable("CurtainDepth",129.0);     // fixed by Ben.

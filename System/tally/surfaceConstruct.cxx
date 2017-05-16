@@ -3,7 +3,7 @@
  
  * File:   tally/surfaceConstruct.cxx
  *
- * Copyright (c) 2004-2016 by Stuart Ansell
+ * Copyright (c) 2004-2017 by Stuart Ansell
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -112,6 +112,7 @@ surfaceConstruct::processSurface(Simulation& System,
     \param System :: Simulation to add tallies
     \param IParam :: Main input parameters
     \param Index :: index of the -T card
+    \return 1 on success / 0 on failure 
   */
 {
   ELog::RegMethod RegA("surfaceConstruct","processSurface");
@@ -144,14 +145,11 @@ surfaceConstruct::processSurface(Simulation& System,
       const std::string surfItem=
 	IParam.outputItem<std::string>
 	("tally",Index,3,"SurfMap set key not give");
-      // This should be a range:
-      const long int surfIndex=
-	IParam.outputItem<long int>
-	("tally",Index,4,"position not given");
+
+      // This should be a range (?):
+      const long int surfIndex=IParam.outputItem<long int>
+	("tally",Index,4,"Index Offset direction");
       
-      Geometry::Vec3D Axis;
-      size_t itemIndex(5);
-      IParam.checkCntVec3D("tally",Index,itemIndex,Axis);
       
       return processSurfMap(System,object,surfItem,surfIndex);
     }
@@ -190,6 +188,7 @@ surfaceConstruct::processSurfObject(Simulation& System,
     \param FObject :: Fixed/Twin name
     \param linkPt :: Link point [-ve for beam object]
     \param linkN :: surface exclude number for making a region of interest
+    \return 1 on success / 0 on failure to find linkPt
   */
 {
   ELog::RegMethod RegA("surfaceConstruct","processSurfObject");
@@ -223,31 +222,31 @@ int
 surfaceConstruct::processSurfMap(Simulation& System,
 				 const std::string& SObject,
 				 const std::string& SurfUnit,
-				 const long int linkPt) const
+				 const long int linkIndex) const
   /*!
     Process a surface tally on a registered object
     \param System :: Simulation to add tallies
     \param SObject :: SurfMap object for surfaces
     \param SurfUnit :: Object within surfMap
-    \param linkPt :: Link point [-ve for beam object]
+    \param linkIndex :: Index of surface [or -ve for all]
+    \return 1 on success / 0 on failure to find linkPt
   */
 {
   ELog::RegMethod RegA("surfaceConstruct","processSurfMap");
   ModelSupport::objectRegister& OR=
     ModelSupport::objectRegister::Instance();
-
   ModelSupport::surfIndex& SurI=
     ModelSupport::surfIndex::Instance();
   
   const int tNum=System.nextTallyNum(idType);
-  if (linkPt)
+  if (linkIndex)
     {
       const attachSystem::SurfMap* SPtr=
 	OR.getObjectThrow<attachSystem::SurfMap>(SObject,"FixedComp");
 
-      const int side=(linkPt>0) ? 1 : -1;
-      const size_t index=(linkPt>0) ? static_cast<size_t>(linkPt-1) :
-	static_cast<size_t>(-linkPt-1);
+      const int side=(linkIndex>0) ? 1 : -1;
+      const size_t index=(linkIndex>0) ? static_cast<size_t>(linkIndex-1) :
+	static_cast<size_t>(-linkIndex-1);
 
       const int surf=SPtr->getSurf(SurfUnit,index);
 
@@ -266,6 +265,7 @@ surfaceConstruct::processSurfaceCurrent(Simulation& System,
     \param System :: Simulation to add tallies
     \param IParam :: Main input parameters
     \param Index :: index of the -T card
+    \return 1 on success / 0 on failure 
   */
 {
   ELog::RegMethod RegA("surfaceConstruct","processSurfaceCurrent");
@@ -282,6 +282,7 @@ surfaceConstruct::processSurfaceFlux(Simulation& System,
     \param System :: Simulation to add tallies
     \param IParam :: Main input parameters
     \param Index :: index of the -T card
+    \return 1 on success / 0 on failure to find linkPt
   */
 {
   ELog::RegMethod RegA("surfaceConstruct","processSurfaceCurrent");
@@ -295,13 +296,14 @@ void
 surfaceConstruct::writeHelp(std::ostream& OX) const
   /*!
     Write out help
-    \param Output stream
+    \param OX :: Output stream
   */
 {
   OX<<"Surface tally options:\n"
     <<"object linkName\n"
     <<"object objectName front/back \n"
-    <<"surfMap objectName front/back/N {1-4 designator} \n"
+    <<"surfMap objectName surfName index-Direction \n"
+    <<"  -- indexDir is +/- 1-N surfaces stored under surfName\n"
     <<"viewObject objectName front/back/N {1-4 designator} \n";
   return;
 }

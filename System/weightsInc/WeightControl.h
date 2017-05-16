@@ -63,15 +63,18 @@ class WeightControl
   double density;                ///< scales the material density
   double r2Length;               ///< scale factor of r2 Length 
   double r2Power;                ///< makes weight 1/r^power
+
   std::vector<double> EBand;     ///< Energy band
   std::vector<double> WT;        ///< Weight scalar
+
+  // exta factors for MARKOV:
+  size_t nMarkov;                ///< Markov count  
   
   std::set<std::string> objectList;  ///< Object list to this cut [local]
 
   bool activeAdjointFlag;                   ///< Active plane
   std::string activePtType;                 ///< ptType 
   size_t activePtIndex;                     ///< plant/source/track pt 
-
 
   std::vector<Geometry::Cone> conePt;         ///< Cone points
   std::vector<Geometry::Plane> planePt;       ///< Plane points
@@ -92,6 +95,8 @@ class WeightControl
   void procType(const mainSystem::inputParam&);
   void procParam(const mainSystem::inputParam&,const std::string&,
 		const size_t,const size_t);
+  void procMarkov(const mainSystem::inputParam&,const std::string&,
+		  const size_t);
   void procTypeHelp() const;
 
   void procSourcePoint(const mainSystem::inputParam&);
@@ -139,6 +144,7 @@ class WeightControl
   void wwgEnergy(const mainSystem::inputParam&);
   void wwgVTK(const mainSystem::inputParam&);
   void wwgCreate(const Simulation&,const mainSystem::inputParam&);
+  void wwgMarkov(const Simulation&,const mainSystem::inputParam&);
   void wwgNormalize(const mainSystem::inputParam&);
   
   void calcWWGTrack(const Simulation&,const Geometry::Plane&,

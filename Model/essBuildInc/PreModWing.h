@@ -54,13 +54,14 @@ class PreModWing : public attachSystem::ContainedComp,
   double outerRadius;            ///< End of down curve [-ve if not used]
   double innerYCut;              ///< Start from inner shape [makeing overstep]
   
-
   int mat;                        ///< (water) material
   int wallMat;                    ///< wall material
-
+  
+  
   HeadRule topSurf;              ///< Top cut surface
   HeadRule baseSurf;             ///< Base cut surface
   HeadRule innerSurf;            ///< Inner surface(s)
+  HeadRule outerSurf;            ///< Outer surface(s)
   HeadRule mainDivider;          ///< Seperatue unit for divider [to simpify boundary]
   
   void populate(const FuncDataBase&);
@@ -71,6 +72,8 @@ class PreModWing : public attachSystem::ContainedComp,
   void createObjects(Simulation&);
   void createLinks();
 
+
+  
  public:
 
   PreModWing(const std::string&);
@@ -79,16 +82,18 @@ class PreModWing : public attachSystem::ContainedComp,
   virtual PreModWing* clone() const;
   virtual ~PreModWing();
 
-  /// assignement of main string
+  /// assignment of main string
   void setInnerExclude(const std::string& HRStr)
   { innerSurf.procString(HRStr); }
-  /// assignement of base rule
+  /// assignment of base rule
   void setBaseCut(const HeadRule& HR) { baseSurf=HR; }
   /// assignement of top rule
   void setTopCut(const HeadRule& HR) { topSurf=HR; }
-  /// assignement of divider rule
+  /// assignment of divider rule
   void setDivider(const HeadRule& HR) { mainDivider=HR; }
-  
+  /// assignment of outer surf
+  void setOuter(const HeadRule& HR) { outerSurf=HR; }
+
   void createAll(Simulation&,const attachSystem::FixedComp&,
 		 const long int);
 

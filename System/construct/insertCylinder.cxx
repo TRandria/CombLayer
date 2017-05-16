@@ -146,60 +146,6 @@ insertCylinder::populate(const FuncDataBase& Control)
 }
 
 void
-insertCylinder::createUnitVector(const attachSystem::FixedComp& FC,
-			      const long int lIndex)
-  /*!
-    Create the unit vectors
-    \param FC :: Fixed coordinate system
-    \param lIndex :: link index
-  */
-{
-  ELog::RegMethod RegA("insertCylinder","createUnitVector(FC,index)");
-
-
-  FixedComp::createUnitVector(FC,lIndex);
-  applyOffset();
-  return;
-}
-
-void
-insertCylinder::createUnitVector(const Geometry::Vec3D& OG,
-			      const attachSystem::FixedComp& FC)
-  /*!
-    Create the unit vectors
-    \param OG :: Origin
-    \param FC :: LinearComponent to attach to
-  */
-{
-  ELog::RegMethod RegA("insertCylinder","createUnitVector");
-
-  FixedComp::createUnitVector(FC);
-  Origin=OG;
-  applyOffset();
-  return;
-}
-
-void
-insertCylinder::createUnitVector(const Geometry::Vec3D& OG,
-                                 const Geometry::Vec3D& Axis)
-  /*!
-    Create the unit vectors
-    \param OG :: Origin
-    \param Axis :: Y-direction 
-  */
-{
-  ELog::RegMethod RegA("insertCylinder","createUnitVector<Vec>");
-  
-  Y=Axis.unit();
-  X=Y.crossNormal();
-  Z=X*Y;
-  Origin=OG;
-  applyOffset();
-
-  return;
-}
-
-void
 insertCylinder::createSurfaces()
   /*!
     Create all the surfaces
@@ -237,6 +183,7 @@ insertCylinder::createLinks()
 {
   ELog::RegMethod RegA("insertCylinder","createLinks");
 
+  FixedComp::setNConnect(10);
   FrontBackCut::createLinks(*this,Origin,Y);
   if (!frontActive())
     {
@@ -260,11 +207,12 @@ insertCylinder::createLinks()
   FixedComp::setLinkSurf(4,SMap.realSurf(ptIndex+7));
   FixedComp::setLinkSurf(5,SMap.realSurf(ptIndex+7));
 
-  // corners 
-  FixedComp::setConnect(6,Origin-X*radius-Z*radius,-X-Z);
-  FixedComp::setConnect(7,Origin+X*radius-Z*radius,X-Z);
-  FixedComp::setConnect(8,Origin-X*radius+Z*radius,-X+Z);
-  FixedComp::setConnect(9,Origin+X*radius+Z*radius,X+Z);
+  // corners
+  const double r2=sqrt(radius);
+  FixedComp::setConnect(6,Origin-X*r2-Z*r2,-X-Z);
+  FixedComp::setConnect(7,Origin+X*r2-Z*r2,X-Z);
+  FixedComp::setConnect(8,Origin-X*r2+Z*r2,-X+Z);
+  FixedComp::setConnect(9,Origin+X*r2+Z*r2,X+Z);
 
   FixedComp::setLinkSurf(6,SMap.realSurf(ptIndex+7));
   FixedComp::setLinkSurf(7,SMap.realSurf(ptIndex+7));
@@ -412,7 +360,7 @@ insertCylinder::createAll(Simulation& System,
   ELog::RegMethod RegA("insertCylinder","createAll");
   if (!populated) 
     populate(System.getDataBase());  
-  createUnitVector(Orig,Axis);
+  insertObject::createUnitVector(Orig,Axis);
   mainAll(System);
   
   return;
