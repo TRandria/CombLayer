@@ -27,6 +27,7 @@ namespace attachSystem
   class FixedComp;
   class FixedOffset;
   class CellMap;
+  class TwinComp;
 }
 
 namespace instrumentSystem
@@ -50,6 +51,7 @@ namespace constructSystem
 namespace essSystem
 {  
 
+  class GuideItem;
   /*!
     \class ESTIA
     \version 1.0
@@ -58,9 +60,11 @@ namespace essSystem
     \brief ESTIA beamline constructor for the ESS
   */
   
-class ESTIA
+class ESTIA : public attachSystem::CopiedComp
 {
  private:
+  
+  int stopPoint;
 
   /// Main Beam Axis [for construction]
   std::shared_ptr<attachSystem::FixedOffset> estiaAxis;
@@ -96,7 +100,7 @@ class ESTIA
   
  public:
   
-  ESTIA();
+  ESTIA(const std::string &);
   ESTIA(const ESTIA&);
   ESTIA& operator=(const ESTIA&);
   ~ESTIA();

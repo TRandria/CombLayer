@@ -259,7 +259,7 @@ setESSSingle(defaultConfig& A,
   const std::set<std::string> beamFilled=
     {"BEER","BIFROST","CSPEC","DREAM","FREIA","LOKI",
      "MAGIC","MIRACLES","NMX","NNBAR","ODIN","TREX","VESPA",
-     "SKADI","VOR","SHORTNMX","SHORTDREAM"};
+     "SKADI","VOR","SHORTNMX","SHORTDREAM","ESTIA"};
 
   size_t beamLineIndex(0);
   while(!LItems.empty())

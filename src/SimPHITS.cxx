@@ -173,7 +173,7 @@ SimPHITS::writeTransform(std::ostream& OX) const
   TransTYPE::const_iterator vt;
   for(vt=TList.begin();vt!=TList.end();vt++)
     {
-      OX<<" "; vt->second.write(OX);
+      OX<<" ";vt->second.write(OX);
     }
   
   OX<<"\n";
@@ -197,7 +197,7 @@ SimPHITS::writeCells(std::ostream& OX) const
   
   for(mp=OList.begin();mp!=OList.end();mp++)
     {
-      OX<<" "; mp->second->writePHITS(OX);
+      OX<<" ";mp->second->writePHITS(OX);
     }
  
   OX<<std::endl;  // Empty line manditory for MCNPX
@@ -233,8 +233,7 @@ SimPHITS::writeSurfaces(std::ostream& OX) const
   std::map<int,Geometry::Surface*>::const_iterator mp;
   for(mp=SurMap.begin();mp!=SurMap.end();mp++)
     {
-      OX<<" ";
-      (mp->second)->write(OX);
+      OX<<" ";(mp->second)->write(OX);
     }
   OX<<std::endl;
   return;

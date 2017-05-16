@@ -318,7 +318,6 @@ LOKI::build(Simulation& System,
   DDiskA->setOffsetFlag(1);  // X direction
   DDiskA->createAll(System,ChopperA->getKey("BuildBeam"),0);
 
-
   VPipeC->addInsertCell(bunkerObj.getCell("MainVoid"));
   VPipeC->createAll(System,ChopperA->getKey("Beam"),2);
 
@@ -384,10 +383,10 @@ LOKI::build(Simulation& System,
 
   //Collimator block in first shielding
   CollA->setInnerExclude(VPipeOutA->getSignedFullRule(9));
-  CollA->setOuter(ShieldA->getXSectionIn());
+  //CollA->setOuter(ShieldA->getXSectionIn());
   CollA->addInsertCell(ShieldA->getCell("Void"));
   CollA->addInsertCell(VPipeOutA->getCell("OutVoid"));
-  //  CollA->createAll(System,*VPipeOutA,-1);
+  CollA->createAll(System,*VPipeOutA,-1);
 
 
 //Beamline shielding
@@ -400,7 +399,7 @@ LOKI::build(Simulation& System,
   VPipeOutB->createAll(System,*AppA,2);
   FocusOutB->addInsertCell(VPipeOutB->getCell("Void"));
   FocusOutB->createAll(System,*VPipeOutB,0,*VPipeOutB,0);
-
+  
   CollB->setInnerExclude(VPipeOutB->getSignedFullRule(9));
   CollB->setOuter(ShieldB->getXSectionIn());
   CollB->addInsertCell(ShieldB->getCell("Void"));

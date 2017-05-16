@@ -49,7 +49,7 @@
 #include "varList.h"
 #include "FuncDataBase.h"
 #include "variableSetup.h"
-
+#include "FocusGenerator.h"
 namespace setVariable
 {
 
@@ -62,13 +62,22 @@ ESTIAvariables(FuncDataBase& Control)
 {
   ELog::RegMethod RegA("ESTIAvariables[F]","ESTIAvariables");
   
+  Control.addVariable("estiaStopPoint",0);
+
   Control.addVariable("estiaAxisXStep",0.0);
   Control.addVariable("estiaAxisYStep",0.0);
   Control.addVariable("estiaAxisZStep",0.0);
   Control.addVariable("estiaAxisXYAngle",0.0);   // rotation 
   Control.addVariable("estiaAxisZAngle",1.0);
 
+  setVariable::FocusGenerator FGen;
+  FGen.setGuideMat("Glass");
+  FGen.setThickness(0.8,0.5);
 
+  FGen.setYOffset(0.0);
+  FGen.generateTaper(Control,"estiaFMono",350.0,2.0,5.2,8.0,10.5);
+  Control.addVariable("estiaFMonoZStep",0.5); 
+  /*
   Control.addVariable("estiaFMonoLength",350.0);       
   Control.addVariable("estiaFMonoNShapes",1);       
   Control.addVariable("estiaFMonoNShapeLayers",3);
@@ -87,7 +96,7 @@ ESTIAvariables(FuncDataBase& Control)
   Control.addVariable("estiaFMono0WidthStart",8.0); // NOT Centred
   Control.addVariable("estiaFMono0WidthEnd",10.5);
   Control.addVariable("estiaFMono0Length",350.0);
-
+*/
   // VACUUM PIPES for Shutter:
   Control.addVariable("estiaPipeAYStep",2.0);
   Control.addVariable("estiaPipeARadius",9.0);

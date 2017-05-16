@@ -219,7 +219,7 @@ makeESSBL::build(Simulation& System,
     }
   else if (beamName=="ESTIA")
     {
-      ESTIA estiaBL;
+      ESTIA estiaBL("estia");
       estiaBL.build(System,*mainGIPtr,bunkerObj,voidCell);
     }
   else if (beamName=="FREIA")

@@ -80,7 +80,7 @@ NMXvariables(FuncDataBase& Control)
   SGen.addFloorMat(5,"Concrete");
   SGen.addRoofMat(5,"Concrete");
   SGen.addWallMat(5,"Concrete");
-
+ Control.addVariable("nmxStopPoint",0);
   Control.addVariable("nmxAxisXStep",0.0);
   Control.addVariable("nmxAxisYStep",0.0);
   Control.addVariable("nmxAxisZStep",0.0);

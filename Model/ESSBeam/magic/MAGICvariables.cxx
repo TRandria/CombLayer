@@ -132,8 +132,10 @@ MAGICvariables(FuncDataBase& Control)
   PipeGen.generatePipe(Control,"magicPipeE",3.0,600.0);
   FGen.generateTaper(Control,"magicFE",596.0 ,4.08,4.93, 4.06,4.79 );
   // out (19m to bunker wall)
-  PipeGen.generatePipe(Control,"magicPipeF",3.0,510.0);
-  FGen.generateTaper(Control,"magicFF",506.0 ,4.93,5.60,  4.79,5.50 );
+ // PipeGen.generatePipe(Control,"magicPipeF",3.0,510.0);
+ // FGen.generateTaper(Control,"magicFF",506.0 ,4.93,5.60,  4.79,5.50 );
+  PipeGen.generatePipe(Control,"magicPipeF",3.0,490.0);
+  FGen.generateTaper(Control,"magicFF",486.0 ,4.93,5.60,  4.79,5.50 );
 
     // BEAM INSERT:
   Control.addVariable("magicBInsertHeight",20.0);

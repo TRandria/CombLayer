@@ -62,6 +62,7 @@
 
 #include "LinkUnit.h"
 #include "FixedComp.h"
+#include "CopiedComp.h"
 #include "FixedOffset.h"
 #include "FixedGroup.h"
 #include "FixedOffsetGroup.h"
@@ -93,15 +94,18 @@
 namespace essSystem
 {
 
-ESTIA::ESTIA() :
-  estiaAxis(new attachSystem::FixedOffset("estiaAxis",4)),
-  FocusMono(new beamlineSystem::GuideLine("estiaFMono")),
-  VPipeA(new constructSystem::VacuumPipe("estiaPipeA")),
-  FocusA(new beamlineSystem::GuideLine("estiaFA")),
+ESTIA::ESTIA(const std::string& keyName) :
+  attachSystem::CopiedComp("estia",keyName),
+  stopPoint(0),
+  estiaAxis(new attachSystem::FixedOffset(newName+"Axis",4)),
 
-  VPipeB(new constructSystem::VacuumPipe("estiaPipeB")),
-  VacBoxA(new constructSystem::VacuumBox("estiaVBoxA")),
-  FocusB(new beamlineSystem::GuideLine("estiaFB"))
+  FocusMono(new beamlineSystem::GuideLine(newName+"FMono")),
+  VPipeA(new constructSystem::VacuumPipe(newName+"PipeA")),
+  FocusA(new beamlineSystem::GuideLine(newName+"FA")),
+
+  VPipeB(new constructSystem::VacuumPipe(newName+"PipeB")),
+  VacBoxA(new constructSystem::VacuumBox(newName+"VBoxA")),
+  FocusB(new beamlineSystem::GuideLine(newName+"FB"))
   /*! 
     Constructor
   */
@@ -146,6 +150,10 @@ ESTIA::setBeamAxis(const FuncDataBase& Control,
   estiaAxis->setLinkCopy(1,GItem.getKey("Main"),1);
   estiaAxis->setLinkCopy(2,GItem.getKey("Beam"),0);
   estiaAxis->setLinkCopy(3,GItem.getKey("Beam"),1);
+
+  estiaAxis->linkShift(3);
+  estiaAxis->linkShift(4);
+
   estiaAxis->linkAngleRotate(3);
   estiaAxis->linkAngleRotate(4);
 
@@ -224,13 +232,23 @@ ESTIA::build(Simulation& System,
   ELog::RegMethod RegA("ESTIA","build");
 
   ELog::EM<<"\nBuilding ESTIA on : "<<GItem.getKeyName()<<ELog::endDiag;
+  
+  const FuncDataBase& Control=System.getDataBase();
+  CopiedComp::process(System.getDataBase());
 
-  setBeamAxis(System.getDataBase(),GItem,1);
+  stopPoint=Control.EvalDefVar<int>(newName+"StopPoint",0);
+
+  setBeamAxis(Control,GItem,0);
 
   FocusMono->addInsertCell(GItem.getCells("Void"));
-  FocusMono->setBack(GItem.getKey("Beam").getSignedLinkString(-2));
+  // FocusMono->setBack(GItem.getKey("Beam").getSignedLinkString(-2));
+  FocusMono->setFront(GItem.getKey("Beam"),-1);
+  FocusMono->setBack(GItem.getKey("Beam"),-2);
   FocusMono->createAll(System,*estiaAxis,-3,*estiaAxis,-3);
-
+  
+  if (stopPoint==1) return; 
+  
+ 
   // Shutter pipe [note gap front/back]
   VPipeA->addInsertCell(bunkerObj.getCell("MainVoid"));
   VPipeA->createAll(System,FocusMono->getKey("Guide0"),2);
@@ -240,14 +258,15 @@ ESTIA::build(Simulation& System,
 		    FocusMono->getKey("Guide0"),2);
 
   // pipe for first section
-  VPipeB->addInsertCell(bunkerObj.getCell("MainVoid"));
+/* 
+ VPipeB->addInsertCell(bunkerObj.getCell("MainVoid"));
   VPipeB->createAll(System,FocusA->getKey("Guide0"),2);
-
-  return;
+  
+ // return;
   FocusB->addInsertCell(VPipeA->getCells("Void"));
   FocusB->createAll(System,FocusA->getKey("Guide0"),2,
 		    FocusA->getKey("Guide0"),2);
-
+ */
   return;
 }
 

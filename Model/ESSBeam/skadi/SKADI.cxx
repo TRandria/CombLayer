@@ -311,7 +311,7 @@ SKADI::build(Simulation& System,
   stopPoint=Control.EvalDefVar<int>(newName+"StopPoint",0);
   
   setBeamAxis(Control,GItem,0);
-  
+
   /// Inside the Monolith
   BendA->addInsertCell(GItem.getCells("Void"));
   BendA->setFront(GItem.getKey("Beam"),-1);
